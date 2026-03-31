@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ApiPath {
   public get base(): string {
-    return 'api';
+    const prefix = environment.apiUrl ? environment.apiUrl : '';
+    return `${prefix}/api`;
   }
 
   public userGuide(): string {

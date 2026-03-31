@@ -26,7 +26,20 @@ namespace BiobrainWebAPI
 		public void ConfigureServices(IServiceCollection services)
 		{
 			//services.AddControllers();
-			services.AddCors(options => options.AddPolicy("PinPayments", builder => builder.SetIsOriginAllowed(s => s == "https://test-api.pinpayments.com")));
+			services.AddCors(options =>
+			{
+				options.AddPolicy("PinPayments", builder => builder.SetIsOriginAllowed(s => s == "https://test-api.pinpayments.com"));
+				options.AddPolicy("AllowFrontend", builder =>
+				{
+					var siteUrl = Configuration.GetSection("SiteUrl");
+					var scheme = siteUrl?.GetValue<string>("Scheme") ?? "https";
+					var host = siteUrl?.GetValue<string>("Host") ?? "biobrain-web.web.app";
+					builder.WithOrigins($"{scheme}://{host}", "https://biobrain-web.web.app", "http://localhost:4200")
+					       .AllowAnyHeader()
+					       .AllowAnyMethod()
+					       .AllowCredentials();
+				});
+			});
 
             services.AddMvc(options =>
             {
@@ -68,6 +81,8 @@ namespace BiobrainWebAPI
 
 			SeedDatabase(app);
 			//app.UseHttpsRedirection();
+
+			app.UseCors("AllowFrontend");
 
 			app.UseAuthentication();
 			app.UseAuthorization();
