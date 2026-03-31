@@ -1,0 +1,31 @@
+<div class="content-container full-size-no-overflow" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="space-around stretch">
+  <div fxLayout="column" class="header-accent-background">
+    <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+      <div class="underlined hand-pointer" (click)="onCourseClick()">{{subjectName | uppercase}}</div>
+      <mat-icon>navigate_next</mat-icon>
+      <span>{{strings.assignedWork | uppercase}}</span>
+    </div>
+  </div>
+  <div class="full-height-with-scroll" fxFlex="1 1 100%" fxFill>
+    <!-- Grid view -->
+    <div class="grid-container" fxHide.lt-lg>
+      <ag-grid-angular
+        class="ag-theme-alpine grid-item"
+        [pagination]="true"
+        [paginationAutoPageSize]="true"
+        (gridReady)="onGridReady($event)"
+        (modelUpdated)="onModelUpdated()"
+        (cellClicked)="onCellClicked($event)"
+        [frameworkComponents]="components">
+      </ag-grid-angular>
+    </div>
+    <!-- Cards view -->
+    <div class="cards-container" fxLayout="column" fxLayoutGap="10px" fxHide.gt-md>
+      <div *ngFor="let assignedWork of rows; last as isLast">
+        <app-content-card [nameLines]="assignedWork.nameLines" [dueDate]="formatDate(assignedWork.dueAt)" [date]="formatDate(assignedWork.assignedAt)" [actions]="getCardActions(assignedWork)"
+          (action)="onCardAction($event, assignedWork)" [endActions]="true" [dueDateColor]="getDueDateColor(assignedWork.dueAt)"></app-content-card>
+        <!-- <mat-divider class="content-card-devider" *ngIf="!isLast"></mat-divider> -->
+      </div>
+    </div>
+  </div>
+</div>

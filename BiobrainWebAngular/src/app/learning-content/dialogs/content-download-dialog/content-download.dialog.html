@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{strings.downloadingContent | titlecase}}</h2>
+
+<mat-dialog-content fxLayout="column">
+  <div class="full-height-with-scroll" fxLayout="column">
+    <div *ngFor="let course of dialogData" fxLayout="row" fxLayoutAlign="space-between center">
+      <div>{{course.courseName}}</div>
+      <div>
+        <mat-spinner class="loader" [diameter]="20" color="accent" *ngIf="!course.isComplete && !course.isError">
+        </mat-spinner>
+        <mat-icon *ngIf="course.isComplete && !course.isError" class="tick">done</mat-icon>
+        <mat-icon *ngIf="course.isError" color="warn">error</mat-icon>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button [disabled]="!isFinished" mat-raised-button color="accent" class="auto-form-button" (click)="onClose()"
+    type="button">
+    {{ strings.close | titlecase }}
+  </button>
+</mat-dialog-actions>

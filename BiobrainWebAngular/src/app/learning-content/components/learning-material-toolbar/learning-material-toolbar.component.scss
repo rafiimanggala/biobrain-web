@@ -1,0 +1,33 @@
+@import '../../../styles/variables';
+
+.level-group {
+  border: none;
+  min-height: 36px;
+}
+
+.disabled{
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.buttons-raw{
+  min-height: 36px;
+}
+
+.level-group {
+  .mat-button-toggle {
+    border-left: none !important;
+    border-bottom: none;
+    font-weight: 600;
+  }
+  ::ng-deep .mat-button-toggle span {
+    line-height: 36px !important;
+  }
+}
+
+.quiz-button {
+  font-weight: 600;
+}
+
+.node-button {
+  margin-right: 11px;
+}

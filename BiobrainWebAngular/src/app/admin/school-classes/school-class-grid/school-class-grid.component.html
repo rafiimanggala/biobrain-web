@@ -1,0 +1,61 @@
+<ag-grid-angular
+  #teachersGrid
+  class='ag-theme-alpine grid-item ag-grid-custom-admin-area'
+  [rowData]='schoolClassListStore.items$ | async'
+  [paginationAutoPageSize]='true'
+  [pagination]='true'
+  (gridReady)='onGridReady($event)'
+  (modelUpdated)='onModelUpdated()'
+>
+
+  <ag-grid-column [appContextMenu]='menu' [hide]='true'
+  [autoHeight]="true">
+    <mat-menu #menu='matMenu'>
+      <ng-template matMenuContent let-item='data'>
+        <button mat-menu-item (click)='onEditSchoolClass(item.schoolClassId)'>{{strings.edit | titlecase}}</button>
+        <button mat-menu-item (click)='onDeleteSchoolClass(item.schoolClassId)'>{{strings.delete | titlecase}}</button>
+      </ng-template>
+    </mat-menu>
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'name'"
+    [headerName]='strings.name | titlecase'
+    [sortable]='true'
+    [filter]="'agTextColumnFilter'"
+    [filterParams]='textFilterParams'
+    [autoHeight]="true"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'year'"
+    [headerName]='strings.year | titlecase'
+    [sortable]='true'
+    [filter]="'agNumberColumnFilter'"
+    [filterParams]='numberFilterParams'
+    [autoHeight]="true"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'teachers'"
+    [headerName]='strings.teachers | titlecase'
+    [cellRenderer]="teachersRenderer"
+    [sortable]='false'
+    [filter]="'agTextColumnFilter'"
+    [filterParams]='textFilterParams'
+    [autoHeight]="true"
+    [wrapText]="true"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'autoJoinClassCode'"
+    [headerName]='strings.classCode | titlecase'
+    [sortable]='true'
+    [autoHeight]="true"
+  >
+  </ag-grid-column>
+
+</ag-grid-angular>

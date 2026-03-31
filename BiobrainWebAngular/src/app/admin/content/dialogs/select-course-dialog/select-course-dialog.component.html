@@ -1,0 +1,35 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+    <h2 class="dialog-header" mat-dialog-title>{{strings.baseCourse | titlecase}}</h2>
+
+    <mat-dialog-content>
+        <div fxLayout="column" class="dialog-content">
+            <mat-form-field fxFlex="1 1 100%">
+                <mat-label>{{strings.course | titlecase}}</mat-label>
+                <mat-select name="course" [(ngModel)]="data.selectedCourseId" #course="ngModel"
+                    placeholder="{{strings.course | titlecase}}" required appAutofocus>
+                    <mat-option *ngFor="let course of data.courses" [value]="course.courseId">
+                        {{course.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="course.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+            </mat-form-field>
+        </div>
+
+    </mat-dialog-content>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+
+        <span fxLayout="raw">
+            <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()"
+                type="button">
+                {{strings.cancel | uppercase}}
+            </button>
+
+            <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+                [disabled]="!dialogForm.valid" type="submit">
+                {{strings.next | uppercase}}
+            </button>
+        </span>
+    </div>
+
+</form>

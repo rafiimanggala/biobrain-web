@@ -1,0 +1,14 @@
+<span class='path'>
+  <ng-container *ngIf='subjectName'>
+    <span>
+      <a>
+        <span>{{subjectName | uppercase}}<ng-container *ngIf='subHeader'>{{': ' + subHeader}}</ng-container></span>
+        
+      </a>
+    </span>
+
+    <ng-container *ngFor='let name of path'>
+      › {{name}}
+    </ng-container>
+  </ng-container>
+</span>

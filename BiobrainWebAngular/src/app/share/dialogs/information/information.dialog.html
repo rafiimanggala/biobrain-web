@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{dialogData.title | titlecase}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <div *ngIf="!dialogData.isHtmlText" class="text-row">{{dialogData.text}}</div>
+  <div *ngIf="dialogData.isHtmlText" class="text-row" [innerHTML]="html"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-raised-button
+    color="accent"
+    class="auto-bordered-form-button"
+    (click)="onClose()"
+    type="button"
+  >
+    {{ (dialogData.closeButtonText ? dialogData.closeButtonText : strings.close) | titlecase }}
+  </button>
+</mat-dialog-actions>

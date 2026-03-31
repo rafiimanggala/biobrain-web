@@ -1,0 +1,87 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{strings.student | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="firstName" [(ngModel)]="data.firstName" #firstName="ngModel"
+          placeholder="{{strings.firstName | titlecase}}" required appAutofocus>
+        <mat-error *ngIf="firstName.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="lastName" [(ngModel)]="data.lastName" #lastName="ngModel"
+          placeholder="{{strings.lastName | titlecase}}" required>
+        <mat-error *ngIf="lastName.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="email" [(ngModel)]="data.email" #email="ngModel"
+          placeholder="{{strings.email | titlecase}}" required
+          pattern="^[a-zA-Z0-9.\-_]{1,}@([0-9a-zA-Z\-]{1,}[.]{1}){1,}([a-zA-Z]{2,}){1}$" [disabled]="data.settings.isEditMode">
+        <mat-error *ngIf="email.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="email.hasError('pattern')">{{strings.invalidEmail}}</mat-error>
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutAlign="space-between none" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="10px">
+        <div fxLayout="column" fxFlex="1 1 100" fxLayoutGap="10px">
+          <app-form-label [text]="strings.country"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" style="display: block">
+            <input type="text" name="country" #country="ngModel" [(ngModel)]="data.country" matInput
+              [matAutocomplete]="countryAuto" required (ngModelChange)="onCountryChanged()">
+            <mat-autocomplete autoActiveFirstOption #countryAuto="matAutocomplete">
+              <mat-option *ngFor="let option of filtredCountries" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="country.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="49" fxFlex.lt-sm="100" fxLayoutGap="10px" *ngIf="data.country == 'Australia'">
+          <app-form-label [text]="strings.state"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" style="display: block">
+            <mat-select #state="ngModel" [(ngModel)]="data.state" matInput name="state" required
+              (ngModelChange)="onStateChanged()">
+              <mat-option *ngFor="let stateEntry of auStates" [value]="stateEntry">{{stateEntry}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="state.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxFlex.lt-sm="100" fxLayoutGap="10px" *ngIf="data.state == 'Victoria' || data.state == 'South Australia'">
+        <app-form-label [text]="strings.curriculum"></app-form-label>
+        <mat-form-field class="form-field" floatLabel="never" style="display: block">
+          <mat-select #curriculum="ngModel" [(ngModel)]="data.curriculumCode" matInput name="curriculum" required>
+            <mat-option *ngFor="let curriculumEntry of filteredCurricula" [value]="curriculumEntry.curriculumCode">
+              {{curriculumEntry.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="curriculum.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()" type="button">
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid" type="submit">
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

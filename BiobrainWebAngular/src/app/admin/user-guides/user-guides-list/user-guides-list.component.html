@@ -1,0 +1,13 @@
+<div class="container" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center strech">
+  <div fxFlex="1 1 30%">
+    <a mat-button href="/admin/user_guides_preview" target="_blank" color="accent" type="submit" fxFlexAlign="center">
+      {{strings.goToPreview | uppercase}}
+    </a>
+    <app-user-guides-tree [contentTree]="contentTree" [selectedItem]="selectedItem" (add)="onAddNode($event)"
+      (edit)="onEditNode($event)" (reorder)="onReorderNode($event)"
+      (select)="onItemSelected($event)"></app-user-guides-tree>
+  </div>
+  <div fxFlex="1 1 70%">
+    <app-user-guide-editor [selectedItem]="selectedItem"></app-user-guide-editor>
+  </div>
+</div>

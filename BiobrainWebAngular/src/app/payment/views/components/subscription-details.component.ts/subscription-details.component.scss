@@ -1,0 +1,97 @@
+@import '../../../../styles/variables.scss';
+
+.sub-label {
+  font-size: 8pt;
+  color: $gray;
+}
+
+.subjects-label{  
+  font-family: $nunito;
+  font-size: $form-label;
+  font-weight: 800;
+  color: $primary;
+}
+
+.form-label{
+  font-family: $roboto;
+  font-size: $form-label;
+  color: $gray;
+}
+
+.form-label-selected{
+  font-family: $nunito;
+  font-size: $form-label;
+  color: $primary;
+  font-weight: 800;
+}
+
+.total-label-container{
+  padding: 10px;
+  border: 2px solid $primary;
+  border-radius: 5px;
+}
+
+.preformated{
+  white-space: pre-wrap;
+}
+
+.form-checkbox{
+  font-family: $roboto;
+  font-size: 16px;
+  color: $gray;
+  min-width: 100px;
+}
+
+.signup-image{
+  width: 120px;
+  display: flex;
+  margin: auto;
+}
+
+.next-button{
+  width: 125px;
+}
+
+.start-button{
+  width: 200px;
+}
+
+.save-button{
+  font-family: $nunito;
+  font-size: 11pt !important;
+  max-width: 220px;
+}
+
+.action-button{
+  font-family: $nunito;
+  font-size: 9pt !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  max-width: 220px;
+}
+
+.component-container{
+  max-height: calc(100vh - 30px);
+}
+
+.component-body{
+  max-height: calc(100% - 260px);
+  overflow-y: auto;
+}
+
+.form-fields{
+  max-height: calc(100% - 260px);
+  overflow-y: auto;
+  padding: 5px;
+  padding-bottom: 20px;
+}
+
+.disabled{
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.coming-soon-label{
+  font-style: italic;
+  font-size: 10px;
+  margin: auto;
+}

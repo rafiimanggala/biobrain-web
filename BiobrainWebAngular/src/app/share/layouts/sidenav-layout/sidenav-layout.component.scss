@@ -1,0 +1,47 @@
+@import '../../../styles/variables';
+
+.example-sidenav-container {
+  /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+     causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+  // flex: 1;
+  // margin-top: 64px;
+  overflow: hidden !important;
+  z-index: 1;
+  min-height: calc(100vh - 100px);
+}
+
+//.example-is-mobile .example-sidenav-container {
+//  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+//     `<body>` to be our scrolling element for mobile layouts. */
+//  flex: 1 0 auto;
+//}
+
+.example-sidenav-container > .mat-drawer-backdrop.mat-drawer-shown {
+  background-color: rgba(255,255,255,0);
+}
+
+.side-nav {
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}
+
+.mat-sidenav {
+  border: none;
+  background-color: $background;
+}
+
+mat-sidenav-content {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  box-sizing: border-box;
+  max-height: calc(100vh - 100px);
+  max-width: calc(100vw);
+}
+
+.app-content {
+  margin-left: 3px;
+  height: calc(100vh - 100px);
+  position: relative;
+}

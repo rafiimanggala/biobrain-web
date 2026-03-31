@@ -1,0 +1,165 @@
+<form #signUpForm="ngForm" name="signUpForm">
+  <mat-card class="main-card" fxLayout="column" fxLayoutGap="10px">
+
+    <app-signup-header [text]="strings.getStartedWithBiobrain"></app-signup-header>
+
+    <div class="devider"></div>
+
+    <app-form-label [text]="strings.yourEmail"></app-form-label>
+    <mat-form-field class="form-field" floatLabel="never">
+      <input type="email" #login="ngModel" [(ngModel)]="data.email" matInput name="login" required
+        pattern="^[a-zA-Z0-9.\-_]{1,}@([0-9a-zA-Z\-]{1,}[.]{1}){1,}([a-zA-Z]{2,}){1}$" />
+      <mat-error *ngIf="login.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      <mat-error *ngIf="login.hasError('pattern')">{{strings.invalidEmail}}</mat-error>
+    </mat-form-field>
+
+    <!-- Name -->
+    <div fxLayout="row" fxLayoutAlign="space-between none" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start stretch"
+      fxLayoutGap="10px">
+      <div fxLayout="column" fxFlex="49" fxFlex.lt-sm="100" fxLayoutGap="10px">
+        <app-form-label [text]="strings.firstName"></app-form-label>
+        <mat-form-field class="form-field" floatLabel="never" style="display: block">
+          <input #firstName="ngModel" [(ngModel)]="data.firstName" matInput name="firstName" required />
+          <mat-error *ngIf="login.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxFlex="49" fxFlex.lt-sm="100" fxLayoutGap="10px">
+        <app-form-label [text]="strings.lastName"></app-form-label>
+        <mat-form-field class="form-field" floatLabel="never" style="display: block">
+          <input #lastName="ngModel" [(ngModel)]="data.lastName" matInput name="lastName" required />
+          <mat-error *ngIf="login.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <app-form-label [text]="strings.createPassword"></app-form-label>
+    <mat-form-field class="form-field" floatLabel="never">
+      <input #password="ngModel" [(ngModel)]="data.password" matInput name="password" type="password" required />
+      <mat-error *ngIf="password.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      <mat-hint>{{strings.passwordHint}}</mat-hint>
+    </mat-form-field>
+
+    <!-- Access code -->
+    <mat-slide-toggle *ngIf="settings && isAccessCodeAvailable" #haveAccessCode="ngModel" name="haveAccessCode" labelPosition='before'
+      [(ngModel)]="isAccessCodeVisible" (ngModelChange)="isAccessCodeChange()">
+      <span class="toggle-label">{{strings.haveAccessCode}}</span>
+      <span class="optional-toggle-label">{{strings._optional}}</span>
+    </mat-slide-toggle>
+
+    <ng-container *ngIf="settings?.isAccessCodeVisible && isAccessCodeAvailable">
+      <app-form-label [text]="strings.accessCode"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never">
+        <input #accessCode="ngModel" [(ngModel)]="data.accessCode" matInput name="accessCode" required maxlength="10" />
+        <mat-error *ngIf="accessCode.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- Class code -->
+    <mat-slide-toggle *ngIf="settings && isClassCodeAvailable" #haveClassCode="ngModel" name="haveClassCode" labelPosition='before'
+      [(ngModel)]="isClassCodeVisible" (ngModelChange)="isClassCodeChange()">
+      <span class="toggle-label">{{strings.haveClassCode}}</span>
+      <span class="optional-toggle-label">{{strings._optional}}</span>
+      <!-- <app-form-label class="optional-label" [text]="strings._optional"></app-form-label> -->
+    </mat-slide-toggle>
+
+    <ng-container *ngIf="settings?.isClassCodeVisible && isClassCodeAvailable">
+      <app-form-label [text]="strings.classCode"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never">
+        <input #classCode="ngModel" [(ngModel)]="data.classCode" matInput name="classCode" required maxlength="6" />
+        <mat-error *ngIf="classCode.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    
+
+    <!-- Voucher -->
+    <mat-slide-toggle *ngIf="settings && isVoucherAvailable" #haveVoucher="ngModel" name="haveVoucher" labelPosition='before'
+      [(ngModel)]="isVoucherVisible" (ngModelChange)="isVoucherChange()">
+      <span class="toggle-label">{{strings.haveVoucher}}</span>
+      <span class="optional-toggle-label">{{strings._optional}}</span>
+    </mat-slide-toggle>
+
+    <ng-container *ngIf="settings?.isVoucherVisible && isVoucherAvailable">
+      <app-form-label [text]="strings.voucher"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never">
+        <input #voucher="ngModel" [(ngModel)]="data.voucher" matInput name="voucher" required maxlength="10" />
+        <mat-error *ngIf="voucher.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+      
+      <app-form-label [text]="strings.school | titlecase"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never">
+        <input #school="ngModel" [(ngModel)]="data.schoolName" matInput name="school" required/>
+        <mat-error *ngIf="school.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container>
+      <div fxLayout="row" fxLayoutAlign="space-between none" fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="10px">
+        <div fxLayout="column" fxFlex="1 1 100" fxLayoutGap="10px">
+          <app-form-label [text]="strings.country"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" style="display: block">
+            <input type="text" name="country" #country="ngModel" [(ngModel)]="data.country" matInput
+              [matAutocomplete]="countryAuto" required (ngModelChange)="onCountryChanged()">
+            <mat-autocomplete autoActiveFirstOption #countryAuto="matAutocomplete">
+              <mat-option *ngFor="let option of filtredCountries" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="country.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxFlex="49" fxFlex.lt-sm="100" fxLayoutGap="10px" *ngIf="data.country == 'Australia'">
+          <app-form-label [text]="strings.state"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" style="display: block">
+            <mat-select #state="ngModel" [(ngModel)]="data.state" matInput name="state" required
+              (ngModelChange)="onStateChanged()">
+              <mat-option *ngFor="let stateEntry of auStates" [value]="stateEntry">{{stateEntry}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="state.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxFlex.lt-sm="100" fxLayoutGap="10px" 
+      *ngIf="data.country 
+      && !settings?.isClassCodeVisible 
+      && !settings?.isAccessCodeVisible 
+      && ( (data.country == 'Australia' && data.state) || (data.country != 'Australia' && data.country.length > 0))">
+        <app-form-label [text]="strings.curriculum"></app-form-label>
+        <mat-form-field class="form-field" floatLabel="never" style="display: block">
+          <mat-select #curriculum="ngModel" [(ngModel)]="data.curriculumCode" matInput name="curriculum" required>
+            <mat-option *ngFor="let curriculumEntry of filteredCurricula" [value]="curriculumEntry.curriculumCode">
+              {{curriculumEntry.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="curriculum.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between none" fxLayout.lt-sm="column"
+        fxLayoutAlign.lt-sm="start stretch">
+
+        <div fxLayout="column" fxFlex="49" fxFlex.lt-sm="100" fxLayoutGap="10px">
+          <app-form-label [text]="strings.year"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" style="display: block">
+            <mat-select #year="ngModel" [(ngModel)]="data.year" matInput name="year" required>              
+              <mat-option value="11">11</mat-option>
+              <mat-option value="12">12</mat-option>
+            </mat-select>
+            <mat-error *ngIf="year.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div> -->
+    </ng-container>
+
+    <button (click)="onSubmit(signUpForm)" [disabled]="!signUpForm.valid" class="form-button" color="primary"
+      fxFlexAlign="end" mat-raised-button>
+      {{strings.submit}}
+    </button>
+  </mat-card>
+</form>
+
+<div class="bg-img"></div>

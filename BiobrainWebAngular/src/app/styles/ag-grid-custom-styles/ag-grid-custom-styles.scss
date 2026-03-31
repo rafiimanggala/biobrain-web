@@ -1,0 +1,116 @@
+.ag-header-cell-label .ag-header-cell-text {
+  white-space: normal !important;
+}
+
+.ag-grid-custom-header-cell-allign-left{
+  .ag-header-cell-label {
+    justify-content: start !important;
+  }
+}
+
+.ag-grid-custom-common-cell, .ag-grid-custom-accent-cell{
+  font-weight: 500;
+  text-align: center;
+
+
+  .ag-header-cell-label {
+    justify-content: center;
+  }
+
+  &.ag-grid-wraped-cell{
+    white-space: normal;
+    word-wrap: normal;
+    word-break: initial;
+    line-height: 20px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.ag-grid-cutted-cell{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  &.ag-centered-cell {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+  }
+
+  &.ag-grid-custom-first-column-cell {
+    text-align: left;
+    .ag-header-cell-label {
+      justify-content: left;
+    }
+  }
+
+  &.ag-grid-custom-first-column-header {
+    text-align: left;
+
+    .ag-header-cell-label {
+      justify-content: left;
+      .ag-header-cell-text{
+        white-space: pre !important;
+
+      }
+    }
+    font-size: 20px !important;
+    font-family: "Nunito", sans-serif !important;
+    font-weight: 800 !important;
+  }
+}
+
+.ag-grid-custom-aggregate-cell {
+  font-weight: 500;
+  white-space: normal !important;
+  text-align: center;
+  vertical-align: center;
+
+  .ag-header-cell-label {
+    justify-content: center;
+  }
+
+  &.ag-grid-custom-first-column-cell {
+    text-align: left;
+  }
+
+  &.ag-centered-cell {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+  }
+}
+
+.ag-grid-custom-button-cell {
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+
+.ag-grid-custom-solid-button-cell{
+  border: solid 1px;
+  height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  padding: 0px 15px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.ag-grid-context-menu-header {
+  border: none!important;
+}
+
+.ag-pinned-left-header {
+  border: none!important;
+}
+
+.ag-grid-custom-admin-area {
+  .ag-root-wrapper {
+    border-left: 0px!important;
+    border-right: 0px!important;
+  }
+}

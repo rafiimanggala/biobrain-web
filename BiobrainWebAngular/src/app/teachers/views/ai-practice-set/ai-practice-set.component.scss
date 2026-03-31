@@ -1,0 +1,109 @@
+.ai-practice-set-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  h2 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.form-panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-button {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 15px;
+
+  mat-icon,
+  .inline-spinner {
+    margin-right: 8px;
+  }
+
+  .inline-spinner {
+    display: inline-block;
+  }
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #e8f5e9;
+  border-radius: 4px;
+  color: #2e7d32;
+  font-size: 14px;
+  line-height: 1.4;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}
+
+.tree-panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.tree-header {
+  margin-bottom: 12px;
+
+  h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .hint {
+    margin: 0;
+    color: #999;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .selected-hint-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #4caf50;
+  }
+}
+
+.loading-container {
+  padding: 40px;
+}
+
+.content-tree {
+  .mat-tree-node {
+    min-height: 36px;
+  }
+}

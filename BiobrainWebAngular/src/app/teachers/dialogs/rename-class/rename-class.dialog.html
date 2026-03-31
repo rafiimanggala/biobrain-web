@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{strings.renameClass}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <mat-form-field fxFlex="1 1 100%">
+    <input
+      matInput
+      name="name"
+      #name="ngModel"
+      placeholder="{{strings.name | titlecase}}"
+      [(ngModel)]="dialogData.className"
+      required
+    >
+    <mat-error *ngIf="name.hasError('required')">
+      {{strings.requiredFieldError | titlecase}}
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ (strings.cancel) | uppercase }}
+  </button>
+
+  <button mat-raised-button type='submit' class='auto-form-button' color='warn' (click)='onSubmit()'>
+    {{ (strings.submit) | uppercase }}
+  </button>
+</mat-dialog-actions>

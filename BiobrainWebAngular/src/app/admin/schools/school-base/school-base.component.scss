@@ -1,0 +1,56 @@
+@import "../../../styles/variables.scss";
+
+.side-nav-container {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-bar {
+  height: 50px;
+  max-width: 700px;
+  background-color: $background;
+  border: solid 2px $accent;
+  border-radius: 20px/25px;
+  margin: 24px;
+}
+
+.router-item {
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: $accent;
+  min-width: 80px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+.active-router-item {
+  height: 50px;
+  background-color: $accent;
+  border-radius: 20px/25px;
+  border-width: 0px;
+  color: white !important;
+  margin-top: -2px;
+  margin-bottom: -2px;
+}
+
+.router-item > span {
+  word-wrap: none;
+  white-space: nowrap;
+}
+
+.router-item:last-of-type {
+  margin-right: -1px;
+}
+
+.active-router-item:focus {
+  outline: 0;
+}
+
+.router-item:focus {
+  outline: 0;
+}

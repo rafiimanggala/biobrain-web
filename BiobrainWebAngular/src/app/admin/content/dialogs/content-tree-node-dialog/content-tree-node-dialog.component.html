@@ -1,0 +1,47 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+    <h2 class="dialog-header" mat-dialog-title>{{data.levelHeader | titlecase}}</h2>
+
+    <mat-dialog-content>
+        <div fxLayout="column" class="dialog-content">
+            <mat-form-field fxFlex="1 1 100%">
+                <input matInput name="name" [(ngModel)]="data.header" #name="ngModel"
+                    placeholder="{{strings.header | titlecase}}" required appAutofocus>
+                <mat-error *ngIf="name.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+            </mat-form-field>
+
+            <mat-checkbox name="isAvailableInDemo" [(ngModel)]="data.isAvailableInDemo">
+                {{strings.availableInDemo}}
+            </mat-checkbox>
+
+            <!-- <mat-form-field fxFlex="1 1 100%" *ngIf="!data.entityId">
+                <input matInput type="number" name="order" [(ngModel)]="data.order" #teachersLicensesNumber="ngModel"
+                    placeholder="{{strings.order | titlecase}}" required>
+                <mat-error *ngIf="teachersLicensesNumber.hasError('required')">
+                    {{strings.requiredFieldError | titlecase}}
+                </mat-error>
+            </mat-form-field> -->
+        </div>
+
+    </mat-dialog-content>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="space-between">
+        <button mat-raised-button class="auto-form-button" (click)="onDelete(dialogForm)" type="submit"
+            [disabled]="!data.entityId" color="warn">
+            {{strings.delete | uppercase}}
+        </button>
+
+        <!-- <div class="flex-separator"></div> -->
+        <span fxLayout="raw">
+            <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()"
+                type="button">
+                {{strings.cancel | uppercase}}
+            </button>
+
+            <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+                [disabled]="!dialogForm.valid" type="submit">
+                {{strings.save | uppercase}}
+            </button>
+        </span>
+    </div>
+
+</form>

@@ -1,0 +1,9 @@
+<div class="wrapper">
+  <!-- <div class="custom-header-label" (click)="onClick()">
+    {{params?.displayName}}
+  </div> -->
+  <button *ngIf="params" mat-raised-button color=accent class='node-button' (click)="onClick()" #tooltip="matTooltip"
+    [matTooltip]="params.tooltip" matTooltipPosition="left">
+    {{params?.displayName | titlecase}}
+  </button>
+</div>

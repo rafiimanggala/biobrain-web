@@ -1,0 +1,25 @@
+<mat-nav-list class="full-height-with-scroll class-admin-sidenav" fxLayout="column" fxLayoutGap="12px">
+    <!-- Header -->
+    <div class="class-admin-menu" fxLayout="column">
+        <div class="class-admin-label" *ngIf="schoolClass$ | async as schoolClass">{{schoolClass.fullName}}</div>
+        <mat-list class="class-admin-menu-list">
+            <mat-list-item class="class-admin-menu-list-item" (click)="onRenameClass()">{{strings.renameClass}}</mat-list-item>
+            <mat-list-item class="class-admin-menu-list-item" (click)="onAddTeacher()">{{strings.addTeacher}}</mat-list-item>
+            <mat-list-item class="class-admin-menu-list-item" (click)="onTeachersList()">{{strings.teachers | titlecase}}</mat-list-item>
+            <mat-list-item class="class-admin-menu-list-item" (click)="onEmailClass()">{{strings.emailClass}}</mat-list-item>
+            <mat-list-item class="class-admin-menu-list-item" (click)="onInviteStudentByEmail()">{{strings.inviteStudentByEmail}}</mat-list-item>
+        </mat-list>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="class-admin-label">{{strings.hotTip}}</div>
+    <img class="image" src="/assets/images/bee.png">
+    <div fxLayout="column">
+        <span class="class-admin-label not-bold">{{strings.toEnrolNewStudent}}</span>
+        <span class="class-admin-label not-bold">{{strings.biobrainLink}}</span>
+    </div>
+    <div class="class-code">
+        <span *ngIf="schoolClass$ | async as schoolClass">{{strings.classCode + ": " + schoolClass.autoJoinClassCode}}</span>
+    </div>
+</mat-nav-list>

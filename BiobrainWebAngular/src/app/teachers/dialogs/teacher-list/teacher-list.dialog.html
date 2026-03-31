@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{strings.teachers | titlecase}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <div fxLayout="column" fxLayoutGap="8px">
+    <div class="primary-color-container" *ngFor="let teacher of dialogData.teachers" fxLayoutAlign="space-between center">
+      <div class="teacher-name">
+        {{teacher.fullName}}
+      </div>
+      <button mat-icon-button color="warn" fxFlexAlign="end" [matTooltip]="strings.removeTeacherForClass"
+        (click)="onDelete(teacher)" *ngIf="teacher.teacherId != currentUserId">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ (strings.cancel) | uppercase }}
+  </button>
+</mat-dialog-actions>

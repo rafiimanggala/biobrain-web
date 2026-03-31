@@ -1,0 +1,40 @@
+@import '~@angular/material/theming';
+
+@mixin toolbar-component-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .initials-label {
+    background-color: mat-color($accent-palette, 500);
+  }
+
+  .menu-icon {
+    color: mat-color($accent-palette, 500);
+  } 
+
+  .tab-group{
+     .mat-button-toggle {
+        border: solid 3px mat-color($primary-palette, 500);
+        border-color: mat-color($primary-palette, 500) !important;
+        border-radius: 6px 6px 0 0;
+        border-bottom: none !important;
+        box-shadow: transparent;
+        background-color: mat-color($accent-palette, '500-contrast') !important;
+        color: mat-color($primary-palette, 500);
+     }
+
+    .mat-button-toggle-checked{
+      background-color: mat-color($accent-palette, A400) !important;
+      color: mat-color($primary-palette, 500);
+    }
+  }
+}
+
+@mixin toolbar-component-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include toolbar-component-color($color);
+  }
+}

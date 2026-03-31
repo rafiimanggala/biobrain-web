@@ -1,0 +1,8 @@
+<div class='container'>
+  <ng-container *ngIf='schoolClassIdChanges$ | async as schoolClassId'>
+    <ng-container *ngIf='courseIdChanges$ | async as courseId'>
+      <app-class-results [schoolClassId]='schoolClassId' [courseId]='courseId'>
+      </app-class-results>
+    </ng-container>
+  </ng-container>
+</div>

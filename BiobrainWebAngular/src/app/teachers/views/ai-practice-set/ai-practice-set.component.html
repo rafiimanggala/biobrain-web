@@ -1,0 +1,111 @@
+<div class="ai-practice-set-container" fxLayout="column" fxLayoutGap="20px">
+  <div class="page-header">
+    <h2>AI Practice Set Generator</h2>
+    <p class="subtitle">Use AI to automatically generate practice questions for your students.</p>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="24px">
+    <!-- Left panel: Form -->
+    <div fxFlex="40" fxLayout="column" fxLayoutGap="16px" class="form-panel">
+
+      <!-- Course Selector -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
+        <mat-label>Course</mat-label>
+        <mat-select [(value)]="selectedCourseId" (selectionChange)="onCourseChange($event.value)">
+          <ng-container *ngFor="let group of courseGroups">
+            <mat-option *ngFor="let course of group.courses" [value]="course.courseId">
+              {{course.course?.subject?.name}} - {{course.className}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Question Type -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Question Type</mat-label>
+        <mat-select [(value)]="questionType">
+          <mat-option *ngFor="let qt of questionTypes" [value]="qt.value">
+            {{qt.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Question Count -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Number of Questions</mat-label>
+        <mat-select [(value)]="questionCount">
+          <mat-option *ngFor="let count of questionCountOptions" [value]="count">
+            {{count}} question{{count > 1 ? 's' : ''}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Generate Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        [disabled]="!isFormValid || isSubmitting"
+        (click)="onGenerate()">
+        <mat-icon *ngIf="!isSubmitting">auto_awesome</mat-icon>
+        <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
+        <span>{{isSubmitting ? 'Generating...' : 'Generate Questions'}}</span>
+      </button>
+
+      <!-- Success message -->
+      <div class="success-message" *ngIf="generatedCount !== null">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{generatedCount}} question(s) generated successfully! You can now review and assign them.</span>
+      </div>
+    </div>
+
+    <!-- Right panel: Content Tree -->
+    <div fxFlex="60" class="tree-panel">
+      <div class="tree-header">
+        <h3>Select Topic</h3>
+        <p class="hint" *ngIf="!selectedCourseId">Select a course to load topics.</p>
+        <p class="hint" *ngIf="selectedCourseId && selectedNodeId">
+          <mat-icon class="selected-hint-icon">check</mat-icon>
+          Topic selected
+        </p>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-container" fxLayoutAlign="center center">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <mat-tree
+        *ngIf="!isLoading && selectedCourseId"
+        [dataSource]="dataSource"
+        [treeControl]="treeControl"
+        class="content-tree">
+
+        <!-- Leaf node -->
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <mat-radio-button
+            [checked]="selectedNodeId === node.entityId"
+            (change)="onNodeSelect(node.entityId)"
+            color="primary">
+            {{node.header}}
+          </mat-radio-button>
+        </mat-tree-node>
+
+        <!-- Parent node -->
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle>
+            <mat-icon>
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <mat-radio-button
+            [checked]="selectedNodeId === node.entityId"
+            (change)="onNodeSelect(node.entityId)"
+            color="primary">
+            {{node.header}}
+          </mat-radio-button>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </div>
+</div>

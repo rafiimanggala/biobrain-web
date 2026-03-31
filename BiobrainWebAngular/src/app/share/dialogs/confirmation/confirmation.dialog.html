@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{dialogData.title | titlecase}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <div class="confirm-text">{{dialogData.text}}</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ (dialogData.noButtonText ? dialogData.noButtonText : strings.no) | uppercase }}
+  </button>
+
+  <button mat-raised-button type='submit' class='auto-form-button' color='primary' (click)='onSubmit()'>
+    {{ (dialogData.yesButtonText ? dialogData.yesButtonText : strings.yes) | uppercase }}
+  </button>
+</mat-dialog-actions>

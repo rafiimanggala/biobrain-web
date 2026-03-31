@@ -1,0 +1,90 @@
+<div class="container full-size-no-overflow">
+    <!-- Add -->
+    <mat-icon *ngIf="isEditMode" class="clickable" color="accent" [matTooltip]="strings.add" (click)="onAdd(null)">
+        add
+    </mat-icon>
+
+    <div class="full-height-with-scroll">
+        <!-- Tree -->
+        <mat-tree #tree *ngIf="nestedDataSource.data != null && nestedDataSource.data != undefined"
+            [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="tree">
+            <mat-tree-node class="node left-direction" *matTreeNodeDef="let node" matTreeNodePadding
+                matTreeNodePaddingIndent="175">
+                <li>
+                    <div class="mat-tree-node" fxLayout="raw" fxLayoutAlign="start">
+                        <span class="clickable" [ngClass]="{'selected' : node.isSelected}"
+                            (click)="onItemSelected(node)">
+                            {{node.name}}
+                        </span>
+
+                        <!-- Edit -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.edit"
+                            (click)="onEdit(node)" *ngIf="isEditMode">
+                            mode_edit
+                        </mat-icon>
+                        <!-- MoveUp -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveUp"
+                            (click)="onContentMoveUp(node)" *ngIf="isEditMode">
+                            arrow_drop_up
+                        </mat-icon>
+                        <!-- MoveDown -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveDown"
+                            (click)="onContentMoveDown(node)" *ngIf="isEditMode">
+                            arrow_drop_down
+                        </mat-icon>
+                        <!-- Delete -->
+                        <!-- <mat-icon class="clickable action-button" color="warn" [matTooltip]="strings.delete"
+                    (click)="onDelete(node)">
+                    clear
+                </mat-icon> -->
+                    </div>
+                </li>
+            </mat-tree-node>
+
+            <mat-nested-tree-node class="node left-direction" *matTreeNodeDef="let node; when: hasNestedChild"
+                matTreeNodePadding matTreeNodePaddingIndent="175">
+                <!-- <div class="mat-tree-node"> -->
+                <li>
+                    <div class="mat-tree-node">
+                        <mat-icon class="mat-icon-rtl-mirror expand-toggle clickable" matTreeNodeToggle>
+                            {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                        <span class="clickable" matTreeNodeToggle NgIsExcluded>
+                            {{node.name}}{{" ("+node.children.length+")"}}
+                        </span>
+                        <!-- Add -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.add"
+                            (click)="onAdd(node)" *ngIf="isEditMode">
+                            add
+                        </mat-icon>
+                        <!-- Edit -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.edit"
+                            (click)="onEdit(node)" *ngIf="isEditMode">
+                            mode_edit
+                        </mat-icon>
+                        <!-- MoveUp -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveUp"
+                            (click)="onContentMoveUp(node)" *ngIf="isEditMode">
+                            arrow_drop_up
+                        </mat-icon>
+                        <!-- MoveDown -->
+                        <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveDown"
+                            (click)="onContentMoveDown(node)" *ngIf="isEditMode">
+                            arrow_drop_down
+                        </mat-icon>
+                        <!-- Delete -->
+                        <!-- <mat-icon class="clickable action-button" color="warn" [matTooltip]="strings.delete"
+                    (click)="onDelete(node)">
+                    clear
+                </mat-icon> -->
+
+                    </div>
+                    <ul [class.invisible]="!nestedTreeControl.isExpanded(node)">
+                        <ng-container matTreeNodeOutlet></ng-container>
+                    </ul>
+                </li>
+                <!-- </div> -->
+            </mat-nested-tree-node>
+        </mat-tree>
+    </div>
+</div>

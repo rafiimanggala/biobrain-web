@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Select a Class</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Class</mat-label>
+    <mat-select [(value)]="selectedClassId">
+      <ng-container *ngFor="let group of dialogData.courseGroups">
+        <mat-option *ngFor="let course of group.courses" [value]="course.classId">
+          {{course.className}}
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!selectedClassId" (click)="onConfirm()">
+    Assign
+  </button>
+</mat-dialog-actions>

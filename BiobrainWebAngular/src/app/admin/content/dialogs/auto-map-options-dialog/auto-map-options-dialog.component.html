@@ -1,0 +1,40 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+    <h2 class="dialog-header" mat-dialog-title>{{strings.autoMapOptions | titlecase}}</h2>
+
+    <mat-dialog-content>
+        <div fxLayout="column" class="dialog-content">
+            <mat-form-field fxFlex="1 1 100%">
+                <mat-label>{{strings.mapFrom | titlecase}}</mat-label>
+                <mat-select name="quiz" [(ngModel)]="data.selectedBaseQuizId" #quiz="ngModel"
+                    placeholder="{{strings.mapFrom | titlecase}}" required appAutofocus>
+                    <mat-option *ngFor="let baseQuiz of data.baseQuizzes" [value]="baseQuiz.quizId">
+                        {{baseQuiz.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="quiz.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+            </mat-form-field>
+        </div>
+
+    </mat-dialog-content>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="space-between">
+        <button mat-raised-button class="auto-form-button" (click)="onDelete(dialogForm)" type="submit"
+            [disabled]="data.isStopAutoMapDisabled" color="warn">
+            {{strings.dontAutoMap | uppercase}}
+        </button>
+
+        <!-- <div class="flex-separator"></div> -->
+        <span fxLayout="raw">
+            <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()"
+                type="button">
+                {{strings.cancel | uppercase}}
+            </button>
+
+            <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+                [disabled]="!dialogForm.valid" type="submit">
+                {{strings.save | uppercase}}
+            </button>
+        </span>
+    </div>
+
+</form>

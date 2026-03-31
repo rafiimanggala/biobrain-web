@@ -1,0 +1,31 @@
+@import '~@angular/material/theming';
+
+@mixin class-admin-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .class-admin-page{
+    .class-admin-header{
+      background-color: mat-color($accent-palette, A400);
+      .class-admin-header-label{
+        color: mat-color($primary-palette, 500);
+      }
+    }
+  }
+  .class-admin-sidenav{
+    background-color: mat-color($accent-palette, A400);
+    color: mat-color($primary-palette, 500);
+    .class-admin-menu-list-item{
+      color: mat-color($accent-palette, 500) !important;
+    }
+  }
+}
+
+@mixin class-admin-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  // @if $color != null {
+    @include class-admin-color($theme);
+  // }
+}

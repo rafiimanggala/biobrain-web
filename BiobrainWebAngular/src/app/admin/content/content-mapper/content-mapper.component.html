@@ -1,0 +1,48 @@
+<div class="container" fxLayout="column">
+    <div class="from-to-row" fxLayout="row" fxLayoutAlign="center baseline" fxLayoutGap="8px">
+        <mat-form-field appearance="outline">
+            <mat-select name="courseControl" [(ngModel)]="course" #courseControl="ngModel"
+                placeholder="{{strings.course}}" (ngModelChange)="courseSelected($event)">
+                <mat-option *ngFor="let courseItem of courses$ | async" [value]="courseItem">{{courseItem.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="filteredBaseCourses.length > 0">
+            <mat-select name="baseCourseControl" [(ngModel)]="baseCourse" #baseCourseControl="ngModel"
+                placeholder="{{strings.baseCourse}}" (ngModelChange)="baseCourseSelected($event)">
+                <mat-option *ngFor="let courseItem of filteredBaseCourses" [value]="courseItem">{{courseItem.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button color="primary" type="button" *ngIf="course" [matMenuTriggerFor]='actionMenu'>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <button mat-icon-button color="primary" type="button" *ngIf="course" (click)="publishCourse(course)" [matTooltip]="strings.publish">
+            <mat-icon>file_upload</mat-icon>
+        </button>
+    </div>
+    <div fxLayout="row">
+        <div class="target-course-levels" fxLayout="row" fxLayoutGap="10px" *ngIf="course">
+            <div class="course-level" *ngFor="let level of contentTreeMetaListStore.items$ | async">
+                {{level.name}}
+            </div>
+        </div>
+
+    </div>
+    <div class="content-tree" *ngIf="course">
+        <app-content-mapper-tree #tree name="tree" (add)="onAdd($event)" (edit)="onEdit($event)"
+            (moveUp)="onMoveUp($event)" (moveDown)="onMoveDown($event)" (attachMaterials)="onAttachMaterials($event)"
+            (attachQuestions)="onAttachQuestions($event)" (updateMaterials)="onUpdateMaterials($event)"
+            (updateQuestions)="onUpdateQuestions($event)" (copy)="onCopyFromGeneric($event)"
+            (manageAutoMap)="onManageAutoMap($event)" (excludeQuestion)="onExclude($event)" (includeQuestion)="onInclude($event)"
+            (availableInDemo)="onAvailableInDemo($event)">
+        </app-content-mapper-tree>
+    </div>
+
+    <mat-menu #actionMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+        <button mat-menu-item color="primary" (click)="onAddQuestions()" type="button"
+            *ngIf="course" [matTooltip]="strings.addNewQuestionsTooltip">{{strings.addNewQuestions}}</button>
+    </mat-menu>
+</div>

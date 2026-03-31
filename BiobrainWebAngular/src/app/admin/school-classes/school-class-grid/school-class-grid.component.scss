@@ -1,0 +1,12 @@
+.grid-item {
+  height: calc(100vh - 300px);
+  margin-right: 10px;
+  margin-left: 7px;
+}
+
+::ng-deep .ag-row .ag-cell {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  line-height: 28px;
+}

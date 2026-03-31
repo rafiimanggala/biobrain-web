@@ -1,0 +1,37 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.vs/
+.vs/
+*.DotSettings.user
+
+## Node/Angular
+node_modules/
+dist/
+.angular/
+npm-debug.log
+
+## IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Secrets - DO NOT COMMIT
+appsettings.Development.json
+appsettings.Production.json
+
+## Mobile source (large, separate)
+mobile-src/
+
+## Misc
+*.log
+firebase-debug.log
+/tmp/

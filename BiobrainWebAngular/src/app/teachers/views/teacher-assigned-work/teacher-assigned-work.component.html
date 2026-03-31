@@ -1,0 +1,24 @@
+<div class="content-container full-size-no-overflow" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="space-around stretch">
+  <!-- <div fxLayout="column" class="header-accent-background">
+    <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+      <div class="underlined hand-pointer" (click)="onCourseClick()">{{subjectName | uppercase}}</div>
+      <mat-icon>navigate_next</mat-icon>
+      <span>{{strings.assignedWork | uppercase}}</span>
+    </div>
+  </div> -->
+  <div fxFlex="1 1 100%" fxFill>
+    <div class="grid-container" >
+      <ag-grid-angular  #agGridRef
+        class="ag-theme-alpine grid-item"
+        [pagination]="true"
+        [paginationAutoPageSize]="true"
+        (gridReady)="onGridReady($event)"
+        (modelUpdated)="onModelUpdated()"
+        (columnResized)='onColumnResized($event)'
+        [frameworkComponents]="components">
+      </ag-grid-angular>
+      
+        <!-- (cellClicked)="onCellClicked($event)" -->
+    </div>
+  </div>
+</div>

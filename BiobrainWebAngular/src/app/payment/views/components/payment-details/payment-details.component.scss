@@ -1,0 +1,86 @@
+@import '../../../../styles/variables.scss';
+
+.component-container{
+  max-height: calc(100vh - 20px);
+}
+
+.main-card {
+  margin: auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.sub-label {
+  font-size: 8pt;
+  color: $gray;
+}
+
+.subjects-label{  
+  font-size: 16px;
+  font-weight: bold;
+  color: $primary;
+}
+
+.form-label{
+  font-family: $roboto;
+  font-size: $form-label;
+  color: $gray;
+}
+
+.form-label-selected{
+  font-family: $nunito;
+  font-size: $form-label;
+  color: $primary;
+  font-weight: 800;
+}
+
+.total-label-container{
+  padding: 10px;
+  border: 2px solid $primary;
+  border-radius: 5px;
+}
+.date-separator{
+  padding-top: 10px;
+}
+
+.input-row{
+  max-width: 100%;
+}
+
+a{
+  color: $gray !important;
+}
+
+.save-button{
+  font-family: $nunito;
+  font-size: 11pt !important;
+  max-width: 220px;
+}
+
+.apply-button{
+  font-family: $nunito;
+  font-size: 11pt !important;
+  max-width: 220px;
+  max-height: 38px;
+  height: 38px !important;
+  min-height: 0;
+}
+
+.form-fields{
+  max-height: calc(100% - 250px);
+  overflow-y: auto;
+  padding: 5px;
+  padding-bottom: 20px;
+}
+
+.promo-code{
+  color: $primary;
+  font-family: $nunito;
+  font-size: 11pt !important;
+  font-weight: bold;
+}
+
+.promo-code-value{
+  color: $red;
+  font-family: $roboto;
+}

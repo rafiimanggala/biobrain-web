@@ -1,0 +1,58 @@
+<div class="base-filters" fxLayout="column" fxLayoutAlign="center center">
+
+    <div class="report-field" fxLayout="row" fxLayoutGap="10">
+        <mat-form-field class="report-field">
+            <mat-label>{{strings.school | titlecase}}</mat-label>
+            <mat-select [formControl]="schoolCtrl" placeholder="{{strings.school | titlecase}}" [multiple]="true" #multiSelect>
+                <mat-option>
+                    <ngx-mat-select-search [formControl]="schoolMultiFilterCtrl" placeholderLabel="{{strings.search}}" 
+                    noEntriesFoundLabel="{{strings.notFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let school of filteredSchools | async" [value]="school">
+                    {{school.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field  fxFlex="1 1 100%">
+            <mat-label>{{strings.school | titlecase}}</mat-label>
+            <input type="text" matInput [formControl]="schoolCtrl" [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="schoolSelected($event)" [displayWith]="displayFn" multiple>
+
+                <mat-option [value]="option"
+                    *ngFor="let option of filteredSchools | async; track option">{{option.name}}</mat-option>
+
+            </mat-autocomplete>
+        </mat-form-field> -->
+        <!-- <button mat-icon-button color="primary" (click)="addSelectedSchool()">
+            <mat-icon>add</mat-icon>
+        </button> -->
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="10" class="report-field">
+        <div fxLayout="row" fxLayoutGap="20" *ngFor="let school of schoolCtrl.value; track school"
+            fxLayoutAlign="center center">
+            <div fxFlex="1 1 100%">{{school.name}}</div>
+            <!-- <button mat-icon-button color="primary" (click)="deleteSchool(school)">
+                <mat-icon>delete</mat-icon>
+            </button> -->
+        </div>
+    </div>
+
+    <mat-form-field class="report-field" (click)="fromDatepickerClick()">
+        <input matInput [matDatepicker]="fromPicker" [placeholder]="strings.from" [formControl]="fromDate"
+            class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="report-field" (click)="toDatepickerClick()">
+        <input matInput [matDatepicker]="toPicker" [placeholder]="strings.to" [formControl]="toDate"
+            class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button class="form-button" color="accent" fxFlexAlign="center" (click)="onGetReport()">
+        {{strings.get.toUpperCase()}}
+    </button>
+</div>

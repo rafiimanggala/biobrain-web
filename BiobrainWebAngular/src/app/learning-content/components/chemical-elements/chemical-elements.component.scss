@@ -1,0 +1,13 @@
+@import '../../../styles/variables.scss';
+
+.content-container{
+    height: calc(100vh - 100px) !important;
+    position: relative;
+}
+
+// @media only screen and (orientation:portrait){
+//     .content-container {
+//       height: 100vw;
+//       transform: rotate(90deg);
+//     }
+//   }

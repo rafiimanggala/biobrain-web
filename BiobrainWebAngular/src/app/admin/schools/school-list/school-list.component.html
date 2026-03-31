@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="header-row">
+    <span class="flex-separator"></span>
+
+    <button mat-fab color="accent" (click)="createSchool()" tabIndex="-1">
+      <mat-icon class="light-content">add</mat-icon>
+    </button>
+  </div>
+
+  <ag-grid-angular
+    #schoolsGrid
+    class="ag-theme-alpine grid-item ag-grid-custom-admin-area"
+    [rowData]="schoolListStore.items$ | async"
+    [paginationAutoPageSize]="true"
+    [paginationPageSize]="20"
+    [pagination]="true"
+    (gridReady)="onGridReady($event)"
+    (modelUpdated)="onModelUpdated()"
+  >
+    <ag-grid-column [appContextMenu]="menu" [hide]="true">
+      <mat-menu #menu="matMenu">
+        <ng-template matMenuContent let-item="data">
+          <button mat-menu-item (click)="viewSchool(item.schoolId)">
+            {{ strings.view | titlecase }}
+          </button>
+          <button mat-menu-item (click)="editSchool(item.schoolId)">
+            {{ strings.edit | titlecase }}
+          </button>
+          <button mat-menu-item (click)="deleteSchool(item.schoolId)">
+            {{ strings.delete | titlecase }}
+          </button>
+          <button mat-menu-item (click)="editSchoolAdmins(item.schoolId)">
+            {{ strings.editAdmins | titlecase }}
+          </button>
+          <button mat-menu-item (click)="editSchoolLicenses(item.schoolId)">
+            {{ strings.editLicenses | titlecase }}
+          </button>
+        </ng-template>
+      </mat-menu>
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'name'"
+      [headerName]="strings.name | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="nameFilterParams"
+      [comparator]="strComparator"
+      [cellRendererFramework]="nameRenderer"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [valueGetter]='startDateValueGetter'
+      [headerName]="strings.startDate | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="nameFilterParams"
+      [comparator]="strComparator"
+      [width]="60"
+      [cellRendererFramework]="nameRenderer"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [valueGetter]='endDateValueGetter'
+      [headerName]="strings.endDate | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="nameFilterParams"
+      [comparator]="strComparator"
+      [cellClassRules]="dateCellClassRules"
+      [width]="60"
+      [cellRendererFramework]="nameRenderer"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'teachersLicensesNumber'"
+      [headerName]="strings.teachersLicensesNumber | titlecase"
+      [sortable]="true"
+      [filter]="'agNumberColumnFilter'"
+      [filterParams]="numberFilterParams"
+      [width]="80"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'teachersCount'"
+      [headerName]="strings.teachersCount | titlecase"
+      [sortable]="true"
+      [filter]="'agNumberColumnFilter'"
+      [filterParams]="numberFilterParams"
+      [width]="60"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'studentLicensesNumber'"
+      [headerName]="strings.studentsLicensesNumber | titlecase"
+      [sortable]="true"
+      [filter]="'agNumberColumnFilter'"
+      [filterParams]="numberFilterParams"
+      [width]="80"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'studentsCount'"
+      [headerName]="strings.studentsCount | titlecase"
+      [sortable]="true"
+      [filter]="'agNumberColumnFilter'"
+      [filterParams]="numberFilterParams"
+      [width]="60"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [valueGetter]='statusValueGetter'
+      [headerName]="strings.status | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="nameFilterParams"
+      [comparator]="strComparator"
+      [cellRendererFramework]="nameRenderer"
+      [width]="80"
+    >
+    </ag-grid-column>
+  </ag-grid-angular>
+</div>

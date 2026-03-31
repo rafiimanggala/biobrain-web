@@ -1,0 +1,20 @@
+<mat-card class="content-card" fxLayout="column" fxLayoutGap="10px">
+  <!-- Path -->
+  <mat-card-subtitle fxLayout="column" class='path'>
+    <span *ngFor='let name of nameLines | slice:0:(nameLines.length-1)'>
+      {{name}}
+    </span>
+  </mat-card-subtitle>
+  <!-- Data -->
+  <mat-card-content fxLayout="row" fxLayoutAlign="space-around">
+    <div>{{nameLines[nameLines.length-1]}}</div>
+    <div *ngIf="score > -1">{{strings.score}}: <span [ngStyle]="getScoreStyle(score*10)">{{score*10}}%</span></div>
+    <div>{{strings.date}}: {{date}}</div>
+    <div *ngIf="dueDate && dueDate.length > 0">{{strings.dueDate}}: <span [ngStyle]="{'color': dueDateColor}">{{dueDate}}</span></div>
+  </mat-card-content>
+  <!-- Actions -->
+  <div fxLayout="row" fxLayoutAlign="{{endActions ? 'end' : 'space-around'}}">
+    <div *ngFor="let act of cardActions"><button class="ag-grid-custom-solid-button-cell" (click)="onAction(act)">{{act.name}}</button></div>
+    
+  </div>
+</mat-card>

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Topic Quiz: {{dialogData.topicName}}</h2>
+
+<mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+  <p>Select the number of questions for your topic quiz:</p>
+
+  <mat-radio-group
+    fxLayout="column"
+    fxLayoutGap="12px"
+    [(ngModel)]="selectedQuestionCount">
+    <mat-radio-button
+      *ngFor="let count of questionCountOptions"
+      [value]="count"
+      color="accent">
+      {{count}} questions
+    </mat-radio-button>
+  </mat-radio-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()" type="button">
+    {{strings.cancel | titlecase}}
+  </button>
+  <button mat-raised-button color="accent" (click)="onStart()" type="button">
+    {{strings.start | titlecase}}
+  </button>
+</mat-dialog-actions>

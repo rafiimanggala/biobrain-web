@@ -1,0 +1,29 @@
+.container {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch flex-start;
+  align-items: stretch;
+  height: calc(100% - 100px);
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.header-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch flex-start;
+  align-items: center;
+  justify-content: end;
+  height: 60px;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  gap: 10px;
+}
+
+.container .ag-grid-angular {
+  flex-basis: 100%;
+  display: flex;
+  flex-grow: 1;
+}

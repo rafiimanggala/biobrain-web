@@ -1,0 +1,35 @@
+<mat-nav-list class='sidenav-container primary-color-container accent-background-container full-height-with-scroll' fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='24px'>
+  <!-- Header -->
+  <div fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='12px'>
+    <div class="header-label">{{name}}'s</div>
+    <div class='with-icon' fxLayout='raw'>
+      <!-- <mat-icon>bookmark_border</mat-icon> -->
+      <div class="header-label">{{strings.quizResults}}</div>
+    </div>
+  </div>
+
+  <ng-container *ngIf='quizResultPageService.data$ | async as data'>
+    <!-- SuccessRate -->
+    <div fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='12px'>
+      <!-- <div>{{strings.successRate}}</div> -->
+      <app-success-rate-diagram [successRate]='data.successRate'></app-success-rate-diagram>
+    </div>
+
+    <!-- Questions -->
+    <div fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='12px'>
+      <div class='subheader-label'>{{strings.clickTheQuestion}}</div>
+      <div>
+        <app-hexagone-results [results]='data.reuslts' (questionSelected)='onQuestionSelected($event)'></app-hexagone-results>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div fxLayout='raw' fxLayoutAlign='space-around' fxLayoutGap="16px">
+      <button class="auto-form-button" mat-raised-button color='primary' (click)='onNextLevel(data)'>{{strings.nextLevel}}</button>
+      <button class="auto-form-button" mat-raised-button color='primary' (click)='onNextTopic(data)'>{{strings.nextTopic}}</button>
+    </div>
+    <div *ngIf="isStudent" fxLayout='raw' fxLayoutAlign='space-around' fxLayoutGap="16px">
+      <button class="auto-form-button" mat-raised-button color='primary' (click)='onAssignedWork(data)'>{{strings.assignedWork | titlecase}}</button>
+    </div>
+  </ng-container>
+</mat-nav-list>

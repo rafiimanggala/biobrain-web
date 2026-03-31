@@ -1,0 +1,31 @@
+@import '~@angular/material/theming';
+
+@mixin glossary-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .term-header {
+    background-color: mat-color($primary-palette, 500);
+  }
+
+  .term-header:focus {
+    background-color: mat-color($primary-palette, 500)!important;
+  }
+
+  .term-header-title {
+    color: mat-color($accent-palette, '500-contrast');
+  }
+
+  .main-term-panel:first-child {
+    border-color: mat-color($primary-palette, 500);
+  }
+}
+
+@mixin glossary-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include glossary-color($theme);
+  }
+}

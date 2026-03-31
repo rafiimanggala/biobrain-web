@@ -1,0 +1,16 @@
+@import '../../../styles/variables.scss';
+
+.component-container{
+    height: 100%;
+}
+
+.row-icon{
+    margin-top: 20px
+}
+
+.course-level{
+    width: 150px;
+    border: 2px solid $primary;
+    border-radius: 5px;
+    padding: 5px;
+}

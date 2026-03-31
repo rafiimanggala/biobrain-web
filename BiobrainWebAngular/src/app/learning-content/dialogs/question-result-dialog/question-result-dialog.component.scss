@@ -1,0 +1,33 @@
+@import '../../../styles/variables.scss';
+
+.mat-dialog-content{
+    min-width: 250px;
+}
+
+.correct-color{
+    color: $green !important;
+}
+
+.incorrect-color{
+    color: $red !important;
+}
+
+.correct-button{
+    color: $green !important;
+    border: none !important;
+    .mat-icon{
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+    }
+}
+
+.incorrect-button{
+    color: $red !important;
+    border: none !important;
+    .mat-icon{
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+    }
+}

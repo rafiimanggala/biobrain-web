@@ -1,0 +1,63 @@
+<div class="ai-insights-container" fxLayout="column" fxLayoutGap="20px">
+  <div class="page-header">
+    <h2>AI Performance Insights</h2>
+    <p class="subtitle">Generate AI-powered insights about your class performance.</p>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-panel" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start center">
+
+    <!-- Course Selector -->
+    <mat-form-field appearance="outline" *ngIf="courseGroups$ | async as courseGroups" fxFlex="30">
+      <mat-label>Course</mat-label>
+      <mat-select [(value)]="selectedCourseId" (selectionChange)="onCourseChange($event.value)">
+        <ng-container *ngFor="let group of courseGroups">
+          <mat-option *ngFor="let course of group.courses" [value]="course.courseId">
+            {{course.course?.subject?.name}} - {{course.className}}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Class Selector -->
+    <mat-form-field appearance="outline" *ngIf="courseGroups$ | async as courseGroups" fxFlex="30">
+      <mat-label>Class</mat-label>
+      <mat-select [(value)]="selectedClassId" (selectionChange)="onClassChange($event.value)">
+        <ng-container *ngFor="let group of courseGroups">
+          <mat-option *ngFor="let course of group.courses" [value]="course.classId">
+            {{course.className}}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Generate Button -->
+    <button
+      mat-raised-button
+      color="primary"
+      class="generate-button"
+      [disabled]="!isFormValid || isGenerating"
+      (click)="onGenerateInsights()">
+      <mat-icon *ngIf="!isGenerating">insights</mat-icon>
+      <mat-spinner *ngIf="isGenerating" diameter="20" class="inline-spinner"></mat-spinner>
+      <span>{{isGenerating ? 'Generating...' : 'Generate Insights'}}</span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isGenerating" class="loading-container" fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px">
+    <mat-spinner diameter="48"></mat-spinner>
+    <p class="loading-text">Analyzing class performance data...</p>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!hasGenerated && !isGenerating" class="empty-state" fxLayoutAlign="center center" fxLayout="column">
+    <mat-icon class="empty-icon">analytics</mat-icon>
+    <p>Select a course and class, then click "Generate Insights" to see AI-powered performance analysis.</p>
+  </div>
+
+  <!-- Insights Display -->
+  <div *ngIf="hasGenerated && insightsHtml" class="insights-panel">
+    <div class="insights-content" [innerHTML]="insightsHtml"></div>
+  </div>
+</div>

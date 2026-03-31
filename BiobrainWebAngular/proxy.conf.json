@@ -1,0 +1,44 @@
+{
+  "/api/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/fonts/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/static/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/user-guide-images/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/images/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/Images/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/report/*": {
+    "target": "http://localhost:5010",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

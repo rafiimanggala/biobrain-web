@@ -1,0 +1,1 @@
+export var supportedCurrencies = { AUD: "AUD", USD: "USD", EUR: "EUR", GBP: "GBP" };

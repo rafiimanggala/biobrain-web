@@ -1,0 +1,108 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+  <!-- Course Selector -->
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+    <mat-form-field appearance="outline" class="course-select">
+      <mat-label>Select Course</mat-label>
+      <mat-select [(value)]="selectedCourseId">
+        <mat-option *ngFor="let course of courses" [value]="course.courseId">
+          {{ course.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- File Upload or Paste -->
+  <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start center">
+    <input #fileInput type="file" accept=".json" (change)="onFileSelected($event)" style="display: none">
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      <mat-icon>upload_file</mat-icon>
+      Upload JSON File
+    </button>
+    <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
+    <button mat-button *ngIf="fileName" (click)="clearFile()">
+      <mat-icon>clear</mat-icon>
+      Clear
+    </button>
+    <span class="separator">or</span>
+    <button mat-stroked-button (click)="loadSample()">
+      <mat-icon>code</mat-icon>
+      Load Sample
+    </button>
+    <button mat-stroked-button (click)="copySample()">
+      <mat-icon>content_copy</mat-icon>
+      Copy Sample
+    </button>
+  </div>
+
+  <!-- JSON Editor -->
+  <mat-form-field appearance="outline" class="json-editor">
+    <mat-label>JSON Content</mat-label>
+    <textarea matInput
+              [(ngModel)]="jsonContent"
+              rows="18"
+              placeholder='Paste your JSON here or upload a file...'
+              class="json-textarea">
+    </textarea>
+  </mat-form-field>
+
+  <!-- Import Button -->
+  <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="start center">
+    <button mat-raised-button
+            color="accent"
+            (click)="importContent()"
+            [disabled]="!isFormValid">
+      <mat-icon>cloud_upload</mat-icon>
+      Import Content
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-box">
+    <mat-icon>error</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- Results -->
+  <div *ngIf="importResult" class="result-box">
+    <h3>Import Results</h3>
+    <div class="result-grid">
+      <div class="result-item">
+        <span class="result-label">Topics Created</span>
+        <span class="result-value">{{ importResult.topicsCreated }}</span>
+      </div>
+      <div class="result-item">
+        <span class="result-label">Subtopics Created</span>
+        <span class="result-value">{{ importResult.subtopicsCreated }}</span>
+      </div>
+      <div class="result-item">
+        <span class="result-label">Materials Created</span>
+        <span class="result-value">{{ importResult.materialsCreated }}</span>
+      </div>
+      <div class="result-item">
+        <span class="result-label">Questions Created</span>
+        <span class="result-value">{{ importResult.questionsCreated }}</span>
+      </div>
+    </div>
+    <div class="result-log" *ngIf="importResult.log">
+      <strong>Log:</strong> {{ importResult.log }}
+    </div>
+  </div>
+
+  <!-- JSON Format Reference -->
+  <mat-expansion-panel class="help-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>help_outline</mat-icon>
+        JSON Format Reference
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <pre class="format-reference">{{ sampleJson }}</pre>
+    <div class="format-notes">
+      <p><strong>Question types:</strong> MultipleChoice, TrueFalse, ShortAnswer</p>
+      <p><strong>Materials content:</strong> Supports HTML markup</p>
+      <p><strong>Answers:</strong> At least one answer should have isCorrect: true</p>
+    </div>
+  </mat-expansion-panel>
+
+</div>

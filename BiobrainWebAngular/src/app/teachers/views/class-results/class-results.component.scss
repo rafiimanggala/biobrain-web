@@ -1,0 +1,100 @@
+@import '../../../styles/variables.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-item {
+  flex: 1 1;
+}
+
+.header-row{
+  padding: 10px;
+  padding-left: 460px;
+}
+
+.filter-container{
+  position: relative;
+  height: 30px;
+  padding: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.filter-select{
+  min-width: 150px;
+  padding-left: 15px;
+}
+
+.filter-icon{
+  position: absolute;
+  width: 12px;
+  color: white;
+  pointer-events: none;
+  right: 10px;
+  top: 10px;
+}
+
+::ng-deep .filter-select .mat-select-placeholder{
+  color: white;
+}
+::ng-deep .filter-select .mat-select-value-text{
+  color: white;
+}
+
+.filter-disabled {
+  background-color: $pale-gray !important;
+}
+
+.filter-narrow{
+  min-width: 110px;
+  width: 110px;
+}
+
+::ng-deep .filter-select .mat-select-arrow {
+  border: none !important;
+}
+
+.footer-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  margin-left: 2px;
+  height: 50px;
+  flex: 0 0 50px;
+}
+
+.footer-column {
+  margin: 10px 0 10px 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+}
+
+.footer-action-container{
+  margin: 10px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  align-self: center;
+  justify-self: flex-end;
+}
+
+.footer-column > span {
+  padding-left: 30px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.download-button{
+  // background-color: ;
+}
+
+.red-color{
+  color: $red;
+}

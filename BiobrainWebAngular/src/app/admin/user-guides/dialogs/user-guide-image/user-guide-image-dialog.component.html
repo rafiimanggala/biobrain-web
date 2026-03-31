@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{strings.addImage}}</h2>
+
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <mat-dialog-content>
+    <div fxLayout="row" fxLayoutGap="8px">
+
+      <input (change)="uploadFile($event)" #fileInput type="file" id="file" accept=".png,.jpg,.jpeg">
+
+      <label class="center-uploader-button" *ngIf="fileLocalUrl">
+        <img class="preview-image" [src]="fileLocalUrl" />
+      </label>
+
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions fxLayoutAlign="end end">
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()"
+      type="button">{{strings.cancel}}</button>
+    <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+      [disabled]="!data.fileToUpload || !dialogForm.valid" type="submit">{{strings.submit}}</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,84 @@
+@import '~@angular/material/theming';
+
+@mixin ag-grid-custom-styles-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .ag-grid-custom-aggregate-cell {
+    color: mat-color($accent-palette, 500);
+  }
+
+  .ag-grid-custom-common-cell {
+    color: mat-color($primary-palette, 500);
+  }
+
+  .ag-grid-custom-accent-cell{
+    color: mat-color($accent-palette, 500);
+  }
+
+  .ag-grid-custom-header-cell {
+    background-color: mat-color($accent-palette, 50);
+  }
+
+  .ag-row{
+    border-color: mat-color($accent-palette, A400) !important;
+  }
+
+  .ag-row-selected {
+    background-color: mat-color($accent-palette, 200)!important;
+
+    &.ag-row-hover {
+      background-color: mat-color($accent-palette, 200)!important;
+    }
+  }
+
+  .ag-row-hover {
+    background-color: mat-color($accent-palette, 50)!important;
+  }
+
+  .ag-grid-custom-header-cell-accent-background {
+    background-color: mat-color($accent-palette, A400);
+  }
+
+  .ag-grid-custom-button-cell {
+    color: mat-color($accent-palette, 500);
+  }
+
+  .ag-grid-custom-solid-button-cell {
+    background-color: mat-color($primary-palette, 500);
+    color: mat-color($primary-palette, "500-contrast");
+  }
+
+  .ag-grid-custom-solid-button-cell:disabled {
+    background-color: gray;
+    color: mat-color($primary-palette, "500-contrast");
+  }
+
+  .ag-grid-with-deviders{
+
+    .ag-root-wrapper{
+      border: none;
+    }
+
+    .ag-row {
+      border-color: mat-color($accent-palette, A400);
+    }
+
+    .ag-cell{
+      border-right: solid  mat-color($accent-palette, A400) 1px !important;
+    }
+
+    .ag-cell :last-of-type{
+      border-right: none !important;
+    }
+  }
+}
+
+@mixin ag-grid-custom-styles-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include ag-grid-custom-styles-color($theme);
+  }
+}

@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+@mixin quiz-assignment-result-color($theme) {
+  $color-config: mat-get-color-config($theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .footer-column-colored {
+    background-color: mat-color($primary-palette, 500);
+    color: white;
+  }
+
+  .email-student-button:hover {
+    background-color: mat-color($primary-palette, 500);
+  }
+}
+
+@mixin quiz-assignment-result-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include quiz-assignment-result-color($color);
+  }
+}

@@ -1,0 +1,30 @@
+<mat-nav-list class='sidenav-container primary-color-container accent-background-container full-height-with-scroll'
+  fxLayout='column' fxLayoutAlign='start' fxLayoutGap='24px'>
+  <!-- Header -->
+  <div fxLayout='column' fxLayoutAlign='start' fxFlexAlign="start" fxLayoutGap='24px'>
+      <div class="header-label">{{strings.viewQuizQuestions}}</div>
+      <div class='subheader-label' fxFlexAlign="start">{{strings.clickTheQuestion}}</div>
+  </div>
+
+  <div fxLayout="column" fxFlex="1 1 100" fxFlexAlign="stretch" fxLayoutAlign="start" fxLayoutGap="24px">
+    <ng-container *ngIf='quizOverviewPageService.data$ | async as data'>
+
+      <!-- Questions -->
+      
+      <div fxLayout='column' fxLayoutAlign='start center' fxLayoutGap='12px'>
+        <div>
+          <app-hexagone-questions id="app-hexagone-questions" [questions]='data.questions'
+            (questionSelected)='onQuestionSelected($event)'></app-hexagone-questions>
+        </div>
+      </div>
+
+      <div fxLayout='raw' fxLayoutAlign='space-around' fxLayoutGap="16px">
+        <button class="auto-form-button" mat-raised-button color='primary' (click)='onBack(data)'>{{strings.back |
+          titlecase}}</button>
+      </div>
+      <div *ngIf="!data.isFull" class="relevant-questions-box" fxLayout="row" fxLayoutAlign="center center">
+        <span class="relevant-questions-text">{{strings.relevantQuestionsText}}</span>
+      </div>
+    </ng-container>
+  </div>
+</mat-nav-list>

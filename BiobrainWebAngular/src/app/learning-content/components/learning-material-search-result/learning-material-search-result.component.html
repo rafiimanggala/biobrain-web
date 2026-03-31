@@ -1,0 +1,13 @@
+<div *ngIf='searchResult' class='learning-material-search-result' (click)='onClick(searchResult)'>
+  <div class='learning-material-search-result-title'>{{title}}</div>
+  <div class='learning-material-search-result-text' [ngSwitch]='searchResult.type'>
+    <div *ngSwitchCase='searchResultType.ContentTree'>
+    </div>
+    <div *ngSwitchCase='searchResultType.MaterialHeader'>
+      {{ text }}
+    </div>
+    <div *ngSwitchCase='searchResultType.MaterialText'>
+      {{ text }}
+    </div>
+  </div>
+</div>

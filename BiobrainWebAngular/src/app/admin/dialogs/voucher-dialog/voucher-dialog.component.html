@@ -1,0 +1,87 @@
+<form role='form' #dialogForm='ngForm' name='dialogForm'>
+  <h2 class='dialog-header' mat-dialog-title>{{ strings.voucher | titlecase }}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout='column' class='dialog-content'>
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='text' name='note' placeholder="{{strings.note | titlecase}}"
+          [(ngModel)]='voucherSettings.note' #note='ngModel' required>
+        <mat-error *ngIf="note.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-label>{{strings.amount | titlecase}}</mat-label>
+        <mat-select name="totalAmount" [(ngModel)]="voucherSettings.totalAmount" #totalAmount="ngModel"
+            placeholder="{{strings.amount | titlecase}}" required appAutofocus>
+            <mat-option [value]="50">
+                $50
+            </mat-option>
+            <mat-option [value]="100">
+                $100
+            </mat-option>
+            <mat-option [value]="200">
+                $200
+            </mat-option>
+            <mat-option [value]="300">
+                $300
+            </mat-option>
+            <mat-option [value]="400">
+                $400
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="totalAmount.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+    </mat-form-field>
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='text' name='country' placeholder="{{strings.country | titlecase}}"
+          [(ngModel)]='voucherSettings.country' #country='ngModel' required disabled>
+        <mat-error *ngIf="country.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='number' name='numberOfCodes' placeholder="{{strings.numberOfCodes | titlecase}}"
+          [(ngModel)]='voucherSettings.numberOfCodes' #numberOfCodes='ngModel' required>
+        <mat-error *ngIf="numberOfCodes.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-label>{{strings.expiryDate | titlecase}}</mat-label>
+        <input matInput [matDatepicker]="expiryDatePicker" [(ngModel)]='voucherSettings.expiryDate' name='expiryDatePicker'
+          #expiryDateModel="ngModel" readonly (click)="expiryDatePicker.open()">
+        <mat-datepicker-toggle matSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #expiryDatePicker disabled="false"></mat-datepicker>
+
+        <mat-error *ngIf="expiryDateModel.errors?.required">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-label>{{strings.redeemExpiryDate | titlecase}}</mat-label>
+        <input matInput [matDatepicker]="redeemExpiryDatePicker" [(ngModel)]='voucherSettings.redeemExpiryDate' name='redeemExpiryDatePicker'
+          #redeemExpiryDateModel="ngModel" readonly (click)="redeemExpiryDatePicker.open()">
+        <mat-datepicker-toggle matSuffix [for]="redeemExpiryDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #redeemExpiryDatePicker disabled="false"></mat-datepicker>
+
+        <mat-error *ngIf="redeemExpiryDateModel.errors?.required">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>        
+
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout='row' fxLayoutGap='8px' align='end'>
+    <div class='flex-separator'></div>
+
+    <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button type='submit' class='auto-form-button' color='accent' (click)='onSubmit(dialogForm)'
+      [disabled]='!dialogForm.valid'>
+      {{strings.add | uppercase}}
+    </button>
+  </div>
+
+</form>

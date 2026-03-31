@@ -1,0 +1,104 @@
+<form role="form" [formGroup]="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{strings.class | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field fxFlex="1 1 100%" appearance="fill">
+        <mat-label>{{strings.course}}</mat-label>
+        <mat-select name="course" required formControlName="courseCtrl" [disabled]='!!data.settings.currentClassId'>
+          <mat-option *ngFor="let course of availableCourses" [value]="course.courseId">
+              {{course.displayName}}
+            <!-- <span *ngIf="course.year != 10 || course.curriculumCode == 3">{{ course.curriculum.name }} - </span><span>{{ course.subject.name }}</span><span *ngIf="course.year != 0 && course.year != 10"> - {{strings.year}} {{course.year}}</span> -->
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="courseCtrl.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%" appearance="fill">
+        <mat-label>{{strings.year | titlecase}}</mat-label>
+        <mat-select name="year" required formControlName="yearCtrl">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="yearCtrl.hasError('required')">{{strings.requiredFieldError | titlecase}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input
+          matInput
+          name="name"
+          placeholder="{{strings.name | titlecase}}"
+          formControlName="nameCtrl"
+          required
+          [schoolClassNameValidator]="data.settings.schoolId"
+          [schoolClassNameValidator_Year]="data.year"
+          [schoolClassNameValidator_ExcludeClassId]="data.settings.currentClassId"
+        >
+        <mat-error *ngIf="nameCtrl.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="nameCtrl.hasError('duplicatedName')">
+          {{strings.nameMustBeUniqueForTheSelectedYear | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-chip-list #teachersChipList>
+          <mat-chip
+            *ngFor="let teacher of teacherMultipleSelectStore.selectedItems$ | async"
+            removable="true"
+            (removed)="teacherMultipleSelectStore.removeValue(teacher.teacherId)"
+          >
+            <span>{{ teacher.fullName }}</span>
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+
+          <input
+            [placeholder]="strings.teachers | titlecase"
+            #teachersInput
+            [matAutocomplete]="teachersAuto"
+            [matChipInputFor]="teachersChipList"
+            [formControl]="teachersCtrl"
+            matChipInputAddOnBlur="false"
+            (matChipInputTokenEnd)="resetTeachersInput($event)"
+            (focusout)="clearTeachersInput()"
+          />
+        </mat-chip-list>
+
+        <mat-autocomplete #teachersAuto="matAutocomplete" (optionSelected)="onTeacherSelected($event)">
+          <mat-option *ngFor="let item of teacherListItemsStore.availableListItems$ | async" [value]="item.value">
+            <span>{{ item.text }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button
+      mat-stroked-button
+      class="auto-bordered-form-button"
+      color="accent"
+      (click)="onClose()"
+      type="button"
+    >
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button
+      mat-raised-button
+      class="auto-form-button"
+      color="accent"
+      (click)="onSubmit(dialogForm)"
+      [disabled]="dialogForm.invalid"
+      type="submit"
+    >
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

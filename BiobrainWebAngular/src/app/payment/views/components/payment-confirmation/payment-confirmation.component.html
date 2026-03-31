@@ -1,0 +1,59 @@
+<form #paymentDetailsForm="ngForm" name="subscriptionForm">
+
+  <div class="component-container" fxLayout="column" fxLayoutGap="10px">
+    <app-signup-header [text]="strings.yourPaymentDetails"></app-signup-header>
+
+    <div class="devider"></div>
+
+    <!-- Fields -->
+    <div class="form-fields" fxFlex="1 1 100%" fxLayout="column" fxLayoutGap="10px">
+      <span class='form-label preformated'>{{getFooterMessage()}}</span>
+
+      <app-form-label [text]="strings.promoCode"></app-form-label>
+      <div fxLayout="row" fxLayoutGap="10px" *ngIf="!promoCode">
+        <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true" fxFlex="1 1 100%">
+          <input matInput name="promoCode" [(ngModel)]="promoCodeValue" #promoCode="ngModel"
+            placeholder="{{strings.promoCode}}" autocomplete="none">
+          <mat-error *ngIf="promoCode.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          <mat-error *ngIf="promoCodeError">{{promoCodeError}}</mat-error>
+        </mat-form-field>
+        <button (click)="onApplyPromoCode()" class="form-button apply-button" color="primary" mat-raised-button>
+          {{strings.apply | titlecase}}
+        </button>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="promoCode">
+        <div class="promo-code">{{promoCode.code+':'}}</div>
+        <div class="promo-code-value">{{getPromoCodeValueInternal()}}</div>
+        <button mat-icon-button color="warn" fxFlexAlign="end" (click)="onRemovePromo()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="input-row" fxLayout="row" fxLayoutAlign="space-between">
+        <div class="form-label-selected" fxFlex="1 1 49%" fxLayoutAlign="end center">
+          <span>{{strings.totalBillingToday}}</span>
+        </div>
+        <div *ngIf="subscriptionData" class="total-label-container" fxFlex="1 1 49%">
+          <div class="form-label-selected">{{subscriptionData.curency + getTotalInternal()}}</div>
+        </div>
+      </div>
+
+      <!-- Terms of service -->
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-checkbox color="primary" name="temsOfService" [(ngModel)]="isTermsConfirmed" required></mat-checkbox>
+        <div class="terms-string" [innerHTML]="termsHtmlString"></div>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+      <button (click)="onCancel()" class="form-button save-button" color="primary" mat-raised-button>
+        {{strings.cancel | titlecase}}
+      </button>
+      <button (click)="onSubscribe()" class="form-button save-button" color="primary" mat-raised-button
+        [disabled]="!paymentDetailsForm.valid">
+        {{strings.save | titlecase}}
+      </button>
+    </div>
+  </div>
+  <!-- </mat-card> -->
+</form>

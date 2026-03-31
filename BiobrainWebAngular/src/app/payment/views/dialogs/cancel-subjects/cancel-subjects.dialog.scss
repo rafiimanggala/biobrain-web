@@ -1,0 +1,15 @@
+@import '../../../../styles/variables.scss';
+
+mat-dialog-content {
+  max-width: 500px;
+  width: 400px !important;
+}
+
+.confirm-text {
+  margin-bottom: 8px;
+}
+
+.content{
+  font-family: $roboto;
+  font-size: 10pt;
+}

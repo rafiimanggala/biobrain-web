@@ -1,0 +1,15 @@
+.bookmark-item {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+
+  .bookmark-item-title {
+    font-weight: 500;
+  }
+
+  .delete-button {
+     mat-icon{
+        font-weight: 900 !important;
+     }
+  }
+}

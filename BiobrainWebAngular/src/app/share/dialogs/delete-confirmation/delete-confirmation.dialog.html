@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>{{strings.delete | titlecase}} {{dialogData.entityType | titlecase}}</h1>
+<mat-dialog-content>
+  <div class="message">
+    <label>
+      {{strings.wouldYouLikeToDelete}} <b>{{dialogData.entityName}}</b>?
+    </label>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-stroked-button
+    class="auto-bordered-form-button"
+    (click)="onClose()"
+    type="button"
+    color="accent"
+  >
+    {{strings.cancel}}
+  </button>
+  <button
+    mat-raised-button
+    class="auto-form-button"
+    color="warn"
+    (click)="onSubmit()"
+    type="submit"
+  >
+    {{strings.delete}}
+  </button>
+</mat-dialog-actions>

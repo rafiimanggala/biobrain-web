@@ -1,0 +1,36 @@
+@import '~@angular/material/theming';
+
+@mixin term-header-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .term-header {
+    background-color: mat-color($primary-palette, 500);
+    border-color: mat-color($primary-palette, 500);
+  }
+
+  .term-header.first {
+    border-color: mat-color($primary-palette, 500);
+  }
+
+  .term-header:focus {
+    background: mat-color($accent-palette, 500) !important;
+  }
+
+  .term-header:hover {
+    background: mat-color($accent-palette, 500) !important;
+  }
+
+  .term-header-title {
+    color: mat-color($accent-palette, '500-contrast')
+  }
+}
+
+@mixin term-header-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include term-header-color($theme);
+  }
+}

@@ -1,0 +1,43 @@
+<div class="container full-size-no-overflow" fxLayout="column">
+    <ng-container *ngIf="quizOverviewPageService.data$ | async as data">
+        <div class="accent-background-container" fxLayout="row" fxLayoutGap="5px">
+            <span class="path primary-color-container underlined hand-pointer" (click)="onCourseClick()">{{(subjectName$
+                | async) | uppercase}}</span>
+            <span class="path primary-color-container">{{'›'}}</span>
+            <span class="path primary-color-container">{{data.path}}</span>
+        </div>
+        <ng-container *ngIf="data.questions">
+            <div class="full-size-no-overflow">
+                <div class="content-container full-height-with-scroll" fxLayout="column" fxLayoutGap="20px">
+                    <div *ngFor="let question of data.questions" fxLayout="column" fxLayoutGap="20px">
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                            <app-hexagone id="{{question.questionHeader}}" class="hex" [text]="question.questionHeader"
+                                [color]="getHexColor()" [textColor]="'#ffffff'" fxFlex="0 0 60px">
+                            </app-hexagone>
+                            <button mat-raised-button color='accent' class='remove-button' (click)='quizOverviewPageService.removeAddBackQuestion(question)'>
+                                {{(question.isExcluded ? strings.addBack : strings.remove) | titlecase}}
+                              </button>
+                        </div>
+                        <div>
+                            <div fxLayout="column" fxLayoutAlign="start">
+                                <div class="quiz-result-content">
+                                    <app-shadow-dom-div-container
+                                        [innerContent]="question.text"></app-shadow-dom-div-container>
+                                </div>
+                                <div class="answer" fxLayout="column" fxLayoutGap="10px">
+                                    <div class="answer-header primary-color-container">{{strings.questionType}}:</div>
+                                    <div class="answer-text">{{getQuestionType(question.questionTypeCode)}}</div>
+                                    <div class="answer-header primary-color-container">{{strings.correctAnswer}}:</div>
+                                    <div class="answer-text" [innerHTML]="question.correctAnswer"></div>
+                                    <div class="answer-header primary-color-container">{{strings.feedback}}:</div>
+                                    <app-shadow-dom-div-container *ngIf="question.feedback"
+                                        [innerContent]="question.feedback"></app-shadow-dom-div-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

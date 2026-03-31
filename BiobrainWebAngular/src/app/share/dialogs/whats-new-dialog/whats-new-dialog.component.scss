@@ -1,0 +1,41 @@
+.whats-new-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.version-badge {
+  display: inline-block;
+  background-color: #4caf50;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  line-height: 1.4;
+}
+
+.whats-new-content {
+  max-width: 560px;
+  max-height: 400px;
+  overflow-y: auto;
+
+  ::ng-deep {
+    ul, ol {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    h3, h4 {
+      margin: 12px 0 6px;
+    }
+
+    p {
+      margin: 6px 0;
+    }
+  }
+}

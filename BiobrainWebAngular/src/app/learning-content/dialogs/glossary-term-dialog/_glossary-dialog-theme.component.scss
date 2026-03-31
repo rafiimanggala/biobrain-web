@@ -1,0 +1,49 @@
+@import '~@angular/material/theming';
+
+@mixin glossary-dialog-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+
+  @font-face {
+    font-family: 'Distro II Bats';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Distro II Bats'), url('../../../../assets/fonts/distro2_bats.woff') format('woff');
+  }
+
+  .glossary-dialog-panel, .narrow-glossary-dialog-panel{
+      position: relative !important;
+      overflow: visible !important;
+      // padding-top: 25px !important;
+
+      .mat-dialog-container{
+        border: 5px solid mat-color($primary-palette, 500);
+        border-radius: 20px;
+      }
+
+      .close-button{
+        position: absolute;
+        right: 20px;
+        top: -24px;
+        border: 3px solid white !important;
+        font-size: 30px;
+        text-align: center;
+        box-shadow: none !important;
+        font-family: 'Distro II Bats';
+        .mat-button-wrapper{
+          margin-right: -3px;
+        }
+      }
+  }
+
+}
+
+@mixin glossary-dialog-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  // @if $color != null {
+    @include glossary-dialog-color($theme);
+  // }
+}

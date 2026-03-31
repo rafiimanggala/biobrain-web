@@ -1,0 +1,56 @@
+@import '../../../styles/variables';
+
+.content-container{
+    padding: 48px 20px;
+    padding-top: 0px;
+}
+
+.content-card-devider{
+    margin-top: 10px;
+}
+
+.header-accent-background{
+    margin-left: -24px;
+    margin-right: -24px;
+}
+
+.diagram{
+    display: block;
+    width: 140px;
+    height: 140px;
+}
+
+.mobile-diagram{
+    display: block;
+    width: 100px;
+    height: 100px;
+
+}
+
+.rate-label {
+    white-space: pre;
+    font-size: 24px;
+    line-height: 32px;
+    font: "Nunito", sans-serif;
+    font-weight: 550;
+}
+
+@media only screen and (max-width: 1279px) {
+    .rate-label {
+        text-align: center;
+        font-size: 20px;
+        line-height: 24px;
+    }
+  }
+
+.results-grid {
+  margin-bottom: 10px;
+  height: 100%;
+  min-height: 250px !important;
+}
+
+.grid-container{
+    height: 100%;
+}
+
+

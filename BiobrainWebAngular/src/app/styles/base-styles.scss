@@ -1,0 +1,473 @@
+@import './variables.scss';
+
+.custom-question-tooltip.ag-tooltip-hiding {
+  opacity: 0;
+  transition: opacity 1s;
+  border-radius: 20px;
+}
+
+.custom-question-tooltip{
+  border-radius: 20px;
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
+}
+
+//region form-field
+.form-field .mat-form-field-infix {
+  border: 0 !important;
+  padding: 10px !important;
+}
+
+.form-field .mat-form-field-label-wrapper {
+  top: 2px !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+.form-field .mat-form-field-label-wrapper label {
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+.form-field .mat-form-field-underline {
+  display: none !important;
+}
+
+//endregion form-field
+
+//region mat-table
+// .mat-table .context-menu-button {
+//   // display: none !important;
+// }
+
+// .mat-table .mat-row:hover .context-menu-button {
+//   display: inline-block !important;
+// }
+
+.mat-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.mat-column-contextMenu {
+  max-width: 40px;
+  min-width: 40px;
+  width: 40px;
+  text-align: center;
+  padding-left: 0px !important;
+}
+
+.mat-column-actionMenu {
+  max-width: 40px;
+  min-width: 40px;
+  width: 40px;
+  text-align: center;
+}
+
+.mat-column-60 {
+  max-width: 60px;
+  min-width: 60px;
+  width: 60px;
+}
+
+.mat-column-80 {
+  max-width: 80px;
+  min-width: 80px;
+  width: 80px;
+}
+
+.mat-column-120 {
+  max-width: 120px;
+  min-width: 120px;
+  width: 120px;
+}
+
+.mat-action {
+  max-width: 20px;
+  min-width: 20px;
+  width: 20px;
+  text-align: center;
+  padding-right: 10px;
+  padding-left: 0px !important;
+  margin: 0px !important;
+}
+
+mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type {
+  padding-right: 0px;
+}
+
+.mat-table {
+  display: block;
+}
+
+.mat-row, .mat-header-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  min-height: 40px;
+  padding: 4px 0px;
+  border-bottom-color: rgba(0, 0, 0, .12);
+}
+
+.mat-header-row{  
+  font-weight: 800 !important;
+  font-family: $nunito !important;
+  font-size: 12pt !important;
+}
+
+.mat-row{  
+  font-family: $roboto !important;
+  font-size: 10pt !important;
+}
+
+.mat-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: inherit;
+}
+
+.mat-cell:focus {
+  outline: none !important;
+}
+
+.mat-cell, .mat-header-cell {
+  flex: 1;
+}
+
+.first-cell {
+  flex: 1;
+  padding-left: 10px !important;
+}
+
+.active {
+  background-color: rgba(0, 0, 0, .04);
+}
+
+.mat-actions {
+  margin-top: 8px;
+  align-items: flex-end;
+}
+//endregion mat-table
+
+.form-button {
+  height: 36px !important;
+  border-radius: 18px !important;
+  min-width: 150px !important;
+  font-family: $nunito;
+  font-size: 12pt;
+}
+
+.devider {
+  height: 4px;
+  border-radius: 2px;
+}
+
+.slim-devider {
+  height: 2px;
+  border-radius: 2px;
+}
+
+.logo {
+  width: 100px;
+}
+
+//region Scroll
+
+.full-size-no-overflow {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.full-height-with-scroll {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.right-direction {
+  direction: rtl;
+}
+
+.left-direction {
+  direction: ltr;
+}
+
+.full-height-with-scroll ::-webkit-scrollbar-track {
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+.full-height-with-scroll ::-webkit-scrollbar {
+  height: 6px;
+}
+
+.full-height-with-scroll ::-webkit-scrollbar-thumb {
+  background-color: #555555;
+  border-radius: 3px;
+}
+
+//endregion Scroll
+
+.hand-pointer {
+  cursor: pointer;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
+.dialog-header {
+  font-family: $nunito;
+  opacity: .54 !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.component-title {
+  font-size: 20px !important;
+  font-weight: 500;
+  flex: 1 0 auto;
+}
+
+.light-content {
+  color: white !important;
+}
+
+.dark-content {
+  color: black !important;
+}
+
+.mat-raised-button {
+  color: white !important;
+}
+
+.form-button {
+  height: 50px;
+  min-height: 50px;
+  width: 250px;
+  border-radius: 25px !important;
+  font-weight: 700;
+}
+
+.bordered-form-button {
+  height: 50px;
+  min-height: 50px;
+  width: 250px;
+  border-radius: 25px !important;
+  font-weight: 700;
+  background-color: white !important;
+}
+
+.auto-form-button {
+  height: 50px;
+  min-width: 80px;
+  border-radius: 25px !important;
+}
+
+.auto-bordered-form-button {
+  height: 50px;
+  min-width: 80px;
+  border-radius: 25px !important;
+}
+
+.flex-separator {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+
+.custom-dialog {
+  .main-card {
+    margin: auto;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .header-container {
+    width: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .header {
+    text-align: center;
+    display: flex;
+    font-size: $dialog-header;
+    font-weight: bold;
+    line-height: 40px;
+    width: 100%;
+  }
+
+  .header span {
+    width: 100%;
+  }
+}
+
+.full-page-form {
+  height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.navigation-path {
+  font-weight: bold;
+  margin: 20px;
+}
+
+.level-group {
+  border: none;
+}
+
+.ag-cell:focus {
+  border: none !important;
+  outline: none;
+}
+
+// Base dialog panel class
+.dialog-panel {
+  max-height: 90vh;
+}
+
+.admin-container .sidenav-container {
+  background-color: $white;
+}
+
+.ag-green-cell{
+  a{
+    color: green !important;
+  }
+}
+
+.ag-orange-cell{
+  a{
+    color: orange !important;
+  }
+}
+
+.ag-red-cell{
+  a{
+    color: red !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .dialog-panel {
+    min-width: 500px;
+  }
+}
+
+@mixin subject-colors($background-color, $light-color, $dark-color) {
+  .subject-background {
+    background-color: $background-color;
+  }
+
+  .subject-dark-background {
+    background-color: $dark-color;
+  }
+
+  .subject-light-text-color {
+    color: $light-color;
+  }
+
+  .subject-dark-text-color {
+    color: $dark-color
+  }
+}
+
+.subject-colors {
+  &.biology {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.chemistry {
+    @include subject-colors($chemistry_background, $chemistry_light_color, $chemistry_dark_color)
+  }
+
+  &.physics {
+    @include subject-colors($physics_background, $physics_light_color, $physics_dark_color)
+  }
+
+  &.biology10 {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.chemistry10 {
+    @include subject-colors($chemistry_background, $chemistry_light_color, $chemistry_dark_color)
+  }
+
+  &.forensics {
+    @include subject-colors($forensics_background, $forensics_light_color, $forensics_dark_color)
+  }
+
+  &.psychology {
+    @include subject-colors($psychology_background, $psychology_light_color, $psychology_dark_color)
+  } 
+
+  &.physics10 {
+    @include subject-colors($physics_background, $physics_light_color, $physics_dark_color)
+  }
+
+  &.marine10 {
+    @include subject-colors($marine_background, $marine_light_color, $marine_dark_color)
+  }
+
+  &.science {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.live {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.sciencePen {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.biology10Us {
+    @include subject-colors($biology_background, $biology_light_color, $biology_dark_color)
+  }
+
+  &.earth10Jpc {
+    @include subject-colors($marine_background, $marine_light_color, $marine_dark_color)
+  }
+
+  &.applied10Jpc {
+    @include subject-colors($forensics_background, $forensics_light_color, $forensics_dark_color)
+  }
+
+}
+
+.ag-grid-custom-header-cell-accent-background{
+  font-weight: 900 !important;
+  font-family: "Nunito", sans-serif;
+  font-size: 14px !important;
+}
+
+// Summernote
+
+.toolbar-icon{
+  font-size: 19px;
+  height: 19px !important;
+  max-height: 19px !important;
+}
+
+.note-btn{
+  max-height: 31.8px;
+}

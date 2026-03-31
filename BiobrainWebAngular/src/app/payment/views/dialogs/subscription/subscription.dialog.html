@@ -1,0 +1,28 @@
+<!-- <h1 mat-dialog-title>{{dialogData.title}}</h1> -->
+
+<mat-dialog-content fxLayout="column">
+  <app-subscription-details *ngIf="mode == 1"
+    [subscriptionParameters]="dialogData"
+    [mode]="2"
+    (next)="onNext($event)"
+    (cancel)="onClose()"
+    (editBillingDetails)="onEditBillingDetails()"
+    (onCancelSubscription)="onCancelSubscription()">
+  </app-subscription-details>
+  <app-payment-confirmation  *ngIf="mode == 2"
+    [subscriptionData]="subscriptionData"
+    (cancel)="onClose()"
+    (subscribe)="onSubmitSubscription($event)"
+  >    
+  </app-payment-confirmation>
+</mat-dialog-content>
+
+<!-- <mat-dialog-actions align="center">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ (dialogData.noButtonText ? dialogData.noButtonText : strings.no) | uppercase }}
+  </button>
+
+  <button mat-raised-button type='submit' class='auto-form-button' color='warn' (click)='onSubmit()'>
+    {{ (dialogData.yesButtonText ? dialogData.yesButtonText : strings.yes) | uppercase }}
+  </button>
+</mat-dialog-actions> -->

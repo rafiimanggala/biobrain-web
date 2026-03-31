@@ -1,0 +1,33 @@
+<div class="container full-size-no-overflow">
+  <ag-grid-angular
+    #schoolsGrid
+    class="ag-theme-alpine grid-item"
+    [pagination]="false"
+    (gridReady)="onGridReady($event)"
+    (modelUpdated)="onModelUpdated()"
+    (selectionChanged)="onSelectionChanged()"
+    [rowSelection]="'multiple'"
+    [rowMultiSelectWithClick]="true" >
+  </ag-grid-angular>
+
+  <div class="footer-row">
+    <div class="footer-column footer-column-colored">
+    <span>
+      {{ strings.totalStudents | uppercase }} = {{ (store.item$ | async)?.students?.length }}
+    </span>
+    </div>
+
+    <div class="footer-column" style='background-color: initial'>
+      <button
+        class="email-student-button"
+        mat-raised-button
+        color="accent"
+        (click)="onEmailStudentClick()"
+        type="button"
+      >
+        {{strings.emailStudent | uppercase}}
+      </button>
+    </div>
+
+  </div>
+</div>

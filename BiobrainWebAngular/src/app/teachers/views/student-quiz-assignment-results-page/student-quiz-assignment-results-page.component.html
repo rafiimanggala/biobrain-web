@@ -1,0 +1,14 @@
+<div class='container'>
+  <ng-container *ngIf='courseIdChanges$ | async as courseId'>
+    <ng-container *ngIf='studentIdChanges$ | async as studentId'>
+      <ng-container *ngIf='schoolClassIdChanges$ | async as schoolClassId'>
+        <app-student-quiz-assignment-results
+          [studentId]='studentId'
+          [courseId]='courseId'
+          [schoolClassId]='schoolClassId'
+          (reassignQuizzesAndMaterials)='onReassign($event, studentId)'>
+        </app-student-quiz-assignment-results>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

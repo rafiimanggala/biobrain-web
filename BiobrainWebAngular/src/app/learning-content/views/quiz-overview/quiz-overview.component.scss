@@ -1,0 +1,54 @@
+@import '../../../styles/variables';
+
+.content-container {
+  padding: 48px 20px;
+}
+
+.path {
+  // font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+.quiz-result-content {
+  border-top-right-radius: 20px;
+  padding: 20px 20px;
+}
+
+.answer {
+  padding: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+         -khtml-user-select: none; /* Konqueror HTML */
+           -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                      supported by Chrome and Opera */
+}
+
+.answer-header {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.answer-text {
+  color: $gray;
+}
+
+.hex {
+  width: 60px !important;
+  height: 60px !important;
+  display: block;
+  box-sizing: border-box;
+}
+
+.accent-background-container{
+  padding: 20px;
+}
+
+.remove-button{
+  background-color: $pale-gray;
+  color: white;
+  border-radius: 18px;
+}

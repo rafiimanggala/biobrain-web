@@ -1,0 +1,10 @@
+<div class="expansion-panel" (click)='onClick()' [ngClass]='{"disabled": isDisabled}'>
+  <div [ngClass]='{"term-header": true, "first": isFirst, "disabled": isDisabled}'>
+    <div class="term-header-title">
+      <mat-icon>
+        navigate_next
+      </mat-icon>
+      <span>{{header}}</span>
+    </div>
+  </div>
+</div>

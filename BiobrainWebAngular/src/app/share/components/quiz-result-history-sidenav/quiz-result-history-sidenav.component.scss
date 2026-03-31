@@ -1,0 +1,54 @@
+@import '../../../styles/variables';
+
+.quiz-history-sidenav-container {
+  height: 100%;
+  width: $sidenav_width;
+  padding: 20px;
+  font-size: 20px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+}
+
+.with-icon {
+  vertical-align: center;
+}
+
+mat-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24x;
+  line-height: 24px;
+  font-weight: 550;
+}
+
+.not-bold {
+  font-weight: 400;
+}
+
+.action-button {
+  font-weight: bold;
+}
+
+.quiz-history-label {
+  white-space: pre;
+  text-align: center;
+}
+
+.bzz-label {
+  padding-left: 40px;
+  align-self: start;
+}
+
+.image{
+  width: 100%;
+}
+
+.bee{
+  width: 100%;
+}
+
+.hive {
+  width: 100%;
+}
+
+

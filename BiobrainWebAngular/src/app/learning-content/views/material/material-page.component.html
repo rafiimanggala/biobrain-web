@@ -1,0 +1,29 @@
+<app-sidenav-layout>
+  <ng-container navigationList>
+    <app-tree-sidenav [courseId]='routeCourseId' [topicId]='routeTopicId'></app-tree-sidenav>
+  </ng-container>
+
+  <ng-container content>
+    <div class='container full-size-no-overflow' fxLayout='column' fxLayoutGap='8px'>
+      <div class='main-material-header'>
+        <app-learning-material-breadcrumbs [courseId]='routeCourseId' [nodeId]='routeTopicId' [className]="className">
+        </app-learning-material-breadcrumbs>
+        <app-learning-material-toolbar [courseId]='routeCourseId'
+                                       [topicId]='routeTopicId'
+                                       [levels]='levels'
+                                       [(selectedLevelId)]='selectedLevelId'
+                                       (selectedLevelIdChange)="onSelectedLevelIdChange()">
+        </app-learning-material-toolbar>
+      </div>
+
+      <app-learning-material-content class='full-size-no-overflow' fxLayout='column' fxFlex='1 1 100'
+                                     [courseId]='routeCourseId' [nodeId]='selectedLevelId'>
+      </app-learning-material-content>
+    </div>
+
+    <app-ask-biobrain
+      [courseId]='routeCourseId'
+      [contentTreeNodeId]='routeTopicId || ""'>
+    </app-ask-biobrain>
+  </ng-container>
+</app-sidenav-layout>

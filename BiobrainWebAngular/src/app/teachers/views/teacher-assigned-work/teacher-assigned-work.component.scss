@@ -1,0 +1,18 @@
+.content-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.header-accent-background{
+  margin: 0 -20px;
+  margin-top: -48px;
+}
+
+.grid-item {
+  flex: 1 1;
+  height: calc(100vh - 110px)
+}
+
+.grid-container{
+  height: 100%;
+}

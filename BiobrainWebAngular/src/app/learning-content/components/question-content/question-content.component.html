@@ -1,0 +1,11 @@
+<div id="content" class="content" fxLayout="column">
+  <div>
+    <app-question-content-shadow-dom-node [displayedQuestionDatum]="displayedQuestionDatum">
+    </app-question-content-shadow-dom-node>
+  </div>
+  <div fxLayout="raw" fxLayoutAlign="end" *ngIf="hintVisible">
+    <button mat-icon-button class="transparent-fab" (click)="openHintDialog()">
+      <img class="button-image" src='/assets/images/LightGlobeIcon.png'>
+    </button>
+  </div>
+</div>

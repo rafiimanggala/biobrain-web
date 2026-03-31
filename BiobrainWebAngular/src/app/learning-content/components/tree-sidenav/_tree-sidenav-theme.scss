@@ -1,0 +1,39 @@
+@import '~@angular/material/theming';
+
+@mixin tree-sidenav-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .tree {
+    background-color: mat-color($accent-palette, A400);
+    color: mat-color($primary-palette, 500);
+  }
+
+  .mat-tree-node {
+    color: mat-color($primary-palette, 500);
+  }
+
+  .active-menu-link {
+    background-color: mat-color($accent-palette, '500-contrast');
+  }
+
+  .accent {
+    color: mat-color($accent-palette, 500);
+  }
+
+  .tree-controls {
+    .control-btn {
+      color: mat-color($primary-palette, 500);
+      border-color: mat-color($primary-palette, 100);
+    }
+  }
+}
+
+@mixin tree-sidenav-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include tree-sidenav-color($theme);
+  }
+}

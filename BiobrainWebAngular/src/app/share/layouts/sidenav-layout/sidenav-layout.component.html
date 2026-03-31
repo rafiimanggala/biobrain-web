@@ -1,0 +1,15 @@
+<mat-sidenav-container [hasBackdrop]="hasBackdrop" class="example-sidenav-container" autofocus='false'>
+  <mat-sidenav [fixedInViewport]="false"
+               class="side-nav" disableClose="true" fixedTopGap="56"
+               [mode]="sideNavMode" [opened]='isOpened' role="navigation" autoFocus='false'>
+    <div style="height: 100%; overflow: hidden;">
+      <ng-content select="[navigationList]"></ng-content>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="app-content">
+      <ng-content select="[content]"></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

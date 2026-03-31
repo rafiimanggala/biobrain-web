@@ -1,0 +1,45 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{strings.addSubject | uppercase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field fxFlex="1 1 100%">
+        <input
+          matInput
+          name="name"
+          placeholder="{{strings.accessCode | titlecase}}"
+          [(ngModel)]="accessCode"
+          #classCodeModel="ngModel"
+          required>
+        <mat-error *ngIf="classCodeModel.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button
+      mat-stroked-button
+      class="auto-bordered-form-button"
+      color="accent"
+      (click)="onClose()"
+      type="button"
+    >
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button
+      mat-raised-button
+      class="auto-form-button"
+      color="accent"
+      (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid"
+      type="submit"
+    >
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+</form>

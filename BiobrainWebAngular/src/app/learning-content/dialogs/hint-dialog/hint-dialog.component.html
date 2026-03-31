@@ -1,0 +1,18 @@
+<div mat-dialog-title>
+    <h2 class="dialog-header" mat-dialog-title>{{data.header}}</h2>
+    <button class="close-button" mat-fab (click)="onClose()">\</button>
+</div>
+
+<div mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+        <div class="content">
+          <app-learning-material-shadow-dom-node [learningContent]="learningContent"></app-learning-material-shadow-dom-node>
+        </div>
+    </div>
+</div>
+
+<!-- <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+    <button mat-icon-button class="submit-button" color="accent" (click)="onClose()" type="button">
+        <mat-icon svgIcon="answer_button"></mat-icon>
+    </button>
+</div> -->

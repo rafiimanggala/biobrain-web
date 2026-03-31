@@ -1,0 +1,35 @@
+<form role='form' #dialogForm='ngForm' name='dialogForm'>
+  <h2 class='dialog-header' mat-dialog-title>{{ strings.addTeacher | titlecase }}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout='column' class='dialog-content'>
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='text' name='email'
+               placeholder="{{strings.email | titlecase}}"
+               [(ngModel)]='userEmail' #email='ngModel'
+               pattern="^[a-zA-Z0-9.\-_]{1,}@([0-9a-zA-Z\-]{1,}[.]{1}){1,}([a-zA-Z]{2,}){1}$"
+               required>
+        <mat-error *ngIf="email.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="email.hasError('pattern')">{{strings.invalidEmail}}</mat-error>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout='row' fxLayoutGap='8px' align='end'>
+    <div class='flex-separator'></div>
+
+    <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent'
+            (click)='onClose()'>
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button type='submit' class='auto-form-button' color='accent'
+            (click)='onSubmit(dialogForm)' [disabled]='!dialogForm.valid'>
+      {{strings.add | uppercase}}
+    </button>
+  </div>
+
+</form>

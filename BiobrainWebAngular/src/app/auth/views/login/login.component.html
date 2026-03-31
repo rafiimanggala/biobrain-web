@@ -1,0 +1,107 @@
+<form #loginForm="ngForm" name="loginForm">
+    <mat-card class="login-card" fxLayout="column" fxLayoutGap="10px">
+
+        <div fxLayout="row">
+          <a href="https://biobrain.tech/"><img class="logo" src="assets/images/logo.svg" fxFlexAlign="center" (click)="reload()"></a>
+            <div class="header-container" fxFlexAlign="center"><span class="header">{{strings.welcomeBack}}</span></div>
+        </div>
+
+        <div class="devider"></div>
+
+        <app-form-label [text]="strings.yourEmail"></app-form-label>
+        <mat-form-field floatLabel="never" class="form-field">
+            <input  [(ngModel)]="user.username" matInput name="login" #login="ngModel" required
+                placeholder="{{strings.yourEmailPlaceholder}}" />
+            <mat-error *ngIf="login.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+
+        <app-form-label [text]="strings.password"></app-form-label>
+        <mat-form-field floatLabel="never"  class="form-field">
+            <input [(ngModel)]="user.password" matInput type="password" name="password" #password="ngModel"
+                placeholder="{{strings.passwordPlaceholder}}" required />
+            <mat-error *ngIf="password.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+
+        <app-form-label [text]="strings.forgotPassword" (click)="onRestore()" style="cursor: pointer"></app-form-label>
+
+      <div fxLayout="row wrap" fxLayoutAlign="end center" class="actions">
+
+        <button
+          mat-raised-button
+          class="form-button"
+          color="primary"
+          fxFlexAlign="end"
+          type="submit"
+          (click)="onSubmit(loginForm)"
+          [disabled]="!loginForm.valid"
+        >
+          {{strings.login}}
+        </button>
+
+        <button
+          mat-stroked-button
+          class="auto-bordered-form-button"
+          color="accent"
+          style="min-width: 250px;"
+          (click)="onSignUp()"
+        >
+          {{strings.signUp | titlecase}}
+        </button>
+      </div>
+
+      <div class="sso-divider">
+        <span class="divider-line"></span>
+        <span class="divider-text">OR</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <button
+        mat-stroked-button
+        class="sso-toggle-button"
+        type="button"
+        (click)="toggleSsoPanel()"
+      >
+        {{strings.loginWithSso}}
+      </button>
+
+      <div *ngIf="showSsoPanel" class="sso-panel">
+        <mat-form-field floatLabel="never" class="form-field" style="width: 100%">
+          <input
+            matInput
+            [(ngModel)]="ssoSchoolName"
+            name="ssoSchoolName"
+            placeholder="{{strings.ssoSchoolNamePlaceholder}}"
+            (keyup.enter)="searchSsoSchool()"
+          />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          [disabled]="ssoSearching || !ssoSchoolName || ssoSchoolName.trim().length < 2"
+          (click)="searchSsoSchool()"
+          style="width: 100%; margin-bottom: 10px;"
+        >
+          {{ ssoSearching ? strings.ssoSearching : 'Search' }}
+        </button>
+
+        <div *ngIf="ssoSchool" class="sso-school-result">
+          <span class="sso-school-name">{{ssoSchool.name}}</span>
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            (click)="startSsoLogin()"
+            style="width: 100%; margin-top: 8px;"
+          >
+            {{strings.ssoLogin}}
+          </button>
+        </div>
+
+        <div *ngIf="ssoError" class="sso-error">{{ssoError}}</div>
+      </div>
+
+    </mat-card>
+</form>
+<div class="bg-img"></div>

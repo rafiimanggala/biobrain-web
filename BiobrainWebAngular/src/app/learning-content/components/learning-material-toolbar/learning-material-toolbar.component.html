@@ -1,0 +1,68 @@
+<div class="learning-material-toolbar" fxLayout='row' fxLayoutAlign='space-between'>
+  <mat-button-toggle-group class='level-group' #group='matButtonToggleGroup'
+                           [ngModel]='selectedLevelId'
+                           (ngModelChange)='onSelectedLevelIdChange($event)'>
+    <mat-button-toggle *ngFor='let level of levels' [value]='level.levelTypeId' [disabled]="!level.isAvailable" [ngClass]="{'disabled': !level.isAvailable, 'red-level': level.isRed, 'yellow-level': level.isYellow, 'green-level': level.isGreen}">
+      {{level.levelName}}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="buttons-raw"  fxHide.lt-sm>
+    <button mat-raised-button color=accent class='node-button' (click)='onAssignedWorkClicked(selectedLevelId)' *ngIf='!!courseId && selectedLevelId && assignedWorkButtonVisible'>
+      {{strings.tasks | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && quizButtonVisible'>
+      {{strings.quiz | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onSubsectionQuiz(selectedLevelId)' *ngIf='selectedLevelId && subsectionQuizButtonVisible'>
+      {{strings.takeSubsectionQuiz | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onTopicQuiz(courseId, topicId)' *ngIf='!!courseId && !!topicId && topicQuizButtonVisible'>
+      {{strings.takeTopicQuiz | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onViewQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && viewQuizButtonVisible'>
+      {{strings.viewQuiz | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onAssignQuiz(selectedLevelId)' *ngIf='selectedLevelId && assignQuizButtonVisible'>
+      {{strings.assignQuiz | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onAssignMaterial(selectedLevelId)' *ngIf='selectedLevelId && assignMaterialButtonVisible'>
+      {{strings.assignMaterial | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onAssignAll(selectedLevelId)' *ngIf='selectedLevelId && assignAllButtonVisible'>
+      {{strings.assignAll | titlecase}}
+    </button>
+  </div>
+  <div fxHide.gt-xs>
+    <button mat-raised-button color=accent class='node-button' (click)='onAssignedWorkClicked(selectedLevelId)' *ngIf='!!courseId && selectedLevelId && assignedWorkButtonVisible'>
+      {{strings.tasks | titlecase}}
+    </button>
+    <button mat-raised-button color=accent class='node-button' (click)='onQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && quizButtonVisible'>
+      {{strings.quiz | titlecase}}
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]='verticalMenu' fxFlexAlign='end'  *ngIf='!!courseId && selectedLevelId && (viewQuizButtonVisible || assignQuizButtonVisible || assignMaterialButtonVisible || assignAllButtonVisible || topicQuizButtonVisible || subsectionQuizButtonVisible)'>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #verticalMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+      <button mat-menu-item (click)='onSubsectionQuiz(selectedLevelId)' *ngIf='selectedLevelId && subsectionQuizButtonVisible'>
+        {{strings.takeSubsectionQuiz | titlecase}}
+      </button>
+      <button mat-menu-item (click)='onTopicQuiz(courseId, topicId)' *ngIf='!!courseId && !!topicId && topicQuizButtonVisible'>
+        {{strings.takeTopicQuiz | titlecase}}
+      </button>
+      <button  mat-menu-item (click)='onViewQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && viewQuizButtonVisible'>
+        {{strings.viewQuiz | titlecase}}
+      </button>
+      <button  mat-menu-item (click)='onAssignQuiz(selectedLevelId)' *ngIf='selectedLevelId && assignQuizButtonVisible'>
+        {{strings.assignQuiz | titlecase}}
+      </button>
+      <button  mat-menu-item (click)='onAssignMaterial(selectedLevelId)' *ngIf='selectedLevelId && assignMaterialButtonVisible'>
+        {{strings.assignMaterial | titlecase}}
+      </button>
+      <button  mat-menu-item (click)='onAssignAll(selectedLevelId)' *ngIf='selectedLevelId && assignAllButtonVisible'>
+        {{strings.assignAll | titlecase}}
+      </button>
+    </mat-menu>
+  </div>
+</div>

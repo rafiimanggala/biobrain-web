@@ -1,0 +1,20 @@
+@import '~@angular/material/theming';
+
+@mixin glossary-sidenav-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .sidenav-content {
+    background-color: mat-color($accent-palette, A400);
+    color: mat-color($primary-palette, 500);
+  }
+}
+
+@mixin glossary-sidenav-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include glossary-sidenav-color($theme);
+  }
+}

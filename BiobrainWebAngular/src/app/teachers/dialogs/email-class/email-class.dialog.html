@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{strings.emailClass}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <mat-form-field fxFlex="1 1 100%">
+    <textarea
+      matInput
+      name="text"
+      #text="ngModel"
+      placeholder="{{strings.text | titlecase}}"
+      [(ngModel)]="dialogData.text"
+      required
+    ></textarea>
+    <mat-error *ngIf="text.hasError('required')">
+      {{strings.requiredFieldError | titlecase}}
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ (strings.cancel) | uppercase }}
+  </button>
+
+  <button mat-raised-button type='submit' class='auto-form-button' color='warn' (click)='onSubmit()'>
+    {{ (strings.submit) | uppercase }}
+  </button>
+</mat-dialog-actions>

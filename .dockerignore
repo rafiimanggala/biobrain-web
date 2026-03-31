@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+**/node_modules/
+.git
+.gitignore
+.vs
+.vscode
+.idea
+BiobrainWebAngular/
+mobile-src/
+**/*.user
+**/*.suo
+**/Thumbs.db
+**/Desktop.ini
+*.md
+docker-compose*.yml

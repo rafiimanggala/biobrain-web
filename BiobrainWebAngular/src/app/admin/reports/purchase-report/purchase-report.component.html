@@ -1,0 +1,22 @@
+<div class="base-filters" fxLayout="column" fxLayoutAlign="center center">
+
+    <div>{{strings.purchaseReportMessage}}</div>
+
+    <mat-form-field (click)="fromDatepickerClick()">
+        <input matInput [matDatepicker]="fromPicker" [placeholder]="strings.from"
+        [formControl]="fromDate" class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field (click)="toDatepickerClick()">
+        <input matInput [matDatepicker]="toPicker" [placeholder]="strings.to"
+        [formControl]="toDate" class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button class="form-button" color="accent" fxFlexAlign="center" (click)="onGetReport()">
+        {{strings.get.toUpperCase()}}
+    </button>
+</div>

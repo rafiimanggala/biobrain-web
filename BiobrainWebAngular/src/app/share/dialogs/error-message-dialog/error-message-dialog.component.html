@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{strings.error | titlecase}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <div class="text-row">{{dialogData.text}}</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-stroked-button
+    class="auto-bordered-form-button"
+    (click)="onClose()"
+    type="button">
+    {{ strings.close | titlecase }}
+  </button>
+</mat-dialog-actions>

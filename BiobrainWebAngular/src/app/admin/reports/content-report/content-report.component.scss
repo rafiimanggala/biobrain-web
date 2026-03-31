@@ -1,0 +1,12 @@
+@import '../../../styles/variables.scss';
+
+.container{
+    padding: 20px;
+}
+
+.my-drop-zone {
+    border: dotted 3px lightgray;
+    height: 150px;
+    width: 150px;
+    min-width: 150px;
+  }  

@@ -1,0 +1,78 @@
+@import '~@angular/material/theming';
+@import '../../../styles/variables.scss';
+
+@mixin question-result-dialog-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+
+  @font-face {
+    font-family: 'Distro II Bats';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Distro II Bats'), url('../../../../assets/fonts/distro2_bats.woff') format('woff');
+  }
+
+  .correct-question-result-dialog-panel, .narrow-question-result-dialog-panel{
+      position: relative !important;
+      overflow: visible !important;
+      // padding-top: 25px !important;
+
+      .mat-dialog-container{
+        border: 5px solid $green;
+        border-radius: 20px;
+        min-width: 250px;
+      }
+
+      .close-button{
+        position: absolute;
+        right: 20px;
+        top: -24px;
+        border: 3px solid white !important;
+        font-size: 30px;
+        text-align: center;
+        box-shadow: none !important;
+        font-family: 'Distro II Bats';
+        background-color: $green !important;
+        .mat-button-wrapper{
+          margin-right: -3px;
+        }
+      }
+  }
+
+  .incorrect-question-result-dialog-panel, .narrow-question-result-dialog-panel{
+      position: relative !important;
+      overflow: visible !important;
+      // padding-top: 25px !important;
+
+      .mat-dialog-container{
+        border: 5px solid $red;
+        border-radius: 20px;
+      }
+
+      .close-button{
+        position: absolute;
+        right: 20px;
+        top: -24px;
+        border: 3px solid white !important;
+        font-size: 30px;
+        text-align: center;
+        box-shadow: none !important;
+        font-family: 'Distro II Bats';
+        background-color: $red !important;
+        .mat-button-wrapper{
+          margin-right: -3px;
+        }
+      }
+  }
+
+}
+
+@mixin question-result-dialog-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  // @if $color != null {
+    @include question-result-dialog-color($theme);
+  // }
+}

@@ -1,0 +1,20 @@
+<h1 mat-dialog-title class="whats-new-title">
+  {{dialogData.title}}
+  <span class="version-badge">v{{dialogData.version}}</span>
+</h1>
+
+<mat-dialog-content class="whats-new-content">
+  <div [innerHTML]="safeContent"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-raised-button
+    color="accent"
+    class="auto-bordered-form-button"
+    (click)="onGotIt()"
+    type="button"
+  >
+    Got it
+  </button>
+</mat-dialog-actions>

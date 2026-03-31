@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="header-row">
+    
+    <button mat-raised-button color='accent' class='node-button' (click)='onGetUsageReport()'>
+      {{strings.usageReport | titlecase}}
+    </button>
+    <button mat-raised-button color='accent' class='node-button' (click)='onAddTeacherByEmail()'>
+      {{strings.addExisting | titlecase}}
+    </button>
+    
+    <button mat-raised-button color='accent' class='node-button' (click)='onCreateTeacher()'>
+      {{strings.create | titlecase}}
+    </button>
+
+    <!-- <button mat-fab color="accent" (click)="onCreateTeacher()" tabIndex="-1">
+      <mat-icon class="light-content">add</mat-icon>
+    </button> -->
+  </div>
+
+  <app-teacher-grid
+    (editTeacher)="onEditTeacher($event)"
+    (deleteTeacher)="onDeleteTeacher($event)"
+    (editTeacherClasses)='onEditTeacherClasses($event)'
+    (resetPassword)="onResetPassword($event)"
+    (changePassword)="onChangePassword($event)"
+    (changeEmail)="onChangeEmail($event)"
+  >
+  </app-teacher-grid>
+
+</div>

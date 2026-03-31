@@ -1,0 +1,33 @@
+<div class="full-size-no-overflow" fxLayout="column">
+  <div fxLayout="column" class="header-accent-background">
+    <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+      <span class="underlined hand-pointer" (click)="onCourseClick()">{{(subjectName$ | async) | uppercase}}</span>
+      <mat-icon>navigate_next</mat-icon>
+      <span>{{strings.glossary | uppercase}}</span>
+      <ng-container *ngIf="searchLetter$ | async as selectedLetter">
+        <mat-icon>navigate_next</mat-icon>
+        <span>{{selectedLetter | uppercase}}</span>
+      </ng-container>
+    </div>
+  </div>
+  <div class="content full-height-with-scroll" fxLayout="column" fxLayoutGap="16px" fxLayoutAlign="start start">
+    <div *ngIf="searchLetter$ | async as selectedLetter" class="hex-container">
+      <app-hexagone class="hex" [text]="selectedLetter" [color]="hexColor" [textColor]="'#ffffff'"></app-hexagone>
+    </div>
+
+    <div class="" fxLayout="column" fxFlex="1 1 100" fxFlexAlign='stretch' *ngIf="glossary$ | async as terms">
+        <div class="header-align">
+          <ng-container *ngFor="let term of terms; first as isFirst">
+            <ng-container *ngIf='!isExpanded(term); else expansionPanel'>
+              <app-term-header [header]='term.header' (showDescription)='showExpansionPanel(term)' [isFirst]='isFirst' [isDisabled]="term.isDisabled">
+              </app-term-header>
+            </ng-container>
+            <ng-template #expansionPanel>
+              <app-term-expansion-panel [header]='term.header' [learningContent]='term.learningContent' [isFirst]='isFirst'>
+              </app-term-expansion-panel>
+            </ng-template>
+          </ng-container>
+        </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+
+  <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+    <div *ngIf="subjectName" class="underlined hand-pointer" (click)="onCourseClick()">{{subjectName | uppercase}}</div>
+    <!-- <mat-icon *ngIf="subHeader">navigate_next</mat-icon>
+    <span *ngIf="subHeader">{{subHeader | uppercase}}</span> -->
+    <mat-icon>navigate_next</mat-icon>
+    <span>{{pageName | uppercase}}</span>
+  </div>

@@ -1,0 +1,113 @@
+﻿using Biobrain.Application.Accounts.Services;
+using Biobrain.Application.Common.Behaviours;
+using Biobrain.Application.Content.Internal;
+using Biobrain.Application.Content.Services;
+using Biobrain.Application.Content.Services.ContentCacheService;
+using Biobrain.Application.LearningMaterialAssignments.Services;
+using Biobrain.Application.Security;
+using Biobrain.Application.Services;
+using Biobrain.Application.Services.Domain.AccessCode;
+using Biobrain.Application.Services.Domain.AvailableCourses;
+using Biobrain.Application.Services.Domain.ContentTreeService;
+using Biobrain.Application.Services.Domain.QuizAutoMap;
+using Biobrain.Application.Services.Domain.Reports;
+using Biobrain.Application.Services.Domain.TrackSession;
+using Biobrain.Application.Services.Domain.Voucher;
+using Biobrain.Application.Services.Hosted;
+using Biobrain.Application.Services.AI;
+using Biobrain.Application.Services.Auth;
+using Biobrain.Application.Students;
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Biobrain.Application
+{
+    public static class DependencyInjection
+    {
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPermissionCheckBehavior<,>));
+
+            AddValidators(services);
+            AddPermissionChecks(services);
+            RegisterServices(services);
+
+            services.AddTransient<ISecurityService, SecurityService>();
+
+            return services;
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            // Transient
+            services.AddTransient<IContentTreeDataBuilder, ContentTreeDataBuilder>();
+            services.AddTransient<IContentPageDataBuilder, ContentPageDataBuilder>();
+            services.AddTransient<IContentQuizDataBuilder, ContentQuizDataBuilder>();
+            services.AddTransient<IContentGlossaryTermBuilder, ContentGlossaryTermBuilder>();
+            services.AddTransient<ICreateAccountService, CreateAccountService>();
+            services.AddTransient<ILearningMaterialNameService, LearningMaterialNameService>();
+            services.AddTransient<IAssignLearningMaterialService, AssignLearningMaterialService>();
+            services.AddTransient<IContentTreeService, ContentTreeService>();
+            services.AddTransient<IAssignLearningMaterialsNotificationService, AssignLearningMaterialsNotificationService>();
+            services.AddTransient<IContentTreePathResolver, ContentTreePathResolver>();
+            services.AddTransient<ITemplateService, TemplateService>();
+            services.AddTransient<IContentCacheService, ContentCacheService>();
+            services.AddTransient<IRefreshClaimsService, RefreshClaimsService>();
+            services.AddTransient<IAvailableCoursesService, AvailableCoursesService>();
+            services.AddTransient<ITrackSessionService, TrackSessionService>();
+            services.AddTransient<IUsageReportChartService, UsageReportChartService>();
+            services.AddTransient<IUsageReportPdfService, UsageReportPdfService>();
+            services.AddTransient<IAccessCodeService, AccessCodeService>();
+            services.AddTransient<IQuizAutoMapService, QuizAutoMapService>();
+            services.AddTransient<IQuizStreakService, QuizStreakService>();
+            services.AddTransient<IUsageReportService, UsageReportService>();
+            services.AddTransient<IVoucherService, VoucherService>();
+            services.AddTransient<IJoinStudentToSchoolClassWithAccessCodeService, JoinStudentToSchoolClassWithAccessCodeService>();
+            services.AddTransient<ISamlService, SamlService>();
+
+            // AI
+            services.AddScoped<IPerformanceInsightsService, PerformanceInsightsService>();
+            services.AddScoped<IAskBiobrainService, AskBiobrainService>();
+            services.AddScoped<IPracticeSetGeneratorService, PracticeSetGeneratorService>();
+
+            // Hosted
+            services.AddHostedService<TempFileDeleterService>();
+            services.AddHostedService<TempHistoryCleanerService>();
+            services.AddHostedService<FreeTrialCheckerService>();
+            services.AddHostedService<WelcomeEmailService>();
+            services.AddHostedService<WeeklyInsightsHostedService>();
+
+            // Single tone
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+        }
+
+        private static void AddValidators(IServiceCollection services)
+        {
+            foreach (var (@interface, implementation) in GetImplementationsOfGenericInterface(typeof(IValidator<>)))
+                services.AddTransient(@interface, implementation);
+        }
+
+        private static void AddPermissionChecks(IServiceCollection services)
+        {
+            foreach (var (@interface, implementation) in GetImplementationsOfGenericInterface(typeof(IPermissionCheck<>)))
+                services.AddTransient(@interface, implementation);
+        }
+
+        private static IEnumerable<(Type @interface, Type implementation)> GetImplementationsOfGenericInterface(Type baseInterface) => from type in typeof(DependencyInjection).Assembly.GetTypes()
+                                                                                                                                       where !type.IsAbstract && !type.IsGenericTypeDefinition
+                                                                                                                                       from @interface in type.GetInterfaces()
+                                                                                                                                       where @interface.IsGenericType
+                                                                                                                                       where @interface.GetGenericTypeDefinition() == baseInterface
+                                                                                                                                       select (@interface, type);
+    }
+}

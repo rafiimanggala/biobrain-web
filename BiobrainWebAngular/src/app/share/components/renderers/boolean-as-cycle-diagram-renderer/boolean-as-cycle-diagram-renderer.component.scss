@@ -1,0 +1,30 @@
+.wrapper {
+  height: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: center;
+  max-width: 100%;
+}
+
+.status-icon-border {
+  border-radius: 50%;
+
+  width: 21px;
+  height: 21px;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+
+  background-color: white;
+  padding: 1px;
+}
+
+.status-icon {
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+
+  background-color: grey;
+}

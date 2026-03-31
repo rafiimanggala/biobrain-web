@@ -1,0 +1,83 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>
+    {{strings.school | titlecase}} - {{data.settings.schoolName}}
+  </h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field>
+        <input
+          matInput
+          type="number"
+          name="teachersLicensesNumber"
+          [(ngModel)]="data.teachersLicensesNumber"
+          #teachersLicensesNumber="ngModel"
+          placeholder="{{strings.teachersLicensesNumber | titlecase}}"
+          appAutofocus
+          required
+          [appMinNumber]="licenseMinValue"
+          [appMaxNumber]="licenseMaxValue"
+        >
+        <mat-error *ngIf="teachersLicensesNumber.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="teachersLicensesNumber.hasError('lessThanMinValue')">
+          {{strings.mustBeGreaterThanOrEqualTo(licenseMinValue) | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="teachersLicensesNumber.hasError('greaterThenOrEqualToMaxValue')">
+          {{strings.mustBeLessThan(licenseMaxValue) | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input
+          matInput
+          type="number"
+          name="studentsLicensesNumber"
+          [(ngModel)]="data.studentsLicensesNumber"
+          #studentsLicensesNumber="ngModel"
+          placeholder="{{strings.studentsLicensesNumber | titlecase}}"
+          required
+          [appMinNumber]="licenseMinValue"
+          [appMaxNumber]="licenseMaxValue"
+        >
+        <mat-error *ngIf="studentsLicensesNumber.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="studentsLicensesNumber.hasError('lessThanMinValue')">
+          {{strings.mustBeGreaterThanOrEqualTo(licenseMinValue) | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="studentsLicensesNumber.hasError('greaterThenOrEqualToMaxValue')">
+          {{strings.mustBeLessThan(licenseMaxValue) | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button
+      mat-stroked-button
+      class="auto-bordered-form-button"
+      color="accent"
+      (click)="onClose()"
+      type="button"
+    >
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button
+      mat-raised-button
+      class="auto-form-button"
+      color="accent"
+      (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid"
+      type="submit"
+    >
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

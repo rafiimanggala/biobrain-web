@@ -1,0 +1,32 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{data.title | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-label>{{data.title | titlecase}}</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" [(ngModel)]='data.date' name='endDatePicker' #endDateModel="ngModel" readonly
+            (click)="endDatePicker.open()">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker disabled="false"></mat-datepicker>
+  
+        <mat-error *ngIf="endDateModel.errors?.required">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field> 
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()" type="button">
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid" type="submit">
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

@@ -1,0 +1,20 @@
+@import '../../../styles/variables.scss';
+
+.bee-container{
+    width: 100%;
+    position: relative;
+}
+
+.image{
+    margin: auto;
+    height: 164px;
+    width: 299px;
+}
+
+.bee-canvas{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 164px;
+    width: 299px;
+}

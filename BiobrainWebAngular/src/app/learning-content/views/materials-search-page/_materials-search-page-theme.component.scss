@@ -1,0 +1,26 @@
+@import '~@angular/material/theming';
+
+@mixin materials-search-page-color($theme) {
+  $color-config: mat-get-color-config($theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .materials-search-page {
+    background-color: mat-color($accent-palette, A400);
+
+    .search-panel {
+    }
+
+    .search-results {
+
+    }
+  }
+}
+
+@mixin materials-search-page-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include materials-search-page-color($color);
+  }
+}

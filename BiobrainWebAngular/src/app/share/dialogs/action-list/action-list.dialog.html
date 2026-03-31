@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{dialogData.title | titlecase}}</h1>
+
+<mat-dialog-content fxLayout="column">
+  <div class="confirm-text">{{dialogData.text}}</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button *ngFor="let dialogAction of dialogData.actions" mat-raised-button type='submit' class='auto-form-button' color='primary' (click)='onSubmit(dialogAction)'>
+    {{ dialogAction.text | uppercase }}
+  </button>
+</mat-dialog-actions>

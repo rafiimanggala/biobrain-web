@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="header-row" fxLayout="row" fxLayoutGap="10px">
+    <button mat-raised-button color='accent' class='node-button' (click)='onGetVouchersReport()'>
+      {{strings.vouchersReport | titlecase}}
+    </button>
+    <button mat-raised-button color='accent' class='node-button' (click)='downloadAccessCodes()'>
+      {{strings.downloadVouchers | uppercase}}
+    </button>
+    <button mat-raised-button color='accent' class='node-button' (click)='onCreateVoucher()'>
+      {{strings.create | titlecase}}
+    </button>
+  </div>
+
+  <ag-grid-angular
+  #schoolsGrid
+  class="ag-theme-alpine grid-item ag-grid-custom-admin-area"
+  [rowData]="vouchers"
+  [paginationAutoPageSize]="true"
+  [paginationPageSize]="20"
+  [pagination]="true"
+  (gridReady)="onGridReady($event)"
+  (modelUpdated)="onModelUpdated()"
+  [enableCellTextSelection]="true"
+  [rowSelection]="{mode: 'multiRow'}"
+>
+  <ag-grid-column [appContextMenu]="menu" [hide]="true">
+    <mat-menu #menu="matMenu">
+      <ng-template matMenuContent let-item="data">
+        <button mat-menu-item (click)="onDelete(item.schoolId)">
+          {{ strings.delete | titlecase }}
+        </button>
+      </ng-template>
+    </mat-menu>
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'note'"
+    [headerName]="strings.note | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'code'"
+    [headerName]="strings.voucher | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'totalAmount'"
+    [headerName]="strings.amount | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+    [valueFormatter]='formatMoney'
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'amountUsed'"
+    [headerName]="strings.amountUsed | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+    [valueFormatter]='formatMoney'
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'expiryDateUtc'"
+    [valueFormatter]='formatDate'
+    [headerName]="strings.contentExpiryDate | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+  >
+  </ag-grid-column>
+
+  <ag-grid-column
+    [field]="'redeemExpiryDateUtc'"
+    [valueFormatter]='formatDate'
+    [headerName]="strings.redeemExpiryDate | titlecase"
+    [sortable]="true"
+    [filter]="'agTextColumnFilter'"
+    [filterParams]="nameFilterParams"
+    [comparator]="strComparator"
+  >
+  </ag-grid-column>
+</ag-grid-angular>
+
+</div>

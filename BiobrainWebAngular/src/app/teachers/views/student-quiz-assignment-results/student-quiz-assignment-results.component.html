@@ -1,0 +1,23 @@
+<div class="container-row full-size-no-overflow">
+  <ag-grid-angular
+    #schoolsGrid
+    class="ag-theme-alpine grid-item"
+    [pagination]="false"
+    (gridReady)="onGridReady($event)"
+    (modelUpdated)="onModelUpdated()"
+    [suppressRowTransform]="true"
+    headerHeight="75">
+
+    <!-- [rowClassRules]="rowClassRules" -->
+  </ag-grid-angular>
+
+  <div class="footer-row">
+    <div class="footer-column footer-column-colored">
+      <span>
+        {{ strings.totalQuizzes | uppercase }} =
+        {{ (store.item$ | async)?.results?.length }}
+      </span>
+    </div>
+  </div>
+</div>
+

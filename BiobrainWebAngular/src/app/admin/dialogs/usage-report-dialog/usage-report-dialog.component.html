@@ -1,0 +1,36 @@
+<form role='form' #dialogForm='ngForm' name='dialogForm'>
+  <h2 class='dialog-header' mat-dialog-title>{{ strings.usageReport | titlecase }}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout='column' class='dialog-content'>
+      <mat-form-field class="report-field" (click)="fromDatepickerClick()">
+        <input matInput [matDatepicker]="fromPicker" [placeholder]="strings.from" [formControl]="fromDate"
+          class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="report-field" (click)="toDatepickerClick()">
+        <input matInput [matDatepicker]="toPicker" [placeholder]="strings.to" [formControl]="toDate"
+          class="datepicker-input">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout='row' fxLayoutGap='8px' align='end'>
+    <div class='flex-separator'></div>
+
+    <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button type='submit' class='auto-form-button' color='accent' (click)='onSubmit(dialogForm)'
+      [disabled]='!dialogForm.valid'>
+      {{strings.get | uppercase}}
+    </button>
+  </div>
+
+</form>

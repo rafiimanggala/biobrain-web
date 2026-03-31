@@ -1,0 +1,12 @@
+<ng-container
+  *ngIf="params.data && params.colDef.cellRendererParams.contextMenu.menu"
+>
+  <button
+    type="button"
+    mat-icon-button
+    [matMenuTriggerFor]="params.colDef.cellRendererParams.contextMenu.menu"
+    [matMenuTriggerData]="{ data: params.data }"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</ng-container>

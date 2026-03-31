@@ -1,0 +1,36 @@
+@import '../../../styles/variables.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+}
+
+.greetingPanel {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: $nunito;
+}
+
+.icons-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.school-name{  
+  font-size: 24px;
+  color: $primary;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: $nunito;
+}

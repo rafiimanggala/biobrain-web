@@ -1,0 +1,55 @@
+@import '../../../styles/variables.scss';
+
+.sidenav-container {
+  height: 100%;
+  width: $sidenav_width;
+  padding: 20px;
+  font-weight: bold;
+}
+
+.with-icon {
+  vertical-align: center;
+}
+
+mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  font-weight: bold;
+}
+
+.not-bold {
+  font-weight: 400;
+}
+
+.action-button {
+  font-weight: bold;
+}
+
+.header-label{
+  font-family: $nunito;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.subheader-label{
+  font-family: $nunito;
+  font-weight: 800;
+  font-size: 20px;
+  text-align: center;
+}
+
+.relevant-questions-box{
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.relevant-questions-text{
+  color: #b0b0b0;
+  text-align: center;
+  font-weight: 400;
+  font-size: 18px;
+  font-family: 'Nunito', sans-serif;
+}

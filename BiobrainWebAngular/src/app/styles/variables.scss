@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'Distro II Bats';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Distro II Bats'), url('../../assets/fonts/distro2_bats.woff') format('woff');
+  }
+
+  $roboto: Roboto, 'Helvetica Neue', sans-serif;
+  $nunito: 'Nunito', sans-serif;
+  $distro: 'Distro II Bats';
+
+// Media queries.
+$xsmall: 'max-width: 600px';
+$small: 'max-width: 960px';
+
+// sidenav
+$sidenav_width: 340px;
+
+// Color palette.
+$accent: #00a1df;
+$primary: #004876;
+$light_primary: #B2DFDB;
+$background: #fafafa;
+$accent_background: #D2EBF8;
+$darkBackground: #EDEDED;
+$gray: #696969;
+$pale-gray: #dbdbdb;
+$white: #fafafa;
+$red: #e30918;
+$green: #09552a;
+
+// Font-size
+$form-label: 12pt;
+$dialog-header: 32px;
+
+// Temp colors for subjects
+$biology_background: #00A0DD;
+$biology_light_color: white;
+$biology_dark_color: #006193;
+
+$chemistry_background: #22A23E;
+$chemistry_light_color: white;
+$chemistry_dark_color: #0E602D;
+
+$physics_background: #287A86;
+$physics_light_color: white;
+$physics_dark_color: #224851;
+
+$forensics_background: #a20e3b;
+$forensics_light_color: white;
+$forensics_dark_color: #4A162E;
+
+$psychology_background: #9f73b2;
+$psychology_light_color: white;
+$psychology_dark_color: #41235e;
+
+$marine_background: #009490;
+$marine_light_color: white;
+$marine_dark_color: #004e59;

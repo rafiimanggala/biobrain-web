@@ -1,0 +1,70 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>
+    {{ strings.school | titlecase }} - {{ data.settings.schoolName }}
+  </h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+
+      <mat-form-field>
+        <mat-chip-list #adminsChipList>
+          <mat-chip
+            *ngFor="let teacher of teacherMultipleSelectStore.selectedItems$ | async"
+            removable="true"
+            (removed)="teacherMultipleSelectStore.removeValue(teacher.teacherId)"
+          >
+            <span>{{ teacher.fullName }}</span>
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+
+          <input
+            [placeholder]="strings.admins | titlecase"
+            #adminsInput
+            [matAutocomplete]="adminsAuto"
+            [matChipInputFor]="adminsChipList"
+            [formControl]="adminsCtrl"
+            matChipInputAddOnBlur="false"
+            (matChipInputTokenEnd)="resetAdminsInput($event)"
+            (focusout)="clearAdminsInput()"
+          />
+        </mat-chip-list>
+
+        <mat-autocomplete
+          #adminsAuto="matAutocomplete"
+          (optionSelected)="onTeacherSelected($event)"
+        >
+          <mat-option *ngFor="let item of teacherListItemsStore.availableListItems$ | async" [value]="item.value">
+            <span>{{ item.text }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button
+      mat-stroked-button
+      class="auto-bordered-form-button"
+      color="accent"
+      (click)="onClose()"
+      type="button"
+    >
+      {{ strings.cancel | uppercase }}
+    </button>
+
+    <button
+      mat-raised-button
+      class="auto-form-button"
+      color="accent"
+      (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid"
+      type="submit"
+    >
+      {{ strings.save | uppercase }}
+    </button>
+  </div>
+
+</form>

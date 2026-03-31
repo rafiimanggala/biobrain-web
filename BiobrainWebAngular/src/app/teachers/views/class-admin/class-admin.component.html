@@ -1,0 +1,12 @@
+<div class="full-size-no-overflow class-admin-page" fxLayout="column">
+  <div class="class-admin-header" >
+    <span class="class-admin-header-label" *ngIf="getStudentsCount() | async as total">
+      {{strings.totalStudents + ": "}}{{total}}
+    </span>
+  </div>
+  <div class="class-admin-body full-height-with-scroll">
+    <ag-grid-angular class="ag-theme-alpine grid-item ag-grid-with-deviders" [pagination]="false" (gridReady)="onGridReady($event)"
+      (modelUpdated)="onModelUpdated()" [headerHeight]="0" [frameworkComponents]="components">
+    </ag-grid-angular>
+  </div>
+</div>

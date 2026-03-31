@@ -1,0 +1,41 @@
+@import '../../../styles/variables';
+
+.content-container {
+  padding: 48px 20px;
+}
+
+.path {
+  // font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
+
+.quiz-result-content {
+  border-top-right-radius: 20px;
+  padding: 0px 20px;
+}
+
+.answer {
+  padding: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.answer-header {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.answer-text {
+  color: $gray;
+}
+
+.hex {
+  width: 60px !important;
+  height: 60px !important;
+  display: block;
+  box-sizing: border-box;
+}
+
+.accent-background-container{
+  padding: 20px;
+}

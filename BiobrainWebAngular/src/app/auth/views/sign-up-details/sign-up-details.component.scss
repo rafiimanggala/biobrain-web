@@ -1,0 +1,36 @@
+@import '../../../styles/variables.scss';
+
+.main-card {
+  margin: auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.header-container {
+  width: 100%;
+}
+
+.header {
+  font-size: $dialog-header;
+  color: $primary;
+  font-weight: bold;
+  line-height: 30px;
+}
+
+.sub-label {
+  font-size: 8pt;
+  color: $gray;
+}
+
+.toggle-label {
+  font-weight: bold !important;
+  color: #696969;
+  font-size: 12pt;
+  font-family: "Nunito", sans-serif;
+}
+
+.optional-toggle-label {
+  color: #696969;
+  font-size: 12pt;
+  font-family: "Nunito", sans-serif;
+}

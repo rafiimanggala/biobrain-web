@@ -1,0 +1,25 @@
+<div class="container" fxLayout="column" fxLayoutGap="10px">
+    <div *ngIf="html" class="content" [innerHtml]="html"></div>
+    <div *ngIf="iframe_html" class="video">
+        <div calss="video-container"  [innerHtml]="iframe_html" style="height: 360px;"
+            *ngIf="content.videoUrl && content.videoUrl.length > 0" fxLayout="column"></div>
+    </div>
+    <div *ngIf="html" fxLayout="column" fxLayoutGap="10">
+        <div>{{strings.couldntFind}}</div>
+        <mat-form-field fxFlex="1 1 100%" floatLabel="never">
+            <textarea
+              matInput
+              name="questionField"
+              #questionField="ngModel"
+              placeholder="{{strings.typeYourQuestion}}"
+              [(ngModel)]="question"
+            ></textarea>
+            <mat-error *ngIf="questionField.hasError('required')">
+              {{strings.requiredFieldError | titlecase}}
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color='accent' class='node-button' (click)='onSendQuestion()' fxFlexAlign="center">
+            {{strings.submitQuestion | titlecase}}
+          </button>
+    </div>
+</div>

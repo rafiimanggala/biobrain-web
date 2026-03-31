@@ -1,0 +1,334 @@
+
+@import './colors.scss';
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+@import './app/share/components/toolbar/_toolbar-theme.component.scss';
+@import './app/teachers/views/class-results/_class-results-theme.component.scss';
+@import './app/teachers/views/student-quiz-assignment-results/_student-quiz-assignment-results-theme.component.scss';
+@import './app/teachers/views/quiz-assignment-result/_quiz-assignment-result-theme.component.scss';
+@import './app/learning-content/views/material/material-page-theme.component';
+@import './app/learning-content/views/materials-search-page/materials-search-page-theme.component';
+@import './app/learning-content/components/learning-material-search-result/learning-material-search-result-theme';
+@import './app/learning-content/components/bookmarks/bookmarks-theme';
+@import './app/styles/ag-grid-custom-styles/_ag-grid-custom-styles-theme.scss';
+@import './app/learning-content/views/glossary/_glossary-theme.component.scss';
+@import './app/styles/_base-styles-theme.scss';
+@import './app/learning-content/components/term-header/_term-header-theme.scss';
+@import './app/learning-content/components/term-expansion-panel/_term-expansion-panel-theme.scss';
+@import './app/learning-content/components/glossary-side-nav/_glossary-side-nav-theme.scss';
+@import './app/learning-content/components/tree-sidenav/_tree-sidenav-theme.scss';
+@import './app/learning-content/views/quiz/quiz-theme';
+@import './app/share/components/quiz-result-history-sidenav/_quiz-result-history-sidenav-theme.scss';
+@import './app/share/components/quiz-result-sidenav/quiz-result-sidenav-theme.scss';
+@import './app/share/components/quiz-overview-sidenav/quiz-overview-sidenav-theme.scss';
+@import './app/share/views/quiz-result-history/_quiz-result-history-theme';
+
+@import './app/learning-content/dialogs/glossary-term-dialog/_glossary-dialog-theme.component.scss';
+@import './app/learning-content/dialogs/question-result-dialog/_question-result-dialog-theme.component.scss';
+@import './app/learning-content/dialogs/hint-dialog/_hint-dialog-theme.component.scss';
+@import './app/teachers/views/class-admin/class-admin-theme.component';
+@import './app/learning-content/views/quiz-result/_quiz-result-theme.scss';
+@import './app/learning-content/views/quiz-overview/_quiz-overview-theme.scss';
+@import './app/learning-content/components/learning-material-toolbar/_learning-material-toolbar-theme.scss';
+
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$BiobrainWebAngular-primary: mat-palette($biology_primary);
+$BiobrainWebAngular-accent: mat-palette($biology_accent);
+
+// The warn palette is optional (defaults to red).
+$BiobrainWebAngular-warn: mat-palette($mat-red);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$BiobrainWebAngular-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngular-primary,
+    accent: $BiobrainWebAngular-accent,
+    warn: $BiobrainWebAngular-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($BiobrainWebAngular-theme);
+
+
+// Emit theme-dependent styles for custom components
+@include toolbar-component-theme($BiobrainWebAngular-theme);
+@include class-results-theme($BiobrainWebAngular-theme);
+@include student-quiz-assignment-results-theme($BiobrainWebAngular-theme);
+@include quiz-assignment-result-theme($BiobrainWebAngular-theme);
+@include learning-material-theme($BiobrainWebAngular-theme);
+@include materials-search-page-theme($BiobrainWebAngular-theme);
+@include learning-material-search-result-theme($BiobrainWebAngular-theme);
+@include bookmarks-theme($BiobrainWebAngular-theme);
+@include ag-grid-custom-styles-theme($BiobrainWebAngular-theme);
+@include glossary-theme($BiobrainWebAngular-theme);
+@include base-styles-theme($BiobrainWebAngular-theme);
+@include term-header-theme($BiobrainWebAngular-theme);
+@include term-expansion-theme($BiobrainWebAngular-theme);
+@include glossary-sidenav-theme($BiobrainWebAngular-theme);
+@include tree-sidenav-theme($BiobrainWebAngular-theme);
+@include quiz-theme($BiobrainWebAngular-theme);
+@include quiz-result-sidenav-theme($BiobrainWebAngular-theme);
+@include quiz-overview-sidenav-theme($BiobrainWebAngular-theme);
+@include quiz-result-history-sidenav-theme($BiobrainWebAngular-theme);
+@include quiz-result-history-theme($BiobrainWebAngular-theme);
+@include quiz-result-theme($BiobrainWebAngular-theme);
+@include quiz-overview-theme($BiobrainWebAngular-theme);
+@include learning-material-toolbar-theme($BiobrainWebAngular-theme);
+@include class-admin-theme($BiobrainWebAngular-theme);
+@include glossary-dialog-theme($BiobrainWebAngular-theme);
+@include question-result-dialog-theme($BiobrainWebAngular-theme);
+@include hint-dialog-theme($BiobrainWebAngular-theme);
+
+
+// 'chemistry' theme
+$BiobrainWebAngularChemistry-primary: mat-palette($chemistry_primary);
+$BiobrainWebAngularChemistry-accent: mat-palette($chemistry_accent);
+$BiobrainWebAngularChemistry-warn: mat-palette($mat-red);
+
+$BiobrainWebAngularChemistry-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngularChemistry-primary,
+    accent: $BiobrainWebAngularChemistry-accent,
+    warn: $BiobrainWebAngularChemistry-warn,
+  )
+));
+
+.chemistry-theme {
+  @include angular-material-color($BiobrainWebAngularChemistry-theme);
+
+  @include toolbar-component-theme($BiobrainWebAngularChemistry-theme);
+  @include class-results-theme($BiobrainWebAngularChemistry-theme);
+  @include student-quiz-assignment-results-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-assignment-result-theme($BiobrainWebAngularChemistry-theme);
+  @include learning-material-theme($BiobrainWebAngularChemistry-theme);
+  @include materials-search-page-theme($BiobrainWebAngularChemistry-theme);
+  @include learning-material-search-result-theme($BiobrainWebAngularChemistry-theme);
+  @include bookmarks-theme($BiobrainWebAngularChemistry-theme);
+  @include ag-grid-custom-styles-theme($BiobrainWebAngularChemistry-theme);
+  @include glossary-theme($BiobrainWebAngularChemistry-theme);
+  @include base-styles-theme($BiobrainWebAngularChemistry-theme);
+  @include term-header-theme($BiobrainWebAngularChemistry-theme);
+  @include term-expansion-theme($BiobrainWebAngularChemistry-theme);
+  @include glossary-sidenav-theme($BiobrainWebAngularChemistry-theme);
+  @include tree-sidenav-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-result-history-sidenav-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-result-sidenav-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-overview-sidenav-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-result-history-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-result-theme($BiobrainWebAngularChemistry-theme);
+  @include quiz-overview-theme($BiobrainWebAngularChemistry-theme);
+  @include learning-material-toolbar-theme($BiobrainWebAngularChemistry-theme);
+  @include class-admin-theme($BiobrainWebAngularChemistry-theme);
+  @include glossary-dialog-theme($BiobrainWebAngularChemistry-theme);
+  @include question-result-dialog-theme($BiobrainWebAngularChemistry-theme);
+  @include hint-dialog-theme($BiobrainWebAngularChemistry-theme);
+
+}
+
+
+// 'physics' theme
+$BiobrainWebAngularPhysics-primary: mat-palette($physics_primary);
+$BiobrainWebAngularPhysics-accent: mat-palette($physics_accent);
+$BiobrainWebAngularPhysics-warn: mat-palette($mat-red);
+
+$BiobrainWebAngularPhysics-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngularPhysics-primary,
+    accent: $BiobrainWebAngularPhysics-accent,
+    warn: $BiobrainWebAngularPhysics-warn,
+  )
+));
+
+.physics-theme {
+  @include angular-material-color($BiobrainWebAngularPhysics-theme);
+
+  @include toolbar-component-theme($BiobrainWebAngularPhysics-theme);
+  @include class-results-theme($BiobrainWebAngularPhysics-theme);
+  @include student-quiz-assignment-results-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-assignment-result-theme($BiobrainWebAngularPhysics-theme);
+  @include learning-material-theme($BiobrainWebAngularPhysics-theme);
+  @include materials-search-page-theme($BiobrainWebAngularPhysics-theme);
+  @include learning-material-search-result-theme($BiobrainWebAngularPhysics-theme);
+  @include bookmarks-theme($BiobrainWebAngularPhysics-theme);
+  @include ag-grid-custom-styles-theme($BiobrainWebAngularPhysics-theme);
+  @include glossary-theme($BiobrainWebAngularPhysics-theme);
+  @include base-styles-theme($BiobrainWebAngularPhysics-theme);
+  @include term-header-theme($BiobrainWebAngularPhysics-theme);
+  @include term-expansion-theme($BiobrainWebAngularPhysics-theme);
+  @include glossary-sidenav-theme($BiobrainWebAngularPhysics-theme);
+  @include tree-sidenav-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-result-sidenav-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-overview-sidenav-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-result-history-sidenav-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-result-history-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-result-theme($BiobrainWebAngularPhysics-theme);
+  @include quiz-overview-theme($BiobrainWebAngularPhysics-theme);
+  @include learning-material-toolbar-theme($BiobrainWebAngularPhysics-theme);
+  @include class-admin-theme($BiobrainWebAngularPhysics-theme);
+  @include glossary-dialog-theme($BiobrainWebAngularPhysics-theme);
+  @include question-result-dialog-theme($BiobrainWebAngularPhysics-theme);
+  @include hint-dialog-theme($BiobrainWebAngularPhysics-theme);
+}
+
+// 'forensics' theme
+$BiobrainWebAngularForensics-primary: mat-palette($forensics_primary);
+$BiobrainWebAngularForensics-accent: mat-palette($forensics_accent);
+$BiobrainWebAngularForensics-warn: mat-palette($mat-red);
+
+$BiobrainWebAngularForensics-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngularForensics-primary,
+    accent: $BiobrainWebAngularForensics-accent,
+    warn: $BiobrainWebAngularForensics-warn,
+  )
+));
+
+.forensics-theme {
+  @include angular-material-color($BiobrainWebAngularForensics-theme);
+
+  @include toolbar-component-theme($BiobrainWebAngularForensics-theme);
+  @include class-results-theme($BiobrainWebAngularForensics-theme);
+  @include student-quiz-assignment-results-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-assignment-result-theme($BiobrainWebAngularForensics-theme);
+  @include learning-material-theme($BiobrainWebAngularForensics-theme);
+  @include materials-search-page-theme($BiobrainWebAngularForensics-theme);
+  @include learning-material-search-result-theme($BiobrainWebAngularForensics-theme);
+  @include bookmarks-theme($BiobrainWebAngularForensics-theme);
+  @include ag-grid-custom-styles-theme($BiobrainWebAngularForensics-theme);
+  @include glossary-theme($BiobrainWebAngularForensics-theme);
+  @include base-styles-theme($BiobrainWebAngularForensics-theme);
+  @include term-header-theme($BiobrainWebAngularForensics-theme);
+  @include term-expansion-theme($BiobrainWebAngularForensics-theme);
+  @include glossary-sidenav-theme($BiobrainWebAngularForensics-theme);
+  @include tree-sidenav-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-result-sidenav-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-overview-sidenav-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-result-history-sidenav-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-result-history-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-result-theme($BiobrainWebAngularForensics-theme);
+  @include quiz-overview-theme($BiobrainWebAngularForensics-theme);
+  @include learning-material-toolbar-theme($BiobrainWebAngularForensics-theme);
+  @include class-admin-theme($BiobrainWebAngularForensics-theme);
+  @include glossary-dialog-theme($BiobrainWebAngularForensics-theme);
+  @include question-result-dialog-theme($BiobrainWebAngularForensics-theme);
+  @include hint-dialog-theme($BiobrainWebAngularForensics-theme);
+}
+
+// 'psychology' theme
+$BiobrainWebAngularPsychology-primary: mat-palette($psychology_primary);
+$BiobrainWebAngularPsychology-accent: mat-palette($psychology_accent);
+$BiobrainWebAngularPsychology-warn: mat-palette($mat-red);
+
+$BiobrainWebAngularPsychology-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngularPsychology-primary,
+    accent: $BiobrainWebAngularPsychology-accent,
+    warn: $BiobrainWebAngularPsychology-warn,
+  )
+));
+
+.psychology-theme {
+  @include angular-material-color($BiobrainWebAngularPsychology-theme);
+
+  @include toolbar-component-theme($BiobrainWebAngularPsychology-theme);
+  @include class-results-theme($BiobrainWebAngularPsychology-theme);
+  @include student-quiz-assignment-results-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-assignment-result-theme($BiobrainWebAngularPsychology-theme);
+  @include learning-material-theme($BiobrainWebAngularPsychology-theme);
+  @include materials-search-page-theme($BiobrainWebAngularPsychology-theme);
+  @include learning-material-search-result-theme($BiobrainWebAngularPsychology-theme);
+  @include bookmarks-theme($BiobrainWebAngularPsychology-theme);
+  @include ag-grid-custom-styles-theme($BiobrainWebAngularPsychology-theme);
+  @include glossary-theme($BiobrainWebAngularPsychology-theme);
+  @include base-styles-theme($BiobrainWebAngularPsychology-theme);
+  @include term-header-theme($BiobrainWebAngularPsychology-theme);
+  @include term-expansion-theme($BiobrainWebAngularPsychology-theme);
+  @include glossary-sidenav-theme($BiobrainWebAngularPsychology-theme);
+  @include tree-sidenav-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-result-sidenav-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-overview-sidenav-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-result-history-sidenav-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-result-history-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-result-theme($BiobrainWebAngularPsychology-theme);
+  @include quiz-overview-theme($BiobrainWebAngularPsychology-theme);
+  @include learning-material-toolbar-theme($BiobrainWebAngularPsychology-theme);
+  @include class-admin-theme($BiobrainWebAngularPsychology-theme);
+  @include glossary-dialog-theme($BiobrainWebAngularPsychology-theme);
+  @include question-result-dialog-theme($BiobrainWebAngularPsychology-theme);
+  @include hint-dialog-theme($BiobrainWebAngularPsychology-theme);
+}
+
+// 'marine' theme
+$BiobrainWebAngularMarine-primary: mat-palette($marine_primary);
+$BiobrainWebAngularMarine-accent: mat-palette($marine_accent);
+$BiobrainWebAngularMarine-warn: mat-palette($mat-red);
+
+$BiobrainWebAngularMarine-theme: mat-light-theme((
+  color: (
+    primary: $BiobrainWebAngularMarine-primary,
+    accent: $BiobrainWebAngularMarine-accent,
+    warn: $BiobrainWebAngularMarine-warn,
+  )
+));
+
+.marine-theme {
+  @include angular-material-color($BiobrainWebAngularMarine-theme);
+
+  @include toolbar-component-theme($BiobrainWebAngularMarine-theme);
+  @include class-results-theme($BiobrainWebAngularMarine-theme);
+  @include student-quiz-assignment-results-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-assignment-result-theme($BiobrainWebAngularMarine-theme);
+  @include learning-material-theme($BiobrainWebAngularMarine-theme);
+  @include materials-search-page-theme($BiobrainWebAngularMarine-theme);
+  @include learning-material-search-result-theme($BiobrainWebAngularMarine-theme);
+  @include bookmarks-theme($BiobrainWebAngularMarine-theme);
+  @include ag-grid-custom-styles-theme($BiobrainWebAngularMarine-theme);
+  @include glossary-theme($BiobrainWebAngularMarine-theme);
+  @include base-styles-theme($BiobrainWebAngularMarine-theme);
+  @include term-header-theme($BiobrainWebAngularMarine-theme);
+  @include term-expansion-theme($BiobrainWebAngularMarine-theme);
+  @include glossary-sidenav-theme($BiobrainWebAngularMarine-theme);
+  @include tree-sidenav-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-result-sidenav-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-overview-sidenav-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-result-history-sidenav-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-result-history-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-result-theme($BiobrainWebAngularMarine-theme);
+  @include quiz-overview-theme($BiobrainWebAngularMarine-theme);
+  @include learning-material-toolbar-theme($BiobrainWebAngularMarine-theme);
+  @include class-admin-theme($BiobrainWebAngularMarine-theme);
+  @include glossary-dialog-theme($BiobrainWebAngularMarine-theme);
+  @include question-result-dialog-theme($BiobrainWebAngularMarine-theme);
+  @include hint-dialog-theme($BiobrainWebAngularMarine-theme);
+}
+
+
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import 'app/styles/base-styles.scss';
+@import 'app/styles/ag-grid-custom-styles/ag-grid-custom-styles';
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';

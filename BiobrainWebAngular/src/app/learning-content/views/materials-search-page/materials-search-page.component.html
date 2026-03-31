@@ -1,0 +1,20 @@
+<div class='materials-search-page'>
+  <div class='search-panel'>
+    <div style='flex: 0 1 30%'></div>
+    <mat-form-field class='search-field' floatLabel='never'>
+      <span matPrefix>
+          <mat-icon>search</mat-icon>
+      </span>
+      <input [formControl]='searchControl'
+             matInput
+             name='search'
+             placeholder='{{strings.search}}' tabindex='-1' />
+    </mat-form-field>
+    <div style='flex: 0 1 30%'></div>
+  </div>
+  <div class='search-results'>
+    <app-learning-material-search-result
+      *ngFor='let searchResult of searchResults$ | async'
+      [searchResult]='searchResult'></app-learning-material-search-result>
+  </div>
+</div>

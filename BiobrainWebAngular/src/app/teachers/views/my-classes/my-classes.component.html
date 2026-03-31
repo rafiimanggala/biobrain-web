@@ -1,0 +1,25 @@
+<div class="container full-size-no-overflow">
+  <div class="greetingPanel primary-color-container" *ngIf='currentUserService.userChanges$ | async as user'>
+    <p>{{strings.hi | titlecase}} {{user.displayName}}</p>
+    <p>{{strings.whatAreYouGoingToStudy}}</p>
+  </div>
+
+  <div *ngIf="schoolClassesGroups$ | async as courseGroups">
+    <div *ngFor="let group of courseGroups" style="margin-bottom: 10px;">
+      <div class="school-name" *ngIf="group.schoolName && courseGroups.length > 1">{{group.schoolName}}</div>
+      <div class='icons-container'>
+        <div *ngFor='let course of group.courses'>
+          <app-teacher-class-icon
+          [schoolClassId]="course.classId"
+          [schoolClassYear]="course.classYear"
+          [schoolClassName]="course.className"
+          [courseId]="course.courseId"
+          [curriculumCode]="course.course.curriculumCode"
+          [subjectCode]="course.course.subjectCode"
+          (schoolClassSelected)='onSchoolClassSelect(course.classId, course.courseId, group)'>
+        </app-teacher-class-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

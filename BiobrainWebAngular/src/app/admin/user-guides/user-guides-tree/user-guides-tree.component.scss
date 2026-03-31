@@ -1,0 +1,72 @@
+@import '../../../styles/variables.scss';
+
+.container{
+  padding: 20px;
+}
+.invisible{
+    display: none;
+}
+
+.selected{
+  font-weight: 600;
+}
+
+.tree{
+  background:none;
+}
+.tree ul,
+.tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+.tree li {
+  padding-inline-start: 0px;
+}
+.tree ul {
+  padding-inline-start: 30px;
+}
+
+.expand-toggle{
+  height: 100%;
+  vertical-align: middle;
+}
+
+.action-button{
+  display: none;
+  height: 100%;
+  vertical-align: middle;
+  text-decoration: none !important;
+}
+
+.mat-tree-node .action-button{
+  display: none;
+}
+
+.mat-tree-node:hover > .action-button{
+  display: inline-block;
+}
+
+.sub-node{
+  margin-left: 20px;
+}
+
+.mat-expansion-panel{
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.excluded{
+  text-decoration: line-through;
+  color: $gray;
+}
+
+.full-size-no-overflow{  
+  height: calc(100% - 40px);
+}
+
+.full-height-with-scroll{
+  direction: ltr;
+  scrollbar-width: thin;
+}

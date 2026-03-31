@@ -1,0 +1,32 @@
+
+
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+    <div *ngIf="selectedItem && content" class="container" fxLayout="column" fxLayoutGap="10px">
+
+        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+            <mat-form-field fxFlex="1 1 100%" (focusout)="initPlayer()" floatLabel="never">
+                <input matInput type="url" name="videoLink" #videoLink="ngModel" [(ngModel)]="content.videoUrl"
+                    pattern="https?://vimeo.com.+" url placeholder="{{strings.video}}">
+                <mat-error *ngIf="videoLink.hasError('pattern')">{{strings.videoUrlError}}</mat-error>
+
+                <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="initPlayer()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </mat-form-field>
+            <div id="video-container" calss="video-container" [innerHtml]="iframe_html"
+                *ngIf="content.videoUrl && content.videoUrl.length > 0" fxLayout="column"></div>
+        </div>
+
+        <div >
+            <div *ngIf="content" [ngxSummernote]="summernoteService.materialsConfig" id="snEditor" #snEditor
+                name="snEditor" [(ngModel)]="content.htmlText" style="display: block;"></div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end">
+            <button mat-raised-button class="auto-form-button" color="accent" (click)="saveContent()"
+                [disabled]="!dialogForm.valid" type="submit">
+                {{strings.save | uppercase}}
+            </button>
+        </div>
+    </div>
+</form>

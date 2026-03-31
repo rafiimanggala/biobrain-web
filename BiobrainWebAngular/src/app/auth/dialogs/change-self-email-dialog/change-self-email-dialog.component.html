@@ -1,0 +1,46 @@
+<form role='form' #dialogForm='ngForm' name='dialogForm'>
+  <h2 class='dialog-header' mat-dialog-title>{{strings.changeEmail | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout='column' class='dialog-content'>
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='password' name='password'
+               placeholder="{{strings.password | titlecase}}"
+               [(ngModel)]='password' #passwordModel='ngModel'
+               required appAutofocus>
+        <mat-error *ngIf="passwordModel.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex='1 1 100%'>
+        <input matInput type='email' name='email'
+               placeholder="{{ strings.newEmail | titlecase }}"
+               [(ngModel)]='email' #emailModel='ngModel'
+               required appAutofocus email>
+        <mat-error *ngIf="emailModel.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+        <mat-error *ngIf="emailModel.hasError('email')">
+          {{strings.validationErrors.invalidEmail | titlecase}}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout='row' fxLayoutGap='8px' align='end'>
+    <div class='flex-separator'></div>
+
+    <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent'
+            (click)='onClose()'>
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button type='submit' class='auto-form-button' color='accent'
+            (click)='onSubmit(dialogForm)' [disabled]='!dialogForm.valid'>
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

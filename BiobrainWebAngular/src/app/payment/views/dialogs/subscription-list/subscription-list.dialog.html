@@ -1,0 +1,64 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between">
+  <span class="dialog-header">
+    {{strings.subscriptions}}
+  </span>
+  <button class="close-button" mat-fab color="warn" (click)="onClose()">\</button>
+</div>
+
+
+<mat-dialog-content fxLayout="column" fxLayoutGap="10px">
+  <div class="mat-table" fxLayout="column">
+    <div color="primary" class="mat-header-row">
+      <div class="mat-header-cell mat-column-120">{{strings.subjects | titlecase}}</div>
+      <div class="mat-header-cell">{{strings.amount | titlecase}}</div>
+      <div class="mat-header-cell">{{strings.period | titlecase}}</div>
+      <div class="mat-header-cell">{{strings.status | titlecase}}</div>
+      <div class="mat-header-cell">{{strings.nextPayment | titlecase}}</div>
+      <div class="mat-header-cell mat-column-contextMenu"></div>
+    </div>
+    <div *ngFor="let subscription of contentSubscriptions | async" class="mat-row">      
+      <div class="mat-cell mat-column-120" fxLayout="column" fxLayoutAlign="center start">
+        <div *ngFor="let course of subscription.courses" [ngClass]="{'strike-out': course.status == 2}">{{course.courseName}}</div>
+      </div>
+      <div class="mat-cell">{{subscription.currency}}{{subscription.amount}}</div>
+      <div class="mat-cell">{{getPeriodText(subscription.period) | titlecase}}</div>
+      <div class="mat-cell">{{getStatusText(subscription.status) | titlecase}}</div>
+      <div class="mat-cell" fxLayout="column" fxLayoutAlign="center center">
+        <div *ngIf="subscription.status == 3 || subscription.status == 2">{{strings.expires}}</div>
+        <!-- <div>{{getTimeStringFromUtc(subscription.nextPayDateUtc)}}</div> -->
+        <div>{{getDateStringFromUtc(subscription.nextPayDateUtc)}}</div>
+      </div>
+      <div class="mat-cell mat-column-contextMenu">
+        <button mat-icon-button *ngIf="subscription.status != 3 && subscription.status != 4" class="context-menu-button" 
+          (click)="onCancelSubscription(subscription)" color="warn">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+    <button (click)="onEditBillingDetails()" class="form-button action-button" color="primary" mat-raised-button>
+      {{strings.editYourBillingDetails}}
+    </button>
+    <button (click)="onAddSubscription()" class="form-button action-button" color="primary" mat-raised-button>
+      {{strings.addSubscription}}
+    </button>
+  </div>
+
+  <!-- <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+    <button (click)="deleteAccount()" class="form-button action-button" color="warn" mat-raised-button>
+      {{strings.deleteAccount}}
+    </button>
+  </div> -->
+</mat-dialog-content>
+<!-- 
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+    {{ strings.cancel | uppercase }}
+  </button> -->
+
+<!-- <button mat-raised-button type='submit' class='auto-form-button' color='warn' (click)='onSubmit()'>
+    {{ (dialogData.yesButtonText ? dialogData.yesButtonText : strings.yes) | uppercase }}
+  </button> -->
+<!-- </mat-dialog-actions> -->

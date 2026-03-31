@@ -1,0 +1,15 @@
+<div class="side-nav-container" fxLayout="column">
+  <div class="navigation-bar" fxLayout="row" fxLayoutAlign="space-between">
+    <div
+      *ngFor="let navItem of navItems"
+      class="router-item"
+      [routerLink]="navItem.navigation"
+      routerLinkActive="active-router-item"
+      [queryParams]="navItem.queryParams"
+    >
+      <span>{{ navItem.title | titlecase}}</span>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

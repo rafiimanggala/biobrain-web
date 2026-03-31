@@ -1,0 +1,90 @@
+@import '../../../styles/variables.scss';
+
+.header-container{
+    width: 100%;
+    margin-right: 100px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.header{
+    text-align: center;
+    display: flex;
+    font-size: $dialog-header;
+    line-height: $dialog-header;
+    color: $primary;
+    font-weight: bold;
+}
+
+.login-card{
+  margin: auto;
+  max-width: 500px;
+  width: calc(100% - 30px);
+}
+
+.login-component{
+  height: 100%;
+}
+
+form {
+  height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $primary;
+}
+
+.actions button {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+// SSO Styles
+.sso-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0 12px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.divider-text {
+  padding: 0 12px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sso-toggle-button {
+  width: 100%;
+  min-height: 36px;
+}
+
+.sso-panel {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.sso-school-result {
+  padding: 8px 0;
+}
+
+.sso-school-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.sso-error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 8px;
+}

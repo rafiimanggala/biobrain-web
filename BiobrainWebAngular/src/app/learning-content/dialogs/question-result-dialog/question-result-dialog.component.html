@@ -1,0 +1,22 @@
+<div mat-dialog-title>
+    <h2 class="dialog-header" mat-dialog-title
+        [ngClass]="{'correct-color': data.isCorrect, 'incorrect-color': !data.isCorrect}">{{header | uppercase}}</h2>
+    <button class="close-button" mat-fab (click)="onClose()">\</button>
+</div>
+
+<div mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+        <div class="feedback">
+            <app-question-result-shadow-dom-node [questionResult]="questionResult">
+            </app-question-result-shadow-dom-node>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+    <button mat-icon-button class="auto-bordered-form-button" color="accent" (click)="onClose()" type="button"
+        [ngClass]="{'correct-button': data.isCorrect, 'incorrect-button': !data.isCorrect}">
+        <!-- {{strings.ok | uppercase}} -->
+        <mat-icon svgIcon="answer_button"></mat-icon>
+    </button>
+</div>

@@ -1,0 +1,20 @@
+<div [class]="'subject-colors ' + subjectCssClass">
+  <div class='container subject-background' (click)="onClick()">
+    <div class="subjectIcon" [ngSwitch]="course?.subject?.subjectCode">
+      <img [alt]='strings.biology' *ngSwitchCase='subjectService.biology' src='assets/icons/BioBrain_Head_Biology.svg'/>
+      <img [alt]='strings.chemistry' *ngSwitchCase='subjectService.chemistry' src='assets/icons/BioBrain_Head_Chemistry.svg'/>
+      <img [alt]='strings.physics' *ngSwitchCase='subjectService.physics' src='assets/icons/BioBrain_Head_Physics.svg'/>
+      <img [alt]='strings.biology' *ngSwitchCase='subjectService.biology10' src='assets/icons/Biobrain_Icon_Biology10.svg'/>
+      <img [alt]='strings.chemistry' *ngSwitchCase='subjectService.chemistry10' src='assets/icons/Biobrain_Icon_Chemistry10.svg'/>
+      <img [alt]='strings.forensics' *ngSwitchCase='subjectService.forensics' src='assets/icons/Biobrain_Icon_Forensics.svg'/>
+      <img [alt]='strings.psychology' *ngSwitchCase='subjectService.psychology' src='assets/icons/Biobrain_Icon_Psychology10.svg'/>
+      <img [alt]='strings.physics' *ngSwitchCase='subjectService.physics10' src='assets/icons/Biobrain_Icon_Physics10.svg'/>
+      <img [alt]='strings.physics' *ngSwitchCase='subjectService.marine10' src='assets/icons/Biobrain_Icon_Marine10.svg'/>
+      <img [alt]='strings.science' *ngSwitchCase='subjectService.science' src='assets/icons/BioBrain_Head_Biology.svg'/>
+    </div>
+
+    <div class="subjectName subject-dark-background subject-light-text-color">
+      {{ course?.subject?.name | uppercase }}
+    </div>
+  </div>
+</div>

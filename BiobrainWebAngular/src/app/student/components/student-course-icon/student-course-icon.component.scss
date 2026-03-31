@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  width: 150px;
+  height: 150px;
+  border-radius: 20px;
+  cursor: pointer;
+
+  .subjectIcon {
+    flex: 0 0 110px;
+    align-self: center;
+
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  .subjectName {
+    flex: 0 0 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+.unit-list {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  padding: 10px 0 10px 0;
+  border-radius: 5px;
+
+  .unit-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    line-height: 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+@import '../../../styles/variables';
+
+.class-admin-sidenav{
+  height: 100%;
+  width: $sidenav_width;
+  padding: 20px;
+}
+
+.class-admin-label{  
+  font-size: 20px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  padding-left: 16px;
+}
+
+.class-admin-menu-list-item{
+  font-weight: 600;
+}
+
+.class-admin-menu{
+  width: 100%;
+}
+
+.mat-divider{
+  width: 100%;
+}
+
+.image {
+  width: 50%;
+}
+
+.not-bold{
+  font-weight: 600;
+}
+
+.class-code{
+  background-color: #fded4f;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 8% / 50%;
+  font-size: 28px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  padding: 8px 8px;
+  text-align: center;
+  span{
+    white-space: nowrap;
+  }
+}
+
+

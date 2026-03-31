@@ -1,0 +1,24 @@
+<div class="container" fxLayout="column" fxLayoutGap="20px">
+
+    <div class="mat-table" fxLayout="column">
+        <div color="primary" class="mat-header-row">
+            <div class="mat-header-cell">{{strings.name | titlecase}}</div>
+            <!-- <div class="mat-header-cell">{{strings.lastUpload | titlecase}}</div> -->
+            <div class="mat-header-cell">{{strings.lastRelease | titlecase}}</div>
+            <div class="mat-header-cell mat-column-contextMenu"></div>
+        </div>
+        <div *ngFor="let course of courses" class="mat-row">
+            <div class="mat-cell">
+                {{course.name}}
+            </div>
+            <!-- <div class="mat-cell">{{formatDate(course.lastUploadDateTimeUtc)}}</div> -->
+            <div class="mat-cell">{{formatDate(course.lastReleaseDateTimeUtc)}}</div>
+            <div class="mat-cell mat-column-contextMenu">
+                <button mat-icon-button class="context-menu-button" (click)="getStructure(course)">
+                    <mat-icon>file_download</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

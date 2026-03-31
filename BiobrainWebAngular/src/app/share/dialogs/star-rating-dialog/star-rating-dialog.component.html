@@ -1,0 +1,51 @@
+<h1 mat-dialog-title class="rating-title">{{ dialogData.title }}</h1>
+
+<mat-dialog-content fxLayout="column" fxLayoutAlign="center center">
+  <div class="stars-container">
+    <mat-icon
+      *ngFor="let star of stars"
+      class="star-icon"
+      [class.active]="star <= (hoveredRating > 0 ? hoveredRating : rating)"
+      (mouseenter)="onStarHover(star)"
+      (mouseleave)="onStarLeave()"
+      (click)="onStarClick(star)">
+      {{ getStarIcon(star) }}
+    </mat-icon>
+  </div>
+
+  <div class="rating-label" *ngIf="rating > 0">
+    {{ rating }} / 5
+  </div>
+
+  <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0">
+    <mat-label>Feedback (optional)</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="feedback"
+      rows="3"
+      maxlength="500"
+      placeholder="Tell us what you think...">
+    </textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    mat-stroked-button
+    type="button"
+    class="auto-bordered-form-button"
+    color="accent"
+    (click)="onMaybeLater()">
+    MAYBE LATER
+  </button>
+
+  <button
+    mat-raised-button
+    type="button"
+    class="auto-form-button"
+    color="primary"
+    [disabled]="rating === 0"
+    (click)="onSubmit()">
+    SUBMIT
+  </button>
+</mat-dialog-actions>

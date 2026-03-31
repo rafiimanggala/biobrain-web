@@ -1,0 +1,44 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{strings.classes | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <ul class="school-class-list">
+        <li class="school-class-list-item" *ngFor="let schoolClass of this.schoolClassListStore.items$ | async">
+          <mat-checkbox
+            [checked]="isSelected(schoolClass.schoolClassId)"
+            (change)="toggleSelection(schoolClass.schoolClassId, $event)">
+            {{ schoolClass.year }} - {{ schoolClass.name }}
+          </mat-checkbox>
+        </li>
+      </ul>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button
+      mat-stroked-button
+      class="auto-bordered-form-button"
+      color="accent"
+      (click)="onClose()"
+      type="button"
+    >
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button
+      mat-raised-button
+      class="auto-form-button"
+      color="accent"
+      (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid"
+      type="submit"
+    >
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

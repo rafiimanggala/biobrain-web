@@ -1,0 +1,48 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{strings.teacher | titlecase}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="template" [(ngModel)]="data.template" #template="ngModel"
+          placeholder="{{strings.template | titlecase}}" required appAutofocus>
+        <mat-error *ngIf="template.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-select name="typeControl" [(ngModel)]="data.templateType" #typeControl="ngModel"
+          placeholder="{{strings.type}}" required>
+          <mat-option *ngFor="let type of data.types" [value]="type.key">{{type.value}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="typeControl.hasError('required')">
+          {{strings.requiredFieldError | titlecase}}
+        </mat-error>
+      </mat-form-field>
+
+      <div fxLayout="column wrap" style="max-height: 300px;">
+        <mat-checkbox *ngFor="let course of data.courses" name="check{{course.courseId}}"
+          [(ngModel)]="course.isSelected">
+          {{course.name}}
+        </mat-checkbox>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+    <div class="flex-separator"></div>
+
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()" type="button">
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+      [disabled]="!dialogForm.valid" type="submit">
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+
+</form>

@@ -1,0 +1,9 @@
+<mat-nav-list class="sidenav-container full-size-no-overflow" fxLayout="column">
+
+  <app-sidenav-search [(searchText)]="searchString"  (searchTextChange)="onSearchChanged($event)" (searchComplete)='onSearchComplete()'>
+  </app-sidenav-search>
+
+  <div class="sidenav-content" fxFlex="1 1 100%" fxLayout="column">
+    <app-alphabet fxFlex="1 1 100%" [(letter)]="searchLetter" (letterChange)="onLetterSelected($event)"></app-alphabet>
+  </div>
+</mat-nav-list>

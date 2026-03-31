@@ -1,0 +1,24 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace DataAccessLayer.Migrations
+{
+    public partial class AddDeletedAtToGlossary : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DeletedAt",
+                table: "GlossaryTerms",
+                type: "timestamp without time zone",
+                nullable: true);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "DeletedAt",
+                table: "GlossaryTerms");
+        }
+    }
+}

@@ -1,0 +1,23 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <span class="dialog-header" fxFlexAlign="center">
+    {{strings.cancelSubscription}}
+  </span>
+  <button class="close-button" mat-fab color="warn" (click)="onClose()">\</button>
+</div>
+
+<mat-dialog-content fxLayout="column">
+  <div>{{strings.cancelSubjectsText}}</div>
+  <mat-selection-list (selectionChange)="onSelectionChange($event)">
+    <mat-list-option *ngFor="let model of models" [disabled]="model.model.status == 2" [value]="model">
+      {{model.model.courseName + ' ' + (model.model.status == 2 ? strings.subjectCanceled : '')}}
+    </mat-list-option>
+  </mat-selection-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button class="form-button action-button" color="primary" (click)='onSubmit()'
+    [disabled]="!anySelected">
+    {{ (strings.confirm) | titlecase }}
+  </button>
+</mat-dialog-actions>

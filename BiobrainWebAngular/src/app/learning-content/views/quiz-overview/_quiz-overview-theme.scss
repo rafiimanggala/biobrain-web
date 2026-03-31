@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+
+@mixin quiz-overview-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .quiz-overview-content {
+    background-color: mat-color($accent-palette, 500);
+  }
+
+  .answer {
+    border-left: 2px solid mat-color($primary-palette, 500);
+    border-bottom: 2px solid mat-color($primary-palette, 500);
+    border-right: 2px solid mat-color($primary-palette, 500);
+  }
+}
+
+@mixin quiz-overview-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include quiz-overview-color($theme);
+  }
+}

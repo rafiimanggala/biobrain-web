@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="header-row">
+    
+    <button mat-raised-button color='accent' class='node-button' (click)='onGetUsageReport()'>
+      {{strings.usageReport | titlecase}}
+    </button>
+    <!-- <span class="flex-separator"></span> -->
+    <button mat-raised-button color='accent' class='node-button' (click)='onAddStudentByEmail()'>
+      {{strings.addExisting | titlecase}}
+    </button>    
+    
+    <button mat-raised-button color='accent' class='node-button' (click)='onCreateStudent()'>
+      {{strings.create | titlecase}}
+    </button>
+  </div>
+
+  <app-student-grid
+    (editStudent)="onEditStudent($event)"
+    (editStudentClasses)="onEditStudentClasses($event)"
+    (deleteStudent)="onDeleteStudent($event)"
+    (resetPassword)="onResetPassword($event)"
+    (changePassword)="onChangePassword($event)"
+    (changeEmail)="onChangeEmail($event)"
+  >
+  </app-student-grid>
+
+</div>

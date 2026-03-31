@@ -1,0 +1,47 @@
+@import '~@angular/material/theming';
+
+@mixin learning-material-color($theme) {
+  $color-config: mat-get-color-config($theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .main-material-header {
+    background-color: mat-color($accent-palette, A400);
+  }
+
+  .path {
+    color: mat-color($primary-palette, 500);
+  }
+
+  .level-group {
+    background-color: mat-color($accent-palette, A400);
+  }
+
+  .level-group{
+     .mat-button-toggle {
+        border: solid 3px mat-color($accent-palette, '500-contrast');
+        background-color: mat-color($accent-palette, A400);
+        color: mat-color($primary-palette, 500);
+     }
+  }
+
+  .level-group{ 
+    .mat-button-toggle-checked {
+      background-color: mat-color($primary-palette, 500);
+      color: mat-color($accent-palette, '500-contrast');
+    }
+  }
+
+  .quiz-button {
+    color: mat-color($primary-palette, 500);
+    background-color: mat-color($accent-palette, A400);
+  }
+}
+
+@mixin learning-material-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include learning-material-color($color);
+  }
+}

@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="header-row">
+    <button mat-raised-button color='accent' class='node-button' (click)='onCreateBatch()'>
+      {{strings.create | titlecase}}
+    </button>
+  </div>
+
+  <div class="full-size-no-overflow" fxFlex="1 1 100">
+    <div class="full-height-with-scroll">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let batch of batches">
+          <mat-expansion-panel-header>
+            <mat-panel-title class="batch-header">
+              {{batch.batchHeader | titlecase}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+              <span class="field-title">{{strings.expiryDate}}:</span>
+              <span class="field-data">{{formatDate(batch.expiryDateUtc)}}</span>
+              <!-- <button mat-icon-button [for]="expiryDatePicker">
+                <mat-icon>edit</mat-icon>
+              </button> -->
+              <mat-datepicker-toggle matSuffix [for]="expiryDatePicker"></mat-datepicker-toggle>
+              <mat-form-field style="opacity: 0; width: 10px;">
+                <input matInput [matDatepicker]="expiryDatePicker" name='expiryDatePicker' [(ngModel)]='batch.expiryDateLocal'
+                  #expiryDateModel="ngModel" readonly (click)="expiryDatePicker.open()" (ngModelChange)="onExpiryEditSelected($event, batch)">
+                <mat-datepicker #expiryDatePicker disabled="false"></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div><span class="field-title">{{strings.createdAt}}:</span><span class="field-data">
+                {{formatDate(batch.createdAtUtc)}}</span></div>
+            <div><span class="field-title">{{strings.totalCodes}}:</span><span class="field-data"> {{batch.codes.length
+                + batch.usedCodes.length}}</span></div>
+            <!-- <div><span class="field-title">{{strings.usedCodes}}:</span><span class="field-data"> {{batch.usedCodes.length}}</span></div> -->
+            <details class="spolier">
+              <summary class="spoiler-summary">{{strings.activeCodes}}({{batch.codes.length}})</summary>
+              <div fxLayout="column">
+                <p class="access-code" *ngFor="let code of batch.codes">{{code.code}}</p>
+              </div>
+            </details>
+            <details class="spolier">
+              <summary class="spoiler-summary">{{strings.usedCodes}}({{batch.usedCodes.length}})</summary>
+              <div fxLayout="column">
+                <p class="access-code" *ngFor="let code of batch.usedCodes">
+                  {{code.code}}({{formatDate(code.usedAtUtc)}})</p>
+              </div>
+            </details>
+            <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+              <button mat-raised-button color='accent' class='node-button' (click)='getAccessCodesBatchReport(batch)'>
+                {{strings.downloadUsedCodes | uppercase}}
+              </button>
+              <button mat-raised-button class="node-button" (click)="onDeleteBatch(batch)" color="warn">
+                {{strings.delete | uppercase}}
+              </button>
+              <button mat-raised-button color='accent' class='node-button' (click)='downloadAccessCodes(batch)'>
+                {{strings.downloadActiveCodes | uppercase}}
+              </button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+
+  <mat-paginator [length]="totalLength" [pageSize]="pageSize" [pageSizeOptions]="[20, 50, 100]"
+    (page)="onPageChanged($event)" aria-label="Select page">
+  </mat-paginator>
+
+</div>

@@ -1,0 +1,69 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+    <h2 class="dialog-header" mat-dialog-title>{{strings.attachContent | titlecase}}</h2>
+
+    <mat-dialog-content>
+        <div class="full-size-no-overflow" fxLayout="column">
+            <!-- Tree -->
+            <div class="full-height-with-scroll">
+                <mat-tree #tree *ngIf="nestedDataSource.data != null && nestedDataSource.data != undefined"
+                    [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="tree">
+                    <mat-tree-node class="node left-direction" *matTreeNodeDef="let node" matTreeNodePadding
+                        matTreeNodePaddingIndent="175">
+                        <li>
+                            <div class="mat-tree-node" fxLayout="raw" FxLayoutGap="5px" fxLayoutAlign="start">
+                                <mat-checkbox name="check{{node.EntityId}}" (change)="selectNode($event.checked, node)"
+                                    [checked]="node.isSelected">
+                                    {{node.header}}
+                                </mat-checkbox>
+                            </div>
+                        </li>
+                    </mat-tree-node>
+
+                    <mat-nested-tree-node class="node left-direction" *matTreeNodeDef="let node; when: hasNestedChild"
+                        matTreeNodePadding matTreeNodePaddingIndent="175">
+                        <!-- <div class="mat-tree-node"> -->
+                        <li>
+                            <div class="mat-tree-node">
+                                <mat-icon class="mat-icon-rtl-mirror expand-toggle clickable" matTreeNodeToggle>
+                                    {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                </mat-icon>
+                                <span class="clickable" matTreeNodeToggle>
+                                    {{node.header}}{{" ("+node.children.length+")"}}
+                                </span>
+                                <mat-checkbox name="check{{node.EntityId}}"
+                                    (change)="selectChildren($event.checked, node)"
+                                    *ngIf="(node.isMaterialsFolder || node.isQuestionsFolder) && nestedTreeControl.isExpanded(node)"
+                                    style="margin-left: 10px;">
+                                </mat-checkbox>
+                            </div>
+                            <ul [class.invisible]="!nestedTreeControl.isExpanded(node)">
+                                <ng-container matTreeNodeOutlet></ng-container>
+                            </ul>
+                        </li>
+                        <!-- </div> -->
+                    </mat-nested-tree-node>
+                </mat-tree>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+    <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+        
+        <mat-checkbox #replaceMode name="replaceMode" [(ngModel)]="data.isReplace">
+            {{strings.replaceMode}}
+        </mat-checkbox>
+        <!-- <div class="flex-separator"></div> -->
+        <span fxLayout="raw">
+            <button mat-stroked-button class="auto-bordered-form-button" color="accent" (click)="onClose()"
+                type="button">
+                {{strings.cancel | uppercase}}
+            </button>
+
+            <button mat-raised-button class="auto-form-button" color="accent" (click)="onSubmit(dialogForm)"
+                [disabled]="!dialogForm.valid" type="submit">
+                {{strings.add | uppercase}}
+            </button>
+        </span>
+    </div>
+
+</form>

@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.container{
+  padding: 10px;
+}
+
+.note-tooltip::ng-deep{
+width: 200px !important;
+}

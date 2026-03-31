@@ -1,0 +1,8 @@
+<div class="container" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center strech">
+    <div fxFlex="1 1 30%">
+        <app-user-guides-tree [contentTree]="contentTree" [selectedItem]="selectedItem" (select)="onItemSelected($event)" [isEditMode]="false"></app-user-guides-tree>
+    </div>
+    <div fxFlex="1 1 70%">
+        <app-user-guide-content [selectedItem]="selectedItem"></app-user-guide-content>
+    </div>
+</div>

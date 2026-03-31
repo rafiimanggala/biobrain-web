@@ -1,0 +1,85 @@
+<div class="container full-size-no-overflow">
+  <div class="page-header">
+    <h2>{{strings.customQuiz}}</h2>
+    <p>{{strings.customQuizDescription}}</p>
+  </div>
+
+  <div class="form-section" *ngIf="courses$ | async as courses">
+    <!-- Course Selector -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="courses.length > 1">
+      <mat-label>{{strings.course}}</mat-label>
+      <mat-select (selectionChange)="onCourseSelected($event.value)">
+        <mat-option *ngFor="let course of courses" [value]="course.courseId">
+          {{course.displayName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Auto-select if single course -->
+    <div class="single-course-label" *ngIf="courses.length === 1">
+      <strong>{{strings.course}}:</strong> {{courses[0].displayName}}
+    </div>
+
+    <!-- Quiz Name -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{strings.quizName}}</mat-label>
+      <input matInput [(ngModel)]="quizName" [placeholder]="strings.quizNamePlaceholder" maxlength="100">
+    </mat-form-field>
+
+    <!-- Question Count -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{strings.numberOfQuestions}}</mat-label>
+      <mat-select [(ngModel)]="questionCount">
+        <mat-option *ngFor="let count of questionCountOptions" [value]="count">
+          {{count}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Content Tree -->
+    <div class="tree-section" *ngIf="selectedCourseId">
+      <h3>{{strings.selectTopics}}</h3>
+
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+      </div>
+
+      <div class="tree-container" *ngIf="!isLoading && treeItems.length > 0">
+        <ng-container *ngFor="let item of treeItems">
+          <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: item }"></ng-container>
+        </ng-container>
+      </div>
+
+      <div *ngIf="!isLoading && treeItems.length === 0 && selectedCourseId" class="no-content">
+        {{strings.noContentAvailable}}
+      </div>
+    </div>
+
+    <!-- Create Button -->
+    <div class="actions">
+      <button mat-raised-button color="primary"
+              [disabled]="!canCreate"
+              (click)="onCreate()">
+        <mat-icon *ngIf="!isCreating">add</mat-icon>
+        <mat-progress-spinner *ngIf="isCreating" mode="indeterminate" diameter="20" class="button-spinner">
+        </mat-progress-spinner>
+        {{strings.createQuiz}}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Recursive tree node template -->
+<ng-template #treeNode let-item>
+  <div class="tree-node" [style.paddingLeft.px]="item.level * 24">
+    <mat-checkbox
+      [checked]="item.checked"
+      [indeterminate]="item.indeterminate"
+      (change)="onNodeChecked(item, $event.checked)">
+      {{item.node.row.name}}
+    </mat-checkbox>
+  </div>
+  <ng-container *ngFor="let child of item.children">
+    <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child }"></ng-container>
+  </ng-container>
+</ng-template>

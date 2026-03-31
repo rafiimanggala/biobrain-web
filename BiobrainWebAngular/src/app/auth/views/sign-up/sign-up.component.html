@@ -1,0 +1,28 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center stretch" fxFlexFill fxFlex.lt-sm="100%">
+  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px"
+       fxLayout.lt-sm="column" fxLayoutAlign.lt-sm="start center" fxLayoutGap.lt-sm="10px"
+       class="nested-container" fxFlex.lt-sm="100%">
+    <app-sign-up-details
+      (signUp)="onSignUp($event)">
+    </app-sign-up-details>
+
+    <div class="login-column" fxLayout="column" fxLayoutAlign="start start">
+      <span>
+        {{strings.haveAnAccountAlready}}
+      </span>
+
+      <button
+        class="form-button"
+        color="basic"
+        mat-raised-button
+        type="submit"
+        (click)="onLogin()"
+      >
+        <span class="login-column-button-label">
+          {{strings.login}}
+        </span>
+      </button>
+    </div>
+
+  </div>
+</div>

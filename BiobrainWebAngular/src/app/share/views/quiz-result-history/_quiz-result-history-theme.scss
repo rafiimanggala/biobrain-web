@@ -1,0 +1,15 @@
+@import '~@angular/material/theming';
+
+@mixin quiz-result-history-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+}
+
+@mixin quiz-result-history-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include quiz-result-history-color($theme);
+  }
+}

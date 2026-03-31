@@ -1,0 +1,117 @@
+<mat-toolbar color='primary' class='toolbar'>
+  <button class='menu-button' mat-icon-button (click)='toggleMenu()'
+    *ngIf='(sidenavService.isNavigationStatic$ | async) !== true'>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <a class='hand-pointer' (click)='homeClick()' #appIcon id='appIcon'>
+    <img class='header-icon' src='/assets/images/icon.png' />
+  </a>
+
+  <div class='sub-title' fxFlex='1 1 auto' fxLayoutGap='8px' fxLayout='row' fxHide.lt-md>
+    <span class='subtitle-text'></span>
+  </div>
+
+  <span class='menu-container' fxFlex='1 1 100' fxLayout='column'
+    *ngIf="navigationType$ | async as navigationType">
+    <span fxLayout='row' fxLayoutGap='20px' fxLayoutAlign='end center' *ngIf="navigationType == 1" fxHide.lt-md>
+      <span *ngIf='mySubjectsVisible$ | async' class='user-menu-button' mat-icon-button
+        [matMenuTriggerFor]='mySubjectsMenu' fxLayout='row' fxLayoutGap='10px' fxLayoutAlign='center center'>
+        <span>{{strings.mySubjects.toUpperCase()}}</span>
+        <mat-icon class='menu-icon'>keyboard_arrow_down</mat-icon>
+      </span>
+      <span class='menu-label' *ngFor='let menuItem of menuItems$ | async' [routerLink]='menuItem.navigation'
+        [queryParams]='menuItem.queryParams'>
+        {{menuItem.title}}
+      </span>
+    </span>
+    <span class='tab-container' *ngIf="navigationType == 2" fxLayout='row' fxLayoutAlign='start end' fxHide.lt-md>
+      <mat-button-toggle-group class='tab-group' #group='matButtonToggleGroup' [ngModel]='selectedTab'>
+
+        <ng-container *ngIf='selectedCourse$ | async as selectedCourse'>
+          <mat-button-toggle [routerLink]='routingService.learningMaterials(selectedCourse.courseId).toString()'
+            *ngIf='mySubjectsVisible$ | async' class="tab-item" [value]='routingService.learningMaterials(selectedCourse.courseId).toString()'>
+            {{strings.mySubjects.toUpperCase()}}
+          </mat-button-toggle>
+        </ng-container>
+
+        <mat-button-toggle *ngFor='let menuItem of menuItems$ | async' [routerLink]='menuItem.navigation'
+          [queryParams]='menuItem.queryParams' class="tab-item" [value]='menuItem.navigation'>
+          {{menuItem.title}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]='verticalMenu' fxFlexAlign='end' fxHide.gt-sm>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </span>
+  <span class='user-menu-button' mat-icon-button (click)="onUserGuidesClick()"
+    *ngIf='canSeeUserGuides$ | async' fxLayout='row' fxLayoutGap='10px'
+    fxLayoutAlign='center center' style="margin-right: 8px;">
+    <span class='initials-label'>?</span>
+    <!-- <span fxHide.lt-md>{{user.displayName}}</span> -->
+  </span>
+  <span class='user-menu-button' mat-icon-button [matMenuTriggerFor]='userProfileMenu'
+    *ngIf='currentUserService.userChanges$ | async as user' fxLayout='row' fxLayoutGap='10px'
+    fxLayoutAlign='center center'>
+    <span class='initials-label'>{{user.initials}}</span>
+    <!-- <span fxHide.lt-md>{{user.displayName}}</span> -->
+  </span>
+
+  <mat-menu #userProfileMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+    <ng-container>
+      <button *ngIf='mySubjectsVisible$ | async' mat-menu-item (click)='homeClick()'>{{strings.mySubjects | titlecase}}</button>
+      <button *ngIf='myClassesVisible$ | async' mat-menu-item (click)='homeClick()'>{{strings.myClasses | titlecase}}</button>
+      <mat-divider></mat-divider>
+    </ng-container>
+    <ng-container *ngIf='canJoinToClass$ | async'>
+      <button mat-menu-item (click)='onJoinToClass()'>{{strings.joinToClass}}</button>
+      <mat-divider></mat-divider>
+    </ng-container>
+    <ng-container *ngIf='canUseAccessCode$ | async'>
+      <button mat-menu-item (click)='onUseAccessCode()'>{{strings.useAccessCode}}</button>
+      <mat-divider></mat-divider>
+    </ng-container>
+    <ng-container *ngIf='canManageSchool$ | async'>
+      <button mat-menu-item (click)='onManageSchool()'>{{strings.schoolManagement}}</button>
+      <mat-divider></mat-divider>
+    </ng-container>
+    <button mat-menu-item *ngIf='myAccountVisible$ | async'
+            (click)='onMyAccountClick()'>{{strings.myAccount}}</button>
+    <button mat-menu-item *ngIf='canEditProfile$ | async'
+            (click)='onEditProfile()'>{{strings.editProfile}}</button>
+    <button mat-menu-item *ngIf='canChangeEmail$ | async'
+            (click)='onChangeEmail()'>{{strings.changeEmail}}</button>
+    <button mat-menu-item *ngIf='canChangePassword$ | async'
+      (click)='onChangePassword()'>{{strings.changePassword}}</button>
+    <button mat-menu-item *ngIf='canSendLogs$ | async'
+        (click)='onSendLogs()'>{{strings.sendLogs}}</button>
+    <mat-divider></mat-divider>
+    <a mat-menu-item [href]="'mailto:feedback@biobrain.com.au?subject=' + strings.biobrainFeedback">{{strings.contactUs}}</a>
+    <button mat-menu-item (click)='logout()'>{{strings.logout}}</button>
+  </mat-menu>
+
+
+  <mat-menu #verticalMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+    <button mat-menu-item [matMenuTriggerFor]='mySubjectsMenu' *ngIf='mySubjectsVisible$ | async'>
+      <span>{{strings.mySubjects.toUpperCase()}}</span>
+    </button>
+    <button *ngFor='let menuItem of menuItems$ | async' mat-menu-item [routerLink]='menuItem.navigation'
+      [queryParams]='menuItem.queryParams'>
+      <span>{{menuItem.title}}</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #mySubjectsMenu='matMenu' yPosition='below' [overlapTrigger]='false'>    
+    <ng-container *ngFor="let courseGroup of courses$ | async">
+      <button *ngFor='let course of courseGroup.courses' mat-menu-item (click)='onCourseSelected(course, courseGroup.schoolId, courseGroup.schoolName)'>
+      <span fxLayout='row' fxLayoutAlign='space-between center' fxFlex='1 1 125px'>
+        <span>{{ course.course.displayName ? course.course.displayName 
+          : course.course.subject.name + ' ' + (course.course.year == 0 || course.course.year == 10 ? '' : strings.year + ' ' + course.course.year)}}</span>
+        <mat-icon class='tick' *ngIf='course.course === (selectedCourse$ | async)'>done</mat-icon>
+      </span>
+    </button>
+      <mat-divider></mat-divider>
+    </ng-container>
+    
+  </mat-menu>
+</mat-toolbar>

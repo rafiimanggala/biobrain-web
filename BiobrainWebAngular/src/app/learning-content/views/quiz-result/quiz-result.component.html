@@ -1,0 +1,30 @@
+<div class="container full-size-no-overflow" fxLayout="column">
+    <ng-container *ngIf="quizResultPageService.data$ | async as data">
+        <div class="accent-background-container" fxLayout="row" fxLayoutGap="5px">
+            <span class="path primary-color-container underlined hand-pointer" (click)="onCourseClick()">{{(subjectName$ | async) | uppercase}}</span>
+            <span class="path primary-color-container">{{'›'}}</span>
+            <span class="path primary-color-container">{{data.path}}</span>
+        </div>
+        <ng-container *ngIf="data.question">
+            <div class="full-size-no-overflow">
+                <div class="content-container full-height-with-scroll" fxLayout="column" fxLayoutGap="20px">
+                    <app-hexagone class="hex" [text]="data.questionHeader" [color]="getHexColor(data)" [textColor]="'#ffffff'" fxFlex="0 0 60px">
+                    </app-hexagone>
+                    <div>
+                        <div fxLayout="column" fxLayoutAlign="start">
+                            <div class="quiz-result-content">
+                                <app-shadow-dom-div-container [innerContent]="data.text"></app-shadow-dom-div-container>
+                            </div>
+                            <div class="answer" fxLayout="column" fxLayoutGap="10px">
+                                <div class="answer-header primary-color-container">{{strings.correctAnswer | titlecase}}:</div>
+                                <div class="answer-text" [innerHTML]="data.correctAnswer"></div>
+                                <app-shadow-dom-div-container *ngIf="data.feedback" [innerContent]="data.feedback"></app-shadow-dom-div-container>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

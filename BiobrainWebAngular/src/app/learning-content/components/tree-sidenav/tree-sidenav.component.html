@@ -1,0 +1,60 @@
+<mat-nav-list class='sidenav-container' fxLayout='column'>
+  <!-- search -->
+  <app-sidenav-search class='search' [(searchText)]='searchString' (searchComplete)='onSearchComplete()'>
+  </app-sidenav-search>
+
+  <!-- tree controls -->
+  <div class='tree-controls'>
+    <button mat-stroked-button class='control-btn' (click)='toggleExpandAll()'>
+      <mat-icon class='control-icon'>{{allExpanded ? 'unfold_less' : 'unfold_more'}}</mat-icon>
+      {{allExpanded ? 'Collapse All' : 'Expand All'}}
+    </button>
+    <span class='control-separator'>|</span>
+    <button mat-stroked-button class='control-btn' (click)='expandToLevel(1)'>L1</button>
+    <button mat-stroked-button class='control-btn' (click)='expandToLevel(2)'>L2</button>
+    <button mat-stroked-button class='control-btn' (click)='expandToLevel(3)'>All</button>
+  </div>
+
+  <!--tree-->
+  <div class='tree-scroll-container right-direction'>
+    <mat-tree *ngIf='treeService' [dataSource]='treeService.flatDataSource' [treeControl]='treeService.flatTreeControl' class='tree'>
+      <mat-tree-node class='node left-direction'
+                     *matTreeNodeDef='let node'
+                     matTreeNodePadding matTreeNodePaddingIndent='8'
+                     routerLinkActive='active-menu-link'>
+        <div class='mat-tree-node' [class.bold]='node.isBold' [class.accent]='node.isAccent'>
+          <button mat-icon-button disabled *ngIf='node.entityType !== 7 && node.entityType !== 8'></button>
+
+          <a class='router-link clickable' *ngIf='node.routing && (node.isAvailableInDemo || !treeService.isDemoMode)'
+             [routerLink]="['./']" [queryParams]='{topicId: node.entityId}'
+             (click)='onRouterLinkClick()' [class.unavailable]="!node.isAvailableInDemo && treeService.isDemoMode">
+            {{node.header}}
+          </a>
+          <a class='router-link clickable' *ngIf='node.routing && (!node.isAvailableInDemo && treeService.isDemoMode)'
+             (click)='onUnavailableClick()' [class.unavailable]="!node.isAvailableInDemo">
+            {{node.header}}
+          </a>
+          <span class='clickable font-nunito' *ngIf='!node.routing'  [class.unavailable]="!node.isAvailableInDemo">
+            {{node.header}}
+          </span>
+        </div>
+      </mat-tree-node>
+
+      <mat-tree-node class='node left-direction'
+                     *matTreeNodeDef='let node; when: treeService.hasNestedChild'
+                     matTreeNodePadding matTreeNodePaddingIndent='8'>
+        <div class='mat-tree-node' [class.bold]='node.isBold' [class.accent]='node.isAccent'>
+          <button mat-icon-button matTreeNodeToggle *ngIf='node.entityType !== 8'>
+            <mat-icon class='mat-icon-rtl-mirror'>
+              {{treeService.flatTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+
+          <span class='clickable font-nunito node-level-{{node.level}}' [class.unavailable]="!node.isAvailableInDemo && treeService.isDemoMode" matTreeNodeToggle>
+            {{node.header}}
+          </span>
+        </div>
+      </mat-tree-node>
+    </mat-tree>
+  </div>
+</mat-nav-list>

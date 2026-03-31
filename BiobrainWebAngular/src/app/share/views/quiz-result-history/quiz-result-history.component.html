@@ -1,0 +1,58 @@
+<div class="content-container full-height-with-scroll" fxLayout="column" fxLayoutGap="20px"
+  *ngIf="data$ | async as data">
+  <div fxLayout="column" class="header-accent-background">
+    <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+      <div class="underlined hand-pointer" (click)="onCourseClick()">{{subjectName | uppercase}}</div>
+      <mat-icon>navigate_next</mat-icon>
+      <span>{{strings.results | uppercase}}</span>
+    </div>
+  </div>
+  <!-- fxLayout.lt-sm="column"  -->
+  <div class="score-raw" fxLayout="raw" fxLayoutAlign="center" fxLayoutGap="40px">
+    <ng-container *ngIf="accentColor | async as accentColorStrict">
+      <ng-container *ngIf="primaryColor | async as primaryColorStrict">
+        <div class="score" fxLayout="raw" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <div class="diagram" fxHide.lt-lg>
+            <app-success-rate-diagram [successRate]="data.averageQuizRate" [primaryColor]="primaryColorStrict"
+              [accentColor]="accentColorStrict" [fontSize]="32" [strokeWidth]="10">
+            </app-success-rate-diagram>
+          </div>
+          <div class="mobile-diagram" fxHide.gt-md>
+            <app-success-rate-diagram [successRate]="data.averageQuizRate" [primaryColor]="primaryColorStrict"
+              [accentColor]="accentColorStrict" [fontSize]="24" [strokeWidth]="8">
+            </app-success-rate-diagram>
+          </div>
+          <span class="rate-label accent-label">{{strings.averageQuizScoreHeader}}</span>
+        </div>
+        <div class="score" fxLayout="raw" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <div class="diagram" fxHide.lt-lg>
+            <app-success-rate-diagram [successRate]="data.quizzesCompletedRate" [primaryColor]="primaryColorStrict"
+              [accentColor]="accentColorStrict" [fontSize]="32" [strokeWidth]="10"></app-success-rate-diagram>
+          </div>
+          <div class="mobile-diagram" fxHide.gt-md>
+            <app-success-rate-diagram [successRate]="data.quizzesCompletedRate" [primaryColor]="primaryColorStrict"
+              [accentColor]="accentColorStrict" [fontSize]="24" [strokeWidth]="8"></app-success-rate-diagram>
+          </div>
+          <span class="rate-label accent-label">{{strings.quizzesCompletedHeader}}</span>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+  <div fxFlex="1 1 100%">
+    <!-- Grid view -->
+    <div class="grid-container" fxHide.lt-lg>
+      <ag-grid-angular #resultsGrid class="ag-theme-alpine results-grid" [pagination]="false"
+        [frameworkComponents]="components" (gridReady)="onGridReady($event)" (modelUpdated)="onModelUpdated()"
+        (cellClicked)="onCellClicked($event)">
+      </ag-grid-angular>
+    </div>
+    <!-- Cards view -->
+    <div class="cards-container" fxLayout="column" fxLayoutGap="10px" fxHide.gt-md>
+      <div *ngFor="let result of data.quizResults; last as isLast">
+        <app-content-card [nameLines]="result.nameLines" [score]="result.score" [date]="result.date" [actions]="cardActions"
+          (action)="onCardAction($event, result)"></app-content-card>
+        <!-- <mat-divider class="content-card-devider" *ngIf="!isLast"></mat-divider> -->
+      </div>
+    </div>
+  </div>
+</div>

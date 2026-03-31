@@ -1,0 +1,52 @@
+@import '~@angular/material/theming';
+
+@mixin learning-material-toolbar-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+
+  .learning-material-toolbar {
+    .node-button:hover {
+      background-color: mat-color($primary-palette, 500);
+    }    
+
+    .mat-button-toggle {
+      &.red-level{
+        background-color: lightcoral;
+      }
+      
+      &.yellow-level{
+        background-color: lightgoldenrodyellow;
+      }
+      
+      &.green-level{
+        background-color: lightgreen;
+      }
+    }
+
+    .mat-button-toggle-checked {
+      
+      &.red-level{
+        background-color: red;
+        color: white;
+      }
+      
+      &.yellow-level{
+        background-color: yellow;
+        color: white;
+      }
+      
+      &.green-level{
+        background-color: green;
+        color: white;
+      }
+    }
+  }
+}
+
+@mixin learning-material-toolbar-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color != null {
+    @include learning-material-toolbar-color($theme);
+  }
+}

@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="header-row">
+    <mat-form-field (click)="fromDatepickerClick()">
+      <input matInput [matDatepicker]="fromPicker" [placeholder]="strings.from"
+      [formControl]="fromDate" class="datepicker-input" (ngModelChange)="dateChanged()">
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field (click)="toDatepickerClick()">
+      <input matInput [matDatepicker]="toPicker" [placeholder]="strings.to"
+      [formControl]="toDate" class="datepicker-input" (ngModelChange)="dateChanged()">
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker [disabled]="false" startView="multi-year"></mat-datepicker>
+  </mat-form-field>
+    <!-- Filters -->
+  </div>
+
+  <ag-grid-angular
+    #teachersGrid
+    class="ag-theme-alpine grid-item ag-grid-custom-admin-area"
+    [paginationAutoPageSize]="true"
+    [paginationPageSize]="20"
+    [pagination]="true"
+    (gridReady)="onGridReady($event)"
+    (modelUpdated)="onModelUpdated()"
+    [rowData]="students" 
+    [tooltipShowDelay]="0"
+  >
+
+  <ag-grid-column [appContextMenu]="menu" [hide]="true">
+    <mat-menu #menu="matMenu">
+      <ng-template matMenuContent let-item="data">
+        <!-- <button mat-menu-item (click)="onEditStudent(item.studentId)">{{strings.edit | titlecase}}</button>
+        <button mat-menu-item (click)="onEditStudentClasses(item.studentId)">{{strings.classes | titlecase}}</button>
+        <button mat-menu-item (click)="onResetPassword(item.studentId)">{{strings.resetPassword | titlecase}}</button>
+        <button mat-menu-item (click)="onChangePassword(item.studentId)">{{strings.changePassword | titlecase}}</button>
+        <button mat-menu-item (click)="onChangeEmail(item.studentId)">{{strings.changeEmail | titlecase}}</button> -->
+        <button mat-menu-item (click)="onDeleteStudent(item.studentId, item.email)">{{strings.delete | titlecase}}</button>
+      </ng-template>
+    </mat-menu>
+  </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'firstName'"
+      [headerName]="strings.firstName | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'lastName'"
+      [headerName]="strings.lastName | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'email'"
+      [headerName]="strings.email | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'registeredAt'"
+      [valueFormatter]='formatDate'
+      [headerName]="strings.registeredAt | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'subscribedAt'"
+      [valueFormatter]='formatDate'
+      [headerName]="strings.subscribedAt | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'licenseTypes'"
+      [valueFormatter]='arrayToString'
+      [headerName]="strings.license | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+  </ag-grid-angular>
+
+</div>

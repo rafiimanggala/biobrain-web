@@ -1,0 +1,122 @@
+<form #subscriptionForm="ngForm" name="subscriptionForm">
+
+  <div class="component-container" fxLayout="column" fxLayoutGap="10px">
+    <app-signup-header [text]="getHeader()" [subText]="getSubHeader()"></app-signup-header>
+
+    <div class="devider"></div>
+
+    <div class="component-body" fxFlex="1 1 100%" fxLayout="column" *ngIf="subscriptionParameters" fxLayoutGap="10px">
+
+      <div class="form-fields" fxFlex="1 1 100%" fxLayout="column" fxLayoutGap="10px">
+        <!-- Subjects -->
+        <app-form-label [text]="chooseSubjects"></app-form-label>
+        <div fxLayout="column">
+          <!-- With year selection -->
+          <div *ngFor="let subjectEntry of subscriptionParameters.subjects" fxLayout="row" fxLayoutGap="16px">
+            <mat-checkbox *ngIf="subjectEntry.isNeedYearSelection" #subjectCheckBox class="form-checkbox" name="subject{{subjectEntry.subjectCode}}"
+              color="primary" [(ngModel)]="subjectEntry.isSelected"
+              (change)="onCourseSelect(subjectEntry, subjectCheckBox)">
+              {{subjectEntry.name}}
+            </mat-checkbox>
+            <mat-radio-group name="year{{subjectEntry.subjectCode}}" [(ngModel)]="subjectEntry.selectedProduct" fxLayout="row"
+              fxLayoutGap="10px" *ngIf="subjectEntry.isNeedYearSelection"
+              [disabled]="!subjectEntry.isSelected">
+              <div *ngFor="let product of subjectEntry.products">
+                <mat-radio-button fxFlex="120px" class="example-margin" *ngIf="!product.isComingSoon"
+                  [value]="product" color="primary">
+                  {{product.name}}</mat-radio-button>
+                <div class="example-margin disabled" *ngIf="product.isComingSoon">{{product.name}}* <br><span class="coming-soon-label" *ngIf="subjectEntry.name == 'Chemistry'">*{{strings.comingSoon}}</span></div>
+              </div>
+            </mat-radio-group>
+
+            <!-- Without year selection -->
+            <mat-checkbox *ngIf="!subjectEntry.isNeedYearSelection" #subjectCheckBox class="form-label" name="subject{{subjectEntry.subjectCode}}" color="primary"
+              fxFlex="33%"
+              [(ngModel)]="subjectEntry.isSelected" (change)="onCourseSelect(subjectEntry, subjectCheckBox)">
+              {{subjectEntry.name}}
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- Additional subjects -->
+        <app-form-label [text]="additionalSubjects" *ngIf="subscriptionParameters.additionalSubjects.length > 0"></app-form-label>
+        <div fxLayout="row wrap">
+          <mat-checkbox #aditionalSubjectCheckBox class="form-label" name="subject{{subjectEntry.subjectCode}}"
+            color="primary" fxFlex="33%" (change)="onCourseSelect(subjectEntry, aditionalSubjectCheckBox)"
+            *ngFor="let subjectEntry of subscriptionParameters.additionalSubjects"
+            [(ngModel)]="subjectEntry.isSelected">
+            {{subjectEntry.name}}
+          </mat-checkbox>
+        </div>
+
+        <ng-container *ngIf="isPaymentDetailsVisible">
+          <!-- Price -->
+          <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+            <div fxLayout="column" fxLayoutGap="10px" fxFlex="0 1 100%">
+              <app-form-label [text]="strings.chooseSubscription"></app-form-label>
+              <mat-radio-group name="period" [(ngModel)]="subscriptionParameters.selectedPaymentPeriod" fxLayout="row"
+                fxLayoutGap="10px" required [disabled]="isVoucherMode">
+                <mat-radio-button fxFlex="100px" *ngFor="let period of periods" class="example-margin" [value]="period">
+                  {{paymentStringsService.getPeriodText(period) | titlecase}}</mat-radio-button>
+              </mat-radio-group>
+              <div *ngFor="let subjectsNum of sets; first as isFirst " fxLayout="column">
+                <div class="subjects-label">{{subjectsNum.subjects + ' ' + strings.subject + (isFirst ? '': 's')}}</div>
+
+                <div fxLayout='row' fxLayoutGap="10px">
+                  <div fxFlex="125px" class="form-label none-selectable" *ngFor="let price of subjectsNum.prices"
+                    [ngClass]="{'form-label-selected': price.model.period == subscriptionParameters.selectedPaymentPeriod && price.model.subjectsNumber == subjectsNumber}">
+                    {{getPriceText(price.model)}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxLayout="column" fxLayoutGap="16px" fxFlex="0 1 100%" fxLayoutAlign="center center">
+              <img class="signup-image" src="assets/images/signup_image.svg">
+              <img class="signup-image" src="assets/images/{{offerIamge}}" *ngIf="subscriptionParameters.additionalSubjects.length > 0">
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <ng-container *ngIf="isPaymentDetailsVisible">
+        <div class="total-label-container"  fxLayout="row" fxLayoutGap="10px">
+          <div class="form-label-selected">{{getTotal()}}</div>
+          <div *ngIf="isVoucherMode" class="form-label-selected">{{getVoucher()}}</div>
+        </div>
+      </ng-container>
+
+      <div class="slim-devider"></div>
+
+      <!-- <app-form-label [text]="strings.enjoyYourPaymentPlan"></app-form-label> -->
+      <span *ngIf="mode == 1" class='form-label preformated'>{{getFooterMessage()}}</span>
+    </div>
+
+    <!-- Buttons -->
+    <div *ngIf="mode == 1" fxLayout='column'>
+      <button *ngIf="isPaymentDetailsVisible && !isVoucherMode" (click)="onSubmit()" class="form-button next-button" color="primary"
+        fxFlexAlign="end" mat-raised-button [disabled]="!subscriptionForm.valid || !isSubjectSelected">
+        {{ strings.next}}
+      </button>
+      <button *ngIf="!isPaymentDetailsVisible && !isVoucherMode" (click)="onStartFreeTrial()" class="form-button start-button"
+        color="primary" fxFlexAlign="end" mat-raised-button [disabled]="!subscriptionForm.valid || !isSubjectSelected">
+        {{ strings.startUsingBiobrain }}
+      </button>
+      <button *ngIf="isVoucherMode" (click)="onUseVoucher()" class="form-button start-button"
+        color="primary" fxFlexAlign="end" mat-raised-button [disabled]="!subscriptionForm.valid || !isSubjectSelected">
+        {{ strings.useVoucher }}
+      </button>
+    </div>
+    <div *ngIf="mode == 2" fxLayout='column' fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+        <button (click)="onCancel()" class="form-button save-button" color="primary" mat-raised-button>
+          {{strings.cancel | titlecase}}
+        </button>
+        <button (click)="onSubmit()" class="form-button save-button" color="primary" mat-raised-button
+          [disabled]="!subscriptionForm.valid || !isSubjectSelected">
+          {{strings.next | titlecase}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- </mat-card> -->
+</form>

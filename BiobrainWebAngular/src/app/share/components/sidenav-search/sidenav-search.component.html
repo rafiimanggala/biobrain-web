@@ -1,0 +1,13 @@
+<mat-form-field class='search-field' floatLabel='never' >
+      <span matPrefix>
+          <mat-icon>search</mat-icon>
+      </span>
+  <input #inputRef
+    [(ngModel)]='searchText'
+    (ngModelChange)='onChange()'
+    (keyup.enter)='onComplete()'
+    (keyup.escape)='onCancel()'
+    matInput
+    name='search'
+    placeholder='{{strings.search}}' tabindex='-1' type="search"/>
+</mat-form-field>

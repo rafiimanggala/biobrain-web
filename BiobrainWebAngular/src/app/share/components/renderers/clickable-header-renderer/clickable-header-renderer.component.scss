@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  align-items: center;
+  text-overflow: ellipsis;
+  align-self: stretch;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.custom-header-label {
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: left;
+  cursor: pointer;
+  white-space: normal !important;
+}

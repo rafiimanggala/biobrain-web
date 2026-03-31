@@ -1,0 +1,25 @@
+<form #inviteForm="ngForm" name="inviteForm">
+  <h1 mat-dialog-title>{{strings.inviteStudentByEmail}}</h1>
+
+  <mat-dialog-content fxLayout="column">
+    <mat-form-field fxFlex="1 1 100%">
+      <input matInput name="email" #email="ngModel" placeholder="{{strings.email | titlecase}}"
+        [(ngModel)]="dialogData.email" pattern="^[a-zA-Z0-9.\-_]{1,}@([0-9a-zA-Z\-]{1,}[.]{1}){1,}([a-zA-Z]{2,}){1}$" required>
+      <mat-error *ngIf="email.hasError('required')">
+        {{strings.requiredFieldError | titlecase}}
+      </mat-error>
+      <mat-error *ngIf="email.hasError('pattern')">{{strings.invalidEmail}}</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button mat-stroked-button type='button' class='auto-bordered-form-button' color='accent' (click)='onClose()'>
+      {{ (strings.cancel) | uppercase }}
+    </button>
+
+    <button mat-raised-button type='submit' class='auto-form-button' color='warn' (click)='onSubmit()'
+      [disabled]="!inviteForm.valid">
+      {{ (strings.submit) | uppercase }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,82 @@
+<div>
+  <div [class]="'container subject-colors ' + subjectCssClass" (click)='onClick()'>
+    <div class='subjectIcon' [ngSwitch]='subjectCode'>
+      <ng-container *ngSwitchCase='subjectService.biology' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchCase='12' [alt]='strings.biology' src='assets/images/Biology_Year_12.svg' />
+        <img *ngSwitchCase='10' [alt]='strings.biology' src='assets/images/Biology_Year_10.svg' />
+        <img *ngSwitchDefault [alt]='strings.biology' src='assets/images/Biology_Year_11.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.chemistry' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchCase='12' [alt]='strings.chemistry' src='assets/images/Chemistry_Year_12.svg' />
+        <img *ngSwitchCase='10' [alt]='strings.chemistry' src='assets/images/Chemistry_Year_10.svg' />
+        <img *ngSwitchDefault [alt]='strings.chemistry' src='assets/images/Chemistry_Year_11.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.physics' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchCase='12' [alt]='strings.physics' src='assets/images/Physics_Year_12.svg' />
+        <img *ngSwitchDefault [alt]='strings.physics' src='assets/images/Physics_Year_11.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.biology10' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.biology' src='assets/images/Biology_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.chemistry10' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.chemistry' src='assets/images/Chemistry_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.forensics' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.forensics' src='assets/images/Forensics_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.psychology' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.psychology' src='assets/images/Psychology_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.physics10' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.physics' src='assets/images/Physics_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.marine10' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.marine' src='assets/images/Marine_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.science' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.science' src='assets/images/Science_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.live' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.live' src='assets/images/Life_Science_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.sciencePen' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.science' src='assets/images/Science_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.biology10Us' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.biology' src='assets/images/Biology_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.earth10Jpc' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.science' src='assets/images/Earth_Year_10.svg' />
+      </ng-container>
+
+      <ng-container *ngSwitchCase='subjectService.applied10Jpc' [ngSwitch]='schoolClassYear'>
+        <img *ngSwitchDefault [alt]='strings.applied' src='assets/images/Applied_Year_10.svg' />
+      </ng-container>
+    </div>
+
+    <div class='subject-light-text-color schoolClassName'>
+      {{ schoolClassName }}
+    </div>
+  </div>
+
+  <div class="streak" *ngIf="streak && streak > 0" fxLayout="column" fxLayoutAlign="start center">
+    <div class="hexagone-container">
+      <app-hexagone class="hexagone" [borderColor]="getStreakColor(subjectCode)" [textColor]="getStreakColor(subjectCode)" [color]="'#ffffff'" [text]="streak.toString()" [borderWidth]="10" [isWide]="true"></app-hexagone>
+      
+    </div>
+    <img class="bee" src="assets/images/bee.svg">
+  </div>
+</div>

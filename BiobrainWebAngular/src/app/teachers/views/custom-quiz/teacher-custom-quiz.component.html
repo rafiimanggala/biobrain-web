@@ -1,0 +1,120 @@
+<div class="custom-quiz-container" fxLayout="column" fxLayoutGap="20px">
+  <div class="page-header">
+    <h2>Create Custom Quiz</h2>
+    <p class="subtitle">Select topics and configure a quiz to assign to your class.</p>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="24px">
+    <!-- Left panel: Form -->
+    <div fxFlex="40" fxLayout="column" fxLayoutGap="16px" class="form-panel">
+
+      <!-- Quiz Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Quiz Name</mat-label>
+        <input matInput [(ngModel)]="quizName" placeholder="Enter quiz name" maxlength="100">
+      </mat-form-field>
+
+      <!-- Course Selector -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
+        <mat-label>Course</mat-label>
+        <mat-select [(value)]="selectedCourseId" (selectionChange)="onCourseChange($event.value)">
+          <ng-container *ngFor="let group of courseGroups">
+            <mat-option *ngFor="let course of group.courses" [value]="course.courseId">
+              {{course.course?.subject?.name}} - {{course.className}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Class Selector -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
+        <mat-label>Assign to Class</mat-label>
+        <mat-select [(value)]="selectedClassId" (selectionChange)="onClassChange($event.value)">
+          <ng-container *ngFor="let group of courseGroups">
+            <mat-option *ngFor="let course of group.courses" [value]="course.classId">
+              {{course.className}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Question Count -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Number of Questions</mat-label>
+        <mat-select [(value)]="questionCount">
+          <mat-option *ngFor="let count of questionCountOptions" [value]="count">
+            {{count}} questions
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Save as Template -->
+      <mat-checkbox [(ngModel)]="saveAsTemplate" color="primary">
+        Save as template for future use
+      </mat-checkbox>
+
+      <!-- Submit -->
+      <button
+        mat-raised-button
+        color="primary"
+        class="submit-button"
+        [disabled]="!isFormValid || isSubmitting"
+        (click)="onSubmit()">
+        <mat-icon *ngIf="!isSubmitting">assignment</mat-icon>
+        <mat-spinner *ngIf="isSubmitting" diameter="20" class="inline-spinner"></mat-spinner>
+        <span>{{isSubmitting ? 'Creating...' : 'Create & Assign'}}</span>
+      </button>
+
+      <div class="selection-summary" *ngIf="selectedNodeIds.length > 0">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{selectedNodeIds.length}} topic(s) selected</span>
+      </div>
+    </div>
+
+    <!-- Right panel: Content Tree -->
+    <div fxFlex="60" class="tree-panel">
+      <div class="tree-header">
+        <h3>Select Topics</h3>
+        <p class="hint" *ngIf="!selectedCourseId">Select a course to load topics.</p>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-container" fxLayoutAlign="center center">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <mat-tree
+        *ngIf="!isLoading && selectedCourseId"
+        [dataSource]="dataSource"
+        [treeControl]="treeControl"
+        class="content-tree">
+
+        <!-- Leaf node -->
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <mat-checkbox
+            [checked]="checklistSelection.isSelected(node)"
+            (change)="toggleLeafNode(node)"
+            color="primary">
+            {{node.header}}
+          </mat-checkbox>
+        </mat-tree-node>
+
+        <!-- Parent node -->
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle>
+            <mat-icon>
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <mat-checkbox
+            [checked]="descendantsAllSelected(node)"
+            [indeterminate]="descendantsPartiallySelected(node)"
+            (change)="toggleParentNode(node)"
+            color="primary">
+            {{node.header}}
+          </mat-checkbox>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </div>
+</div>

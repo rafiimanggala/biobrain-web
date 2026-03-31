@@ -1,0 +1,52 @@
+<div class="container full-size-no-overflow">
+  <div class="header-row" fxLayout="row" fxLayoutAlign="space-between center">
+    <!-- <div class="placeholder"></div> -->
+    <div class="filters" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <div class="filter-container" *ngFor="let filter of filters; let last = last;" fxLayout="row" (click)="filterClicked(filter.depth)"
+        [ngClass]="{'filter-disabled': !filter.values || filter.values.length < 1, 'filter-narrow': last}">
+        <!-- (ngModelChange)="courseSelected($event)" -->
+
+        <!-- <mat-form-field> -->
+          <mat-select id="filter{{filter.depth}}" class="filter-select" name="filter{{filter.depth}}" [(ngModel)]="filter.selectedValue"
+            #filter{{filter.depth}}="ngModel" placeholder="{{filter.contentTreeMetaName}}"
+            (ngModelChange)="filterSelected(filter.contentTreeMetaId)"
+            [disabled]="!filter.values || filter.values.length < 1">
+            <mat-option></mat-option>
+            <mat-option *ngFor="let value of filter.values" [value]="value">{{value.nodeTitle}}
+            </mat-option>
+          </mat-select>
+          <img class="filter-icon" matSuffix src="/assets/icons/filter-icon.svg">
+        <!-- </mat-form-field> -->
+      </div>
+    </div>
+    <div class="anonymise-toggle" fxLayoutAlign="center center" style="margin-right: 16px;">
+      <mat-slide-toggle [(ngModel)]="anonymiseResults"
+                        (change)="onAnonymiseToggle()"
+                        color="accent">
+        {{strings.anonymiseResults}}
+      </mat-slide-toggle>
+    </div>
+    <div class="description">
+      <div class="description-note"><span class="red-color">{{strings.assignedShort}}</span> - {{strings.assigned}}</div>
+      <div class="description-note"><span class="red-color">{{strings.notAssignedShort}}</span> - {{strings.notAssigned}}</div>
+    </div>
+  </div>
+
+  <ag-grid-angular #agGridRef class="ag-theme-alpine grid-item" [pagination]="false" (gridReady)="onGridReady($event)"
+    (columnResized)='onColumnResized($event)' (modelUpdated)="onModelUpdated()">
+  </ag-grid-angular>
+
+  <div class="footer-row">
+    <div class="footer-column">
+      <span>
+        {{ strings.totalStudents | uppercase }} = {{ getStudentsCount() | async }}
+      </span>
+    </div>
+    <div class="footer-action-container">
+      <button class="download-button" mat-button (click)="download()">
+        <mat-icon color="white">file_download</mat-icon>
+        <span>{{strings.downloadResults}}</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<form #paymentDetailsForm="ngForm" name="subscriptionForm">
+
+  <div class="component-container" fxLayout="column" fxLayoutGap="10px">
+    <app-signup-header [text]="strings.yourPaymentDetails"></app-signup-header>
+
+    <div class="devider"></div>
+
+    <!-- Fields -->
+    <div class="form-fields" fxFlex="1 1 100%" fxLayout="column" fxLayoutGap="2px">
+
+      <app-form-label [text]="strings.nameOnCard"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+        <input matInput name="ccname" [(ngModel)]="card.cardholderName" #ccname="ngModel" appAutofocus="ccname"
+          placeholder="{{strings.nameOnCard}}" required autocomplete="cc-name" cc-name>
+        <mat-error *ngIf="ccname.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <app-form-label [text]="strings.cardNumber"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+        <input matInput cc-number name="cardnumber" [(ngModel)]="card.cardNumber" #cardnumber="ngModel"
+          placeholder="{{strings.cardNumber}}" required mask="0000 0000 0000 0000" autocomplete="cc-number">
+        <mat-error *ngIf="cardnumber.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <div class="input-row" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutGap="5px" fxFlex="1 1 49%">
+          <app-form-label [text]="strings.expiryDate"></app-form-label>
+          <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="space-between">
+            <mat-form-field class="form-field date-field" floatLabel="never" hideRequiredMarker="true" fxFlex="45%">
+              <input matInput name="ccmonth" [(ngModel)]="card.expiryMonth" #ccmonth="ngModel"
+                placeholder="{{strings.mm}}" required mask="00" autocomplete="cc-exp-month" cc-exp-month>
+              <mat-error *ngIf="ccmonth.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+            </mat-form-field>
+            <div class="date-separator"><span>/</span></div>
+            <mat-form-field class="form-field date-field" floatLabel="never" hideRequiredMarker="true" fxFlex="45%">
+              <input matInput name="ccyear" [(ngModel)]="card.expiryYear" #ccyear="ngModel" mask="00"
+                placeholder="{{strings.yy}}" required autocomplete="cc-exp-year" cc-exp-year>
+              <mat-error *ngIf="ccyear.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div fxLayout="column" fxLayoutGap="5px" fxFlex="1 1 49%">
+          <app-form-label [text]="strings.cvc"></app-form-label>
+          <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+            <input matInput name="cvc" [(ngModel)]="card.cvc" #cvc="ngModel" placeholder="{{strings.cvc}}" required
+              autocomplete="cc-csc" cc-csc>
+            <mat-error *ngIf="cvc.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <app-form-label [text]="strings.address"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+        <input matInput name="addressLine1" [(ngModel)]="card.addressLine1" #addressLine1="ngModel"
+          placeholder="{{strings.address}}" required autocomplete="addressLine1" cc-addressLine1>
+        <mat-error *ngIf="addressLine1.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <app-form-label [text]="strings.city"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+        <input matInput name="city" [(ngModel)]="card.city" #city="ngModel" placeholder="{{strings.city}}" required
+          autocomplete="cc-city" cc-city>
+        <mat-error *ngIf="city.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <!-- <app-form-label [text]="strings.country"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true">
+        <input matInput name="country" [(ngModel)]="card.country" #country="ngModel"
+          placeholder="{{strings.country}}" required autocomplete="country" cc-country>
+        <mat-error *ngIf="country.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field> -->
+
+      <app-form-label [text]="strings.country"></app-form-label>
+      <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true" style="display: block">
+        <input type="text" name="country" #country="ngModel" [(ngModel)]="card.country" matInput
+          [matAutocomplete]="countryAuto" required (ngModelChange)="onCountryChanged()" [placeholder]="strings.country">
+        <mat-autocomplete autoActiveFirstOption #countryAuto="matAutocomplete">
+          <mat-option *ngFor="let option of filtredCountries" [value]="option.name">
+            {{option.name}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="country.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+      </mat-form-field>
+
+      <app-form-label *ngIf="mode == 1" [text]="strings.promoCode"></app-form-label>
+      <div fxLayout="row" fxLayoutGap="10px" *ngIf="!promoCode && mode == 1">
+        <mat-form-field class="form-field" floatLabel="never" hideRequiredMarker="true" fxFlex="1 1 100%">
+          <input matInput name="promoCode" [(ngModel)]="promoCodeValue" #promoCode="ngModel"
+            placeholder="{{strings.promoCode}}" autocomplete="none">
+          <mat-error *ngIf="promoCode.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+          <mat-error *ngIf="promoCodeError">{{promoCodeError}}</mat-error>
+        </mat-form-field>
+        <button (click)="onApplyPromoCode()" class="form-button apply-button" color="primary" mat-raised-button>
+          {{strings.apply | titlecase}}
+        </button>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" *ngIf="promoCode && mode == 1">
+        <div class="promo-code">{{promoCode.code+':'}}</div>
+        <div class="promo-code-value">{{getPromoCodeValueInternal()}}</div>
+        <button mat-icon-button color="warn" fxFlexAlign="end" (click)="onRemovePromo()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div *ngIf="mode == 1" class="input-row" fxLayout="row" fxLayoutAlign="space-between">
+        <div class="form-label-selected" fxFlex="1 1 49%" fxLayoutAlign="end center">
+          <span>{{strings.totalBillingToday}}</span>
+        </div>
+        <div *ngIf="subscriptionData" class="total-label-container" fxFlex="1 1 49%">
+          <div class="form-label-selected">{{subscriptionData.curency + getTotalInternal()}}</div>
+        </div>
+      </div>
+
+      <!-- Terms of service -->
+      <div *ngIf="mode == 1" fxLayout="row" fxLayoutGap="10px">
+        <mat-checkbox color="primary" name="temsOfService" [(ngModel)]="isTermsConfirmed" required></mat-checkbox>
+        <div class="terms-string" [innerHTML]="termsHtmlString"></div>
+      </div>
+    </div>
+
+    <div *ngIf="mode == 1" fxLayout="column">
+      <button (click)="onSubscribe()" class="form-button" color="primary" fxFlexAlign="end" mat-raised-button
+        [disabled]="!paymentDetailsForm.valid || !isTermsConfirmed">
+        {{signup ? strings.startUsingBiobrain : strings.welcomeBack}}
+      </button>
+    </div>
+    <div *ngIf="mode == 2" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+      <button (click)="onCancel()" class="form-button save-button" color="primary" mat-raised-button>
+        {{strings.cancel | titlecase}}
+      </button>
+      <button (click)="onSubscribe()" class="form-button save-button" color="primary" mat-raised-button
+        [disabled]="!paymentDetailsForm.valid">
+        {{strings.save | titlecase}}
+      </button>
+    </div>
+  </div>
+  <!-- </mat-card> -->
+</form>

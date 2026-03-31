@@ -1,0 +1,40 @@
+@import "../../../styles/variables.scss";
+
+.container-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-item {
+  flex: 1 1;
+}
+
+.footer-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin-left: 2px;
+  height: 50px;
+  flex: 0 0 50px;
+}
+
+.footer-column {
+  margin: 10px 40px 10px 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+}
+
+.footer-column > span {
+  padding-left: 30px;
+  font-weight: 500;
+}
+
+.show-cell {
+  background: white;
+  border-left: 1px solid lightgrey !important;
+  border-right: 1px solid lightgrey !important;
+  border-bottom: 1px solid lightgrey !important;
+}

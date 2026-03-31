@@ -1,0 +1,11 @@
+<div fxLayout="row" fxLayoutGap="20px">
+  <a href="https://biobrain.tech/"><img class="logo" fxFlexAlign="center" src="assets/images/logo.svg"></a>
+  <div class="header-container" fxLayoutAlign="center stretch" fxLayout="column">
+    <span class="header">
+      {{text}}
+    </span>
+    <span class="sub-header" *ngIf="subText">
+      {{subText}}
+    </span>
+  </div>
+</div>

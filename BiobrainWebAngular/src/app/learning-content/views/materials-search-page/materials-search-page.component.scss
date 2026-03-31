@@ -1,0 +1,30 @@
+::ng-deep .search-field .mat-form-field-flex {
+  border-radius: 20px !important;
+  padding-left: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 8px;
+}
+
+::ng-deep .search-field .mat-form-field-underline {
+  display: none !important;
+}
+
+::ng-deep .search-field .mat-form-field-infix {
+  border: 0px;
+}
+
+.materials-search-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 100px);;
+
+  .search-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+  }
+}

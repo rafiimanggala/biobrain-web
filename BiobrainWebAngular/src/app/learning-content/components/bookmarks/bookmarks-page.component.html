@@ -1,0 +1,24 @@
+<div class='bookmarks-page'>
+  <!-- <div fxLayout="row" fxLayoutAlign="start center" class="navigation-path">
+    <div class="underlined hand-pointer" (click)="onCourseClick()">{{subjectName | uppercase}}</div>
+    <mat-icon>navigate_next</mat-icon>
+    <span>{{strings.savedItems | uppercase}}</span>
+  </div> -->
+  <app-page-bradscrumbs [courseId]='courseId' [pageName]='strings.savedItems'></app-page-bradscrumbs>
+  <div class='bookmarks-list' fxLayout="column" fxLayoutGap="2px">
+    <div class="bookmark-item" *ngFor="let bookmark of bookmarks" fxLayout="row" fxLayoutAlign="space-between" (click)="onBookmarkClick(bookmark)">
+      <div class="bookmark-item-title" fxLayout="raw wrap" fxLayoutAlign="start center">
+        <div fxLayout="raw" fxLayoutAlign="start center" *ngFor="let pathItem of bookmark.path; last as isLast">
+          <span>{{pathItem}}</span>
+          <mat-icon *ngIf="!isLast">navigate_next</mat-icon>
+        </div>
+        <!-- <div>{{bookmark.header}}</div> -->
+      </div>
+      <div>
+        <button class="delete-button" mat-icon-button color="white" (click)="onDeleteClick(bookmark);$event.stopPropagation()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

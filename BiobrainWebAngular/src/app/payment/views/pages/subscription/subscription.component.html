@@ -1,0 +1,27 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center stretch" fxFlexFill fxFlex.lt-sm="100%">
+  <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="20px" fxLayout.lt-sm="column"
+    fxLayoutAlign.lt-sm="start center" fxLayoutGap.lt-sm="10px" class="nested-container" fxFlex.lt-sm="100%">
+
+    <mat-card class="main-card" fxLayout="column" fxLayoutGap="10px">
+      <app-subscription-details *ngIf="currentStep == 0" [subscriptionParameters]="subscriptionParameters" [isPaymentDetailsVisible]="!isFreeTrial"
+        (next)="onNext($event)" (freeTrial)="onFreeTrial($event)" (useVoucher)="onUseVoucher($event)">
+      </app-subscription-details>
+      <app-payment-details *ngIf="currentStep == 1" [subscriptionData]="subscriptionDetails"
+        [paymentMethods]="paymentMethods" (subscribe)="onSubscribe($event)" [signup]="signup">
+
+      </app-payment-details>
+    </mat-card>
+    <div class="login-column" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" *ngIf="currentStep == 0">
+      <button class="form-button" color="basic" mat-raised-button (click)="onEditProfile()">
+        <span class="login-column-button-label">
+          {{strings.editProfile}}
+        </span>
+      </button>
+      <button class="form-button" color="basic" mat-raised-button (click)="onLogout()">
+        <span class="logout-button-label">
+          {{strings.logout}}
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

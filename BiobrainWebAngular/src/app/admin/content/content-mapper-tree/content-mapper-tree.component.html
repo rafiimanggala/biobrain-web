@@ -1,0 +1,118 @@
+<!-- Add -->
+<mat-icon class="clickable" color="accent" [matTooltip]="strings.add" (click)="onAdd(null)">
+    add
+</mat-icon>
+
+<!-- Tree -->
+<mat-tree #tree *ngIf="nestedDataSource.data != null && nestedDataSource.data != undefined"
+    [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="tree">
+    <mat-tree-node class="node left-direction" *matTreeNodeDef="let node" matTreeNodePadding
+        matTreeNodePaddingIndent="175">
+        <li>
+            <div class="mat-tree-node" fxLayout="raw" fxLayoutAlign="start">
+                <span class="clickable" [ngClass]="{'excluded' : node.isExcluded}">
+                    {{node.header}}
+                </span>
+                <!-- MoveUp -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveUp"
+                    (click)="onContentMoveUp(node)"
+                    *ngIf="(node.isCanAddChildren || !node.isCanAttachContent)&& !node.isAutoMapped">
+                    arrow_drop_up
+                </mat-icon>
+                <!-- MoveDown -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveDown"
+                    (click)="onContentMoveDown(node)"
+                    *ngIf="(node.isCanAddChildren || !node.isCanAttachContent)&& !node.isAutoMapped">
+                    arrow_drop_down
+                </mat-icon>
+                <!-- Delete -->
+                <mat-icon class="clickable action-button" color="warn" [matTooltip]="strings.delete"
+                    (click)="onContentDelete(node)"
+                    *ngIf="(node.isCanAddChildren || !node.isCanAttachContent) && !node.isAutoMapped">
+                    clear
+                </mat-icon>
+                <!-- Exclude -->
+                <mat-icon class="clickable action-button" color="warn" [matTooltip]="strings.exclude"
+                    (click)="onExclude(node)"
+                    *ngIf="(node.isCanAddChildren || !node.isCanAttachContent) && node.isAutoMapped && !node.isExcluded">
+                    remove
+                </mat-icon>
+                <!-- Include -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.include"
+                    (click)="onInclude(node)"
+                    *ngIf="(node.isCanAddChildren || !node.isCanAttachContent) && node.isAutoMapped && node.isExcluded">
+                    add
+                </mat-icon>
+
+            </div>
+        </li>
+    </mat-tree-node>
+
+    <mat-nested-tree-node class="node left-direction" *matTreeNodeDef="let node; when: hasNestedChild"
+        matTreeNodePadding matTreeNodePaddingIndent="175">
+        <!-- <div class="mat-tree-node"> -->
+        <li>
+            <div class="mat-tree-node">
+                <mat-icon class="mat-icon-rtl-mirror expand-toggle clickable" matTreeNodeToggle>
+                    {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+                <span class="clickable" matTreeNodeToggle NgIsExcluded>
+                    {{node.header}}{{node.isAutoMapped ? "*" : ""}}{{" ("+node.children.length+")"}}
+                </span>
+                <!-- Add -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.add"
+                    (click)="onAdd(node)" *ngIf="node.isCanAddChildren">
+                    add
+                </mat-icon>
+                <!-- Automap -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.autoMapOptions"
+                    (click)="onManageAutoMap(node)" *ngIf="node.isQuestionsFolder">
+                    link
+                </mat-icon>
+                <!-- Paste -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.pasteFromGeneric"
+                    (click)="onCopy(node)" *ngIf="node.isCanCopyIn">
+                    content_paste
+                </mat-icon>
+                <!-- Edit -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.edit"
+                    (click)="onEdit(node)" *ngIf="node.isCanAddChildren || !node.isCanAttachContent">
+                    mode_edit
+                </mat-icon>
+                <!-- MoveUp -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveUp"
+                    (click)="onMoveUp(node)" *ngIf="node.isCanAddChildren || !node.isCanAttachContent">
+                    arrow_drop_up
+                </mat-icon>
+                <!-- MoveDown -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.moveDown"
+                    (click)="onMoveDown(node)" *ngIf="node.isCanAddChildren || !node.isCanAttachContent">
+                    arrow_drop_down
+                </mat-icon>
+
+                <!-- Add material-->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.attachMaterial"
+                    (click)="onAttachMaterials(node)" *ngIf="node.isMaterialsFolder">
+                    add
+                </mat-icon>
+                <!-- Add question-->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.attachQuestion"
+                    (click)="onAttachQuestions(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped">
+                    add
+                </mat-icon>
+
+                <!-- for levels -->
+                <!-- availableindemo -->
+                <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.availableInDemo"
+                    (click)="onAvailableInDemo(node)"
+                    *ngIf="(!node.isMaterialsFolder && !node.isQuestionsFolder)">
+                    {{node.isAvailableInDemo ? 'check_box' : 'check_box_outline_blank'}}
+                </mat-icon>
+            </div>
+            <ul [class.invisible]="!nestedTreeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+            </ul>
+        </li>
+        <!-- </div> -->
+    </mat-nested-tree-node>
+</mat-tree>

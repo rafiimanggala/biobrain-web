@@ -1,0 +1,21 @@
+@import '../../../styles/variables.scss';
+
+.header-container {
+  width: 100%;
+}
+
+.header {
+  font-size: 17pt;
+  font-family: $nunito;
+  color: $primary;
+  font-weight: 800;
+  line-height: 30px;
+}
+
+.sub-header {
+  font-size: 12pt;
+  font-family: $nunito;
+  color: $primary;
+  font-weight: 800;
+  line-height: 30px;
+}

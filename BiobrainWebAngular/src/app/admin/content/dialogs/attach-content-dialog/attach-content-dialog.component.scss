@@ -1,0 +1,38 @@
+.invisible{
+    display: none;
+}
+
+.tree{
+    background:none;
+}
+.tree ul,
+.tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+.tree li {
+    padding-inline-start: 0px;
+}
+.tree ul {
+    padding-inline-start: 30px;
+}
+
+.expand-toggle{
+    height: 100%;
+    vertical-align: middle;
+}
+
+.action-button{
+    display: none;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.mat-tree-node .action-button{
+    display: none;
+}
+
+.mat-tree-node:hover > .action-button{
+    display: inline-block;
+}

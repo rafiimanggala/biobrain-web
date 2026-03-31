@@ -1,0 +1,13 @@
+@import './../../../styles/variables.scss';
+
+mat-dialog-content {
+  max-width: 500px;
+}
+
+.text-row {
+  margin-bottom: 8px;
+}
+
+.tick{
+  color: $green;
+}

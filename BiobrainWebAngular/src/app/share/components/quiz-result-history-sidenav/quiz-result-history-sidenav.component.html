@@ -1,0 +1,19 @@
+<mat-nav-list class="quiz-history-sidenav-container full-height-with-scroll" fxLayout="column"
+    fxLayoutAlign="start center" fxLayoutGap="24px">
+    <!-- Header -->
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="12px">
+        <div>{{name}}'s</div>
+        <div class="with-icon" fxLayout="raw">
+            <!-- <mat-icon>bookmark_border</mat-icon> -->
+            <div>{{strings.quizResultsSummary}}</div>
+        </div>
+    </div>
+    <ng-container *ngIf="data$ | async as streakData">
+        <span class="bzz-label">{{strings.bzz}}</span>
+        <span class="quiz-history-label">{{strings.youJustCompletedStreak(streakData.daysCount)}}</span>
+        <app-bee class="bee" [days]="streakData.daysCount" ></app-bee>
+        <span class="quiz-history-label">{{strings.completeStreatMessage}}</span>
+        <app-hive class="hive" [streak]="streakData.streak"></app-hive>
+    </ng-container>
+
+</mat-nav-list>

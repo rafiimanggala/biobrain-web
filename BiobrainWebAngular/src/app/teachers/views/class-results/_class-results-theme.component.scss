@@ -1,0 +1,43 @@
+@import '~@angular/material/theming';
+
+@mixin class-results-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+  .footer-column {
+    background-color: mat-color($primary-palette, 500);
+    color: white;
+  }
+
+  .header-row {
+    background-color: mat-color($accent-palette, 50);
+  }
+
+  .description-note {
+    color: mat-color($primary-palette, 500);
+  }
+
+  .filter-container {
+    background-color: mat-color($accent-palette, 500);
+  }
+
+  .filter-select {
+    color: white !important;
+  }
+
+  .download-button {
+    background-color: mat-color($accent-palette, 500);
+    color: white !important;
+    padding-left: 4px !important;
+    padding-right: 8px !important;
+  }
+}
+
+@mixin class-results-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  @if $color !=null {
+    @include class-results-color($theme);
+  }
+}

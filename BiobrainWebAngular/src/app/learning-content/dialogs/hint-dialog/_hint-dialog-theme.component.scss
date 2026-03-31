@@ -1,0 +1,61 @@
+@import '~@angular/material/theming';
+
+@mixin hint-dialog-color($config-or-theme) {
+  $color-config: mat-get-color-config($config-or-theme);
+  $primary-palette: map-get($color-config, 'primary');
+  $accent-palette: map-get($color-config, 'accent');
+
+
+  @font-face {
+    font-family: 'Distro II Bats';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Distro II Bats'), url('../../../../assets/fonts/distro2_bats.woff') format('woff');
+  }
+
+  .hint-dialog-panel, .narrow-hint-dialog-panel{
+      position: relative !important;
+      overflow: visible !important;
+      // padding-top: 25px !important;
+
+      .mat-dialog-container{
+        border: 5px solid mat-color($primary-palette, 500);
+        border-radius: 20px;
+      }
+
+      .close-button{
+        position: absolute;
+        right: 20px;
+        top: -24px;
+        border: 3px solid white !important;
+        font-size: 30px;
+        text-align: center;
+        box-shadow: none !important;
+        font-family: 'Distro II Bats';
+        .mat-button-wrapper{
+          margin-right: -3px;
+        }
+      }
+
+      
+
+      .submit-button{
+        color: mat-color($primary-palette, 500) !important;
+        border: none !important;
+        .mat-icon{
+            font-size: 40px;
+            height: 40px;
+            width: 40px;
+        }
+      }
+  }
+
+}
+
+@mixin hint-dialog-theme($theme) {
+  $color: mat-get-color-config($theme);
+
+  // @if $color != null {
+    @include hint-dialog-color($theme);
+  // }
+}

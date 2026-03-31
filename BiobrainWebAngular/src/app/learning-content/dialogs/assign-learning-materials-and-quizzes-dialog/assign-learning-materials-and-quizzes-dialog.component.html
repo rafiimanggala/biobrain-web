@@ -1,0 +1,132 @@
+<h2 class="dialog-header" mat-dialog-title>{{dialogData.title | titlecase}}</h2>
+
+<mat-dialog-content>
+  <form fxLayout="column" class="dialog-content" #form="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>{{strings.dueDate | titlecase}}</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]='dueDate' name='dueDate' #dueDateModel="ngModel" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="dueDateModel.errors?.required">{{strings.validationErrors.invalidDueDate}}</mat-error>
+    </mat-form-field>
+
+    <mat-accordion multi='true'>
+      <ng-container *ngIf='learningMaterialSelections.length > 0'>
+        <mat-expansion-panel [expanded]='learningMaterialSelections.length === 1'>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{strings.learningMaterials}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{strings.total | titlecase}}: {{learningMaterialSelections.length}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <p *ngFor='let material of learningMaterialSelections'>
+          <mat-checkbox [(ngModel)]='material.included'
+                        [ngModelOptions]="{ standalone: true }">
+            {{material.fullName}}
+          </mat-checkbox>
+        </p>
+      </mat-expansion-panel>
+      </ng-container>
+
+      <ng-container *ngIf='dialogData.quizIds.length > 0'>
+        <mat-expansion-panel [expanded]='dialogData.quizIds.length === 1'>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{strings.quizzes | titlecase}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{strings.total | titlecase}}: {{dialogData.quizIds.length}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <p *ngFor='let quiz of quizzes$ | async'>
+            {{quiz.fullName}}
+          </p>
+
+          <div style="margin-top: 8px;">
+            <mat-slide-toggle [(ngModel)]='hintsEnabled'
+                              [ngModelOptions]="{ standalone: true }"
+                              color="accent">
+              {{strings.enableHints}}
+            </mat-slide-toggle>
+          </div>
+
+          <div style="margin-top: 8px;">
+            <mat-slide-toggle [(ngModel)]='soundEnabled'
+                              [ngModelOptions]="{ standalone: true }"
+                              color="accent">
+              {{strings.enableSound}}
+            </mat-slide-toggle>
+          </div>
+        </mat-expansion-panel>
+      </ng-container>
+
+      <mat-expansion-panel *ngFor='let entry of studentsMap'>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{strings.students | titlecase}}
+          </mat-panel-title>
+          <ng-container ></ng-container>
+          <mat-panel-description *ngIf='entry.schoolClass; else countOfStudentsTemplate'>
+            {{strings.class | titlecase}}: {{entry.schoolClass.fullName}}
+          </mat-panel-description>
+          <ng-template #countOfStudentsTemplate>
+            <mat-panel-description>
+              {{strings.total | titlecase}}: {{entry.students.length}}
+            </mat-panel-description>
+          </ng-template>
+        </mat-expansion-panel-header>
+
+        <p *ngFor='let student of entry.students'>
+          <mat-checkbox [(ngModel)]='student.checked'
+                        [ngModelOptions]="{ standalone: true }"
+                        [name]="checkboxName(entry.schoolClass, student)">
+            {{student.fullName}}
+          </mat-checkbox>
+        </p>
+        <mat-action-row fxLayout="row" fxLayoutAlign="start">
+          <button mat-raised-button
+                  color=accent
+                  class='node-button'
+                  style="margin-left: 0px !important;"
+                  (click)="unselectAll(entry.schoolClass?.schoolClassId)">
+            {{strings.unselectAll}}
+          </button>
+          <button mat-raised-button
+                  color=accent
+                  class='node-button'
+                  (click)="selectAll(entry.schoolClass?.schoolClassId)">
+            {{strings.selectAll}}
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-dialog-content>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" align="end">
+  <div class="flex-separator"></div>
+
+  <button
+    mat-stroked-button
+    class="auto-bordered-form-button"
+    color="accent"
+    (click)="onClose()"
+    type="button">
+    {{strings.cancel | uppercase}}
+  </button>
+
+  <button
+    mat-raised-button
+    class="auto-form-button"
+    color="accent"
+    [disabled]='!form.valid'
+    (click)="onSubmit()"
+    type="submit">
+    {{strings.save | uppercase}}
+  </button>
+</div>

@@ -1,0 +1,32 @@
+@import '../../../../styles/variables.scss';
+
+mat-dialog-content {
+  width: 550px;
+}
+
+.confirm-text {
+  margin-bottom: 8px;
+}
+
+.subjects{
+  white-space: pre;
+}
+
+.add-subscription-link{
+  text-decoration: underline;
+  font-size: 11pt;
+  font-family: $nunito;
+  cursor: pointer;
+  font-weight: 800;
+}
+.action-button{
+  font-family: $nunito;
+  font-size: 9pt !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  max-width: 220px;
+}
+
+.strike-out{
+  text-decoration: line-through;
+}

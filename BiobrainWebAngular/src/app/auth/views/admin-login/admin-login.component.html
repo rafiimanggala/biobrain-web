@@ -1,0 +1,49 @@
+<form #loginForm="ngForm" name="loginForm">
+    <mat-card class="login-card" fxLayout="column" fxLayoutGap="10px">
+
+        <div fxLayout="row">
+            <img class="logo" src="assets/images/logo.svg" fxFlexAlign="center" (click)="reload()">
+            <div class="header-container" fxFlexAlign="center"><span class="header">{{strings.welcomeBack}}</span></div>
+        </div>
+
+        <div class="devider"></div>
+
+        <app-form-label [text]="strings.yourEmail"></app-form-label>
+        <mat-form-field floatLabel="never" class="form-field">
+            <input  [(ngModel)]="user.username" matInput name="login" #login="ngModel" required
+                placeholder="{{strings.yourEmailPlaceholder}}" />
+            <mat-error *ngIf="login.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+
+        <app-form-label [text]="strings.userEmail"></app-form-label>
+        <mat-form-field floatLabel="never" class="form-field">
+            <input  [(ngModel)]="user.usercode" matInput name="login2" #login2="ngModel" required
+                placeholder="{{strings.userEmail}}" />
+            <mat-error *ngIf="login2.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+
+        <app-form-label [text]="strings.password"></app-form-label>
+        <mat-form-field floatLabel="never"  class="form-field">
+            <input [(ngModel)]="user.password" matInput type="password" name="password" #password="ngModel"
+                placeholder="{{strings.passwordPlaceholder}}" required />
+            <mat-error *ngIf="password.hasError('required')">{{strings.requiredFieldError}}</mat-error>
+        </mat-form-field>
+
+      <div fxLayout="row wrap" fxLayoutAlign="end center" class="actions">
+
+        <button
+          mat-raised-button
+          class="form-button"
+          color="primary"
+          fxFlexAlign="end"
+          type="submit"
+          (click)="onSubmit(loginForm)"
+          [disabled]="!loginForm.valid"
+        >
+          {{strings.login}}
+        </button>
+      </div>
+
+    </mat-card>
+</form>
+<div class="bg-img"></div>

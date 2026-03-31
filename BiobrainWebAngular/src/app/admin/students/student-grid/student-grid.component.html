@@ -1,0 +1,53 @@
+<ag-grid-angular
+    #teachersGrid
+    class="ag-theme-alpine grid-item ag-grid-custom-admin-area"
+    [rowData]="studentListStore.items$ | async"
+    [paginationAutoPageSize]="true"
+    [paginationPageSize]="20"
+    [pagination]="true"
+    (gridReady)="onGridReady($event)"
+    (modelUpdated)="onModelUpdated()"
+  >
+
+  <ag-grid-column [appContextMenu]="menu" [hide]="true">
+    <mat-menu #menu="matMenu">
+      <ng-template matMenuContent let-item="data">
+        <button mat-menu-item (click)="onEditStudent(item.studentId)">{{strings.edit | titlecase}}</button>
+        <button mat-menu-item (click)="onEditStudentClasses(item.studentId)">{{strings.classes | titlecase}}</button>
+        <button mat-menu-item (click)="onResetPassword(item.studentId)">{{strings.resetPassword | titlecase}}</button>
+        <button mat-menu-item (click)="onChangePassword(item.studentId)">{{strings.changePassword | titlecase}}</button>
+        <button mat-menu-item (click)="onChangeEmail(item.studentId)">{{strings.changeEmail | titlecase}}</button>
+        <button mat-menu-item (click)="onDeleteStudent(item.studentId)">{{strings.delete | titlecase}}</button>
+      </ng-template>
+    </mat-menu>
+  </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'firstName'"
+      [headerName]="strings.firstName | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'lastName'"
+      [headerName]="strings.lastName | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+    <ag-grid-column
+      [field]="'schoolClassNames'"
+      [valueFormatter]='joinClassNames'
+      [headerName]="strings.classes | titlecase"
+      [sortable]="true"
+      [filter]="'agTextColumnFilter'"
+      [filterParams]="textFilterParams"
+    >
+    </ag-grid-column>
+
+  </ag-grid-angular>

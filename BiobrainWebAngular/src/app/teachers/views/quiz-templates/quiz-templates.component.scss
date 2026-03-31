@@ -1,0 +1,73 @@
+.templates-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-header {
+  h2 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.loading-container {
+  padding: 60px;
+}
+
+.empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #ccc;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 4px 0;
+    font-size: 16px;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: #aaa;
+  }
+}
+
+.templates-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  .mat-header-cell {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .mat-cell {
+    font-size: 14px;
+  }
+
+  button {
+    mat-icon {
+      margin-right: 4px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
