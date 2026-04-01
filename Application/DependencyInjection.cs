@@ -87,8 +87,17 @@ namespace Biobrain.Application
             services.AddHostedService<WelcomeEmailService>();
             services.AddHostedService<WeeklyInsightsHostedService>();
 
-            // Single tone
-            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            // PDF converter — DinkToPdf requires libwkhtmltox native lib.
+            // On environments where it's unavailable (e.g. Render), skip gracefully.
+            try
+            {
+                services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DI] DinkToPdf unavailable, PDF export disabled: {ex.Message}");
+                services.AddSingleton<IConverter>(sp => throw new InvalidOperationException("PDF export is not available on this platform."));
+            }
         }
 
         private static void AddValidators(IServiceCollection services)
