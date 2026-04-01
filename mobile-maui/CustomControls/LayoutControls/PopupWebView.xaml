@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls"
+             xmlns:customControls="clr-namespace:CustomControls"
+             x:Class="CustomControls.LayoutControls.PopupWebView" IsVisible="False">
+    <ContentView.Content>
+        <Grid x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent">
+            <ContentView x:Name="ContentContainer" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent"
+                         Padding="3, 15, 2, 0">
+                <Border BackgroundColor="White"
+                        StrokeShape="RoundRectangle 15"
+                        Stroke="{x:Static customControls:CustomColors.DarkMain}"
+                        StrokeThickness="4"
+                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <WebView x:Name="ContentWebView" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Navigating="PopupWebView_OnNavigating"/>
+
+                        <Image x:Name="PopupButton" Source="crossicon.png" HorizontalOptions="End" VerticalOptions="End" Margin="13,5"
+                               HeightRequest="40" WidthRequest="40">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="CloseButton_OnClicked"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </VerticalStackLayout>
+                </Border>
+            </ContentView>
+            <Image x:Name="SpeechBubbleImage" IsVisible="True" WidthRequest="30" HeightRequest="30" HorizontalOptions="End" VerticalOptions="End" Source="speechbubble.png"
+                   Margin="0, 0, 50, 0"/>
+
+            <Image x:Name="Correctness" WidthRequest="50" HeightRequest="50" Margin="0,0,20,0" HorizontalOptions="End" VerticalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Correctness_OnOnTouchesEnded"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

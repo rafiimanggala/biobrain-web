@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+          xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+          xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+          xmlns:common="clr-namespace:Common;assembly=BioBrain"
+          xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+          xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+          x:Class="BioBrain.Views.DeleteAccountView"
+          x:Name="This">
+    <ContentPage.Content>
+        <AbsoluteLayout VerticalOptions="FillAndExpand">
+            <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+                <controls:TopBaner Text="{Binding Header}" IsBackVisible="{Binding IsResultVisible, Converter={StaticResource InverseBooleanConverter}}" IsShareVisible="False"/>
+
+                <!--Body-->
+                <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 20" BackgroundColor="White">
+                        <StackLayout.Triggers>
+                            <DataTrigger Binding="{Binding IsResultVisible}" Value="true" TargetType="StackLayout">
+                                <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.LightMain}"></Setter>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+
+                        <!--Description-->
+                        <StackLayout IsVisible="{Binding IsDescriptionVisible}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" 
+                                     Margin="15,10,15,15" Spacing="10">
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Spacing="10">
+
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" Text="{appResources:Translate DeletingAccountPermanent}"
+                               Style="{StaticResource AccountDeleteHeaderLabelStyle}"></Label>
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource AccountDeleteTextLabelStyle}"
+                               Text="{appResources:Translate DeleteAccountDescription}"></Label>
+
+                                <Frame BackgroundColor="{x:Static customControls:CustomColors.Red}" HasShadow="False" CornerRadius="20" Margin="0,30">
+                                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="10">
+                                        <Label VerticalOptions="Center" HorizontalOptions="Center"  Style="{StaticResource AccountDeleteHeaderLabelStyle}"
+                                   TextColor="White" Text="{appResources:Translate AreYouSubscriber}"></Label>
+                                        <Label VerticalOptions="Center" HorizontalOptions="Center" Style="{StaticResource AccountDeleteTextLabelStyle}"
+                                   TextColor="White" Text="{appResources:Translate SubscriberDescription}" FontFamily="Nunito"></Label>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical">
+                                <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{Binding ContinueDeletionButtonText}" 
+                                                       Touched="ContinueButton_OnTouched" VerticalOptions="EndAndExpand" FontSize="14" Margin="40, 0"/>
+                                <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{Binding CancelButtonText}" 
+                                                       Touched="CancelButton_OnTouched" VerticalOptions="EndAndExpand" FontSize="18" Margin="40, 0"/>
+                            </StackLayout>
+
+                        </StackLayout>
+
+                        <!--Reason-->
+                        <StackLayout x:Name="ReasonControl" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="15,10,15,15" 
+                                     Spacing="10">
+
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Spacing="10">
+
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" Text="{appResources:Translate WhyAreYouLeaving}"
+                                   Style="{StaticResource AccountDeleteHeaderLabelStyle}"></Label>
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource AccountDeleteTextLabelStyle}"
+                                   Text="{appResources:Translate LeavingDescription}"></Label>
+
+                                <StackLayout HorizontalOptions="FillAndExpand">
+                                    <RadioButton  Style="{StaticResource AccountDeleteRadioButtonStyle}" GroupName="reason" Content="{appResources:Translate ReasonFinishCourse}"
+                                             CheckedChanged="Reason_OnCheckedChanged" VerticalOptions="Center"/>
+                                    <RadioButton Style="{StaticResource AccountDeleteRadioButtonStyle}" GroupName="reason" Content="{appResources:Translate ReasonTooHard}" CheckedChanged="Reason_OnCheckedChanged"/>
+                                    <RadioButton Style="{StaticResource AccountDeleteRadioButtonStyle}" GroupName="reason" Content="{appResources:Translate ReasonBadContent}" CheckedChanged="Reason_OnCheckedChanged"/>
+                                    <RadioButton Style="{StaticResource AccountDeleteRadioButtonStyle}" GroupName="reason" Content="{appResources:Translate ReasonContentNotRelevant}" CheckedChanged="Reason_OnCheckedChanged"/>
+                                    <RadioButton Style="{StaticResource AccountDeleteRadioButtonStyle}" GroupName="reason" Content="{appResources:Translate ReasonOther}" CheckedChanged="Reason_OnCheckedChanged"/>
+                                </StackLayout>
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource AccountDeleteTextLabelStyle}"
+                                   Text="{appResources:Translate DeleteAccountLastDescription}"></Label>
+
+                            </StackLayout>
+
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical">
+                                <buttons:RoundedButton IsEnabled="{Binding IsContinueAvailable}" Style="{StaticResource AboutButtonStyle}" FontSize="18"
+                                                       Text="{Binding ContinueButtonText}" Touched="FinishButton_OnTouched" VerticalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                        </StackLayout>
+
+                        <!--Result-->
+                        <StackLayout IsVisible="{Binding IsResultVisible}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="15,10,15,15" Spacing="10">
+
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Spacing="10">
+
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" Text="{appResources:Translate AccountDeleted}"
+                                   Style="{StaticResource AccountDeleteHeaderLabelStyle}"></Label>
+                                <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Style="{StaticResource AccountDeleteTextLabelStyle}"
+                                   Text="{appResources:Translate AccountDeletedDescription}" TextColor="White"></Label>
+
+                            </StackLayout>
+
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="End" Orientation="Vertical">
+                                <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{Binding OkButtonText}" Touched="OkButton_OnTouched" VerticalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+
+                <!--Footer-->
+                <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                    Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+            </StackLayout>
+
+            <StackLayout BackgroundColor="Transparent" IsVisible="{Binding IsBusy}"
+                         AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+                <ActivityIndicator  IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" 
+                                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Color="{x:Static customControls:CustomColors.DarkMain}"
+                                    Scale="2"/>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</views:BaseView>

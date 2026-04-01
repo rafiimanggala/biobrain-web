@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             x:Class="CustomControls.LayoutControls.MaterialInput">
+    <ContentView.Content>
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Start" Orientation="Vertical" Spacing="0">
+            <Label x:Name="PlaceholderLabel" FontSize="9" Opacity="0" TextColor="{x:Static customControls:CustomColors.GrayColor}" VerticalOptions="Start"
+                   IsVisible="False"/>
+            <StackLayout Orientation="Horizontal" Spacing="0" Margin="0">
+                <Image x:Name="PrefixImage" HeightRequest="26" WidthRequest="26" IsVisible="False" Margin="3"/>
+                <Entry x:Name="TextEntry" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Transparent"
+                       PlaceholderColor="{x:Static customControls:CustomColors.GrayColor}" TextColor="{x:Static customControls:CustomColors.GrayColor}"
+                       TextChanged="TextEntry_OnTextChanged"
+                       Focused="PlaceholderLabel_OnFocused" Unfocused="PlaceholderLabel_OnUnfocused"
+                       FontAttributes="Italic" VerticalTextAlignment="Center"/>
+                <Image x:Name="HideImage" HeightRequest="30" WidthRequest="30" Source="hide.png" Margin="3" IsVisible="False">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+            <BoxView x:Name="Underline" HorizontalOptions="Fill" Color="{x:Static customControls:CustomColors.GrayColor}" HeightRequest="1"/>
+            <Label x:Name="Error" TextColor="Red" FontSize="9" Margin="0,1" Opacity="0"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

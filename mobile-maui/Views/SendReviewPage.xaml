@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.SendReviewPage" x:Name="This">
+
+    <Grid>
+        <StackLayout Style="{StaticResource MainContainerStyle}">
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate FeedbackString}" Share="TopBaner_OnShare"/>
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="10"
+                         BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                <Image HorizontalOptions="CenterAndExpand" VerticalOptions="Start" HeightRequest="60" WidthRequest="60"
+                           Source="inappicon.png" Margin="10,10,10,0"/>
+                <Label Style="{StaticResource TextLabelStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                       Text="{appResources:Translate WeAreSorryString}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                <Label Style="{StaticResource TextLabelStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="Start" LineBreakMode="WordWrap"
+                       Text="{appResources:Translate WhatCanWeDoString}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="10,0"/>
+                <layoutControls:TextAreaControl Style="{StaticResource TextAreaStyle}" HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="10,0"
+                                                Text="{Binding Review}"/>
+                <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Margin="10,0">
+                    <buttons:RoundedButton HeightRequest="35" WidthRequest="130" FillColor="{x:Static customControls:CustomColors.DarkMain}" BorderColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                 FontColor="{StaticResource IceBlue}" Text="{appResources:Translate CancelString}" FontSize="15" HorizontalOptions="EndAndExpand" VerticalOptions="End" 
+                                 Touched="CancelButton_OnClicked" Type="Both" Margin="0,0,15,30" IsVisible="{Binding IsNextTopicVisible}"/>
+                    <buttons:RoundedButton HeightRequest="35" WidthRequest="130" FillColor="{StaticResource IceBlue}" BorderColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                 FontColor="{x:Static customControls:CustomColors.DarkMain}" Text="{appResources:Translate SendString}" FontSize="15" HorizontalOptions="StartAndExpand" VerticalOptions="End"
+                                 Touched="SendButton_OnClicked" Type="Both" Margin="15,0,0,30" IsVisible="{Binding IsNextLevelVisible}" IsEnabled="{Binding IsCanSend}"/>
+                </StackLayout>
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}"></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+
+    </Grid>
+</views:BaseView>

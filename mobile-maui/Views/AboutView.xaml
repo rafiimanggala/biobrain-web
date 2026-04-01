@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Name="This"
+             x:Class="BioBrain.Views.AboutView">
+    <Grid>
+        <StackLayout Style="{StaticResource MainContainerStyle}">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate AboutString}" Share="TopBaner_OnShare"/>
+
+            <ContentView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" Margin="0, 20" Spacing="10">
+                    <WebView x:Name="MaterialWebView" Source="{Binding FilePath}" VerticalOptions="FillAndExpand"/>
+                    <Label Style="{StaticResource VersionLabelStyle}" Text="{Binding Date}"></Label>
+                </StackLayout>
+            </ContentView>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" ></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+    </Grid>
+</views:BaseView>

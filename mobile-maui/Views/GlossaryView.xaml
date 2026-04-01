@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePurchaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+                        xmlns:converters="clr-namespace:BioBrain.Converters;assembly=BioBrain"
+                        xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+                        xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+                        xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+                        xmlns:common="clr-namespace:Common;assembly=BioBrain"
+                        xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+                        x:Class="BioBrain.Views.GlossaryView" x:Name="This">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringWebSourceConverter x:Key="WebSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid VerticalOptions="FillAndExpand">
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate GlossaryString}" IsBackVisible="False" Navigating="BottomBar_OnNavigating" Share="ShareButton_OnTapped"/>
+
+            <!--Body-->
+            <!--<ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">-->
+            <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Vertical" Spacing="5" Padding="5,20,5,0" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                    <layoutControls:SearchBar HeightRequest="30" HorizontalOptions="FillAndExpand" FontSize="13" FontColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                              FontFamily="Arial Regular" FillColor="{StaticResource IceBlue}" OnSearch="SearchBar_OnOnSearch" Margin="10,0,10,0"/>
+
+                    <layoutControls:GlossaryAlphabetControl HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                                                            FillColor="{x:Static customControls:CustomColors.DarkMain}" SelectedFillColor="{StaticResource Red}" 
+                                                            FontColor="{StaticResource IceBlue}" FontSize="15" Touched="GlossaryAlphabetControl_OnTouched" Margin="15"/>
+                </StackLayout>
+            <!--</ScrollView>-->
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}"
+                                Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--SharePopup-->
+        <layoutControls:ShareButtonsPoup x:Name="SharePopup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" IsVisible="False" Margin="10,70"
+                                      Link="{Binding Source={x:Static appResources:Links.ShareLink}}" Text="{appResources:Translate TextToShare}"/>
+
+        <!--Popup-->
+        <layoutControls:PopupWebView x:Name="Popup" WebSource="{Binding ErrorText, Converter={StaticResource WebSourceConverter}}" HorizontalOptions="FillAndExpand" 
+                                 VerticalOptions="FillAndExpand" Closed="Popup_OnClosed" MaxWidth="500" MaxHeight="350" Margin="15, 180" />
+    </Grid>
+</views:BasePurchaseView>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:dataGrid="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             x:Class="BioBrain.Views.HistoryView">
+  <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}">
+
+    <!--Header-->
+    <StackLayout Style="{StaticResource HeaderStyle}" x:Name="ContentStackLayout">
+      <Image Style="{StaticResource HeaderImageStyle}" Source="mainicon.png"/>
+      <Label Text="{appResources:Translate HistoryHeaderString}" Style="{StaticResource HeaderLabelStyle}"/>
+    </StackLayout>
+
+    
+    <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+      <dataGrid:DataGrid></dataGrid:DataGrid>
+    </StackLayout>
+
+    <!--Footer-->
+    <StackLayout Style="{StaticResource FooterStyle}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+      <Image Style="{StaticResource FastImageStyle}" Source="homeicon.png">
+        <Image.GestureRecognizers>
+          <TapGestureRecognizer Tapped="HomeButton_OnClicked"/>
+        </Image.GestureRecognizers>
+      </Image>
+      <Image Style="{StaticResource AboutImageStyle}" Source="helpbutton.png" HorizontalOptions="EndAndExpand">
+        <Image.GestureRecognizers>
+          <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"/>
+        </Image.GestureRecognizers>
+      </Image>
+    </StackLayout>
+
+  </StackLayout>
+</ContentPage>

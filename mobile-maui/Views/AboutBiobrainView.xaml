@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:effects="clr-namespace:BioBrain.Effects;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.AboutBiobrainView" x:Name="This">
+
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate AboutString}"  Navigating="BottomBar_OnNavigating" Share="TopBaner_OnShare" IsBackVisible="False"/>
+
+            <!--Body-->
+            <StackLayout BackgroundColor="{x:Static customControls:CustomColors.LightMain}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                    <!--head image-->
+                    <Image Source="headimage.png" HeightRequest="100" VerticalOptions="EndAndExpand" HorizontalOptions="End" Margin="0, 0, 15, 25"/>
+
+                    <StackLayout Orientation="Vertical" Spacing="10" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="0, 40, 0, 0">
+
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate VisitHelpString}" Touched="VisitHelpButton_OnClicked"/>
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate GiveFeedbackString}" Touched="GiveFeedbackButton_OnClicked"/>
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate YourAccountString}" Touched="YourAccountButton_OnClicked"/>
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate EnterPromoCodeString}" Touched="PromoCodeButton_OnClicked"
+                                               IsVisible="{Binding IsPromoVisible}"/>
+                        <!--<buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate PurchasesString}" Touched="PurchasesButton_OnClicked"/>-->
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate PrivacyPolicyString}" Touched="PrivacyPolicyButton_OnClicked"/>
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate TermsOfServiceString}" Touched="TermsOfServiceButton_OnClicked"/>
+                        <!--<buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate PaymentPolicyString}" Touched="PaynentPolicyButton_OnTouched"/>-->
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate AboutString}" Touched="AboutButton_OnClicked"/>
+                        <Grid HeightRequest="35" Margin="55, 0" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
+                            <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Text="{appResources:Translate UpdatesString}" Touched="UpdatesButton_OnClicked"/>
+                            <Frame x:Name="UpdateBadge" CornerRadius="7.5" WidthRequest="15" HeightRequest="15" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand" 
+                                   BackgroundColor="Red" BorderColor="Transparent" HasShadow="False" Padding="0,0,1,0" IsVisible="{x:Static common:Settings.IsUpdateAvailable}">
+                                <Label Text="!" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" TextColor="White"
+                                       VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="11"/>
+                            </Frame>
+                        </Grid>
+                        <!--<buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="Qtest" Touched="qButton_OnClicked"/>-->
+                    </StackLayout>
+
+                </Grid>
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                                Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+        </StackLayout>
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="SharePopup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+        <ContentView x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent" IsVisible="False">
+            <layoutControls:RoundedBoxView HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="10,0" Padding="5" 
+                                           BackgroundColor="{x:Static customControls:CustomColors.LightMain}" IsVisible="True"
+                                       effects:RoundedCornerProperties.RoundRadius="15" effects:RoundedCornerProperties.BorderThickness="4"
+                                       effects:RoundedCornerProperties.BorderColor="{x:Static customControls:CustomColors.DarkMain}"
+                                           Orientation="Vertical">
+                <layoutControls:RoundedBoxView.Effects>
+                    <effects:RoundedCorners/>
+                </layoutControls:RoundedBoxView.Effects>
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                         BackgroundColor="{x:Static customControls:CustomColors.LightMain}"  Spacing="10" Padding="10">
+                    <Label Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate PromoCodeString}" />
+                    <layoutControls:TextFieldControl Style="{StaticResource TextFieldStyle}" Text="{Binding PromoCode}" />
+                    <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate ApplyString}"
+                                       Touched="EnterPromoCode_OnClicked" HorizontalOptions="FillAndExpand" Margin="0"/>
+                    <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate CancelUpperString}"
+                                       Touched="ClosePopup_OnClicked" HorizontalOptions="FillAndExpand" Margin="0"/>
+                </StackLayout>
+            </layoutControls:RoundedBoxView>
+        </ContentView>
+
+    </Grid>
+</views:BaseView>

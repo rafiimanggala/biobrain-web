@@ -31,6 +31,12 @@ appsettings.Production.json
 ## Mobile source (large, separate)
 mobile-src/
 
+## Original source backup (large)
+original-src/
+
+## Static content (imported data, too large for git)
+BiobrainWebAPI/static/content/
+
 ## Misc
 *.log
 firebase-debug.log

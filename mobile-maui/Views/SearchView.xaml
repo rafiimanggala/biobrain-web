@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.SearchView" x:Name="This">
+
+    <Grid>
+        <StackLayout Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     Orientation="Vertical">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate SearchString}" Share="TopBaner_OnShare"/>
+
+            <!--Body-->
+            <StackLayout BackgroundColor="{x:Static customControls:CustomColors.LightMain}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                         Orientation="Vertical">
+                <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" IsVisible="{Binding IsShowData}" HorizontalOptions="FillAndExpand">
+                    <layoutControls:SearchBar HeightRequest="30" WidthRequest="260" HorizontalOptions="Center" FontSize="13" FontColor="{x:Static customControls:CustomColors.DarkMain}" FontFamily="Arial Regular"
+                                              FillColor="{StaticResource IceBlue}" OnSearch="SearchBar_OnOnSearch" Margin="0, 20, 0, 0" Text="{Binding SearchText}"/>
+
+                    <ListView x:Name="ResultsListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemsSource="{Binding SearchResult}"
+                          CachingStrategy="RecycleElement" BackgroundColor="Transparent" SeparatorVisibility="None" HasUnevenRows="True" Margin="0,10" RowHeight="50">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" Margin="10, 2" Style="{StaticResource SearchContentStyle}" VerticalOptions="FillAndExpand">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="Element_OnTapped"/>
+                                            </StackLayout.GestureRecognizers>
+                                            <Label Text="{Binding Text}" Style="{StaticResource ListViewLabelStyle}" LineBreakMode="TailTruncation" 
+                                                   HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center"/>
+                                            <Label Text="{Binding Context}" Style="{StaticResource ListViewLabelStyle}" LineBreakMode="TailTruncation" IsVisible="{Binding IsContextVisible}"
+                                                   HorizontalOptions="FillAndExpand" FontSize="10"  VerticalOptions="End" VerticalTextAlignment="Center"/>
+                                        </StackLayout>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </StackLayout>
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}"></controls:BottomBar>
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+    </Grid>
+</views:BaseView>

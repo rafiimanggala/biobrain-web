@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:imageControls="clr-namespace:CustomControls.ImageControls;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:effects="clr-namespace:BioBrain.Effects;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.ResultsView" x:Name="This">
+    <Grid>
+        <StackLayout Style="{StaticResource MainContainerStyle}">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate ResultHeaderString}" Navigating="BottomBar_OnNavigating" Share="TopBaner_OnShare"/>
+
+            <ScrollView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Grid RowSpacing="10" ColumnSpacing="-2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackLayout Orientation="Vertical" Spacing="0" Grid.Row="0" Grid.ColumnSpan="2" BackgroundColor="{x:Static customControls:CustomColors.DarkMain}"
+                                 Margin="0,20,0,0">
+                        <Label  Text="{Binding HeaderString}" FontFamily="Nunito" TextColor="{StaticResource IceBlue}" HorizontalTextAlignment="Center" 
+                                VerticalOptions="Start" HeightRequest="30" VerticalTextAlignment="End"/>
+                        <Label Text="{Binding HeaderString2}" FontFamily="Nunito" TextColor="{StaticResource IceBlue}" HorizontalTextAlignment="Center" 
+                               VerticalOptions="Start" HeightRequest="40" IsVisible="{Binding HeaderString2Visible}"
+                               VerticalTextAlignment="Center"/>
+                    </StackLayout>
+
+                    <StackLayout x:Name="StatStack" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Orientation="Vertical"  VerticalOptions="FillAndExpand" 
+                                 HorizontalOptions="FillAndExpand" Spacing="10">
+                        <Label Text="{appResources:Translate SuccessRateString}" HorizontalOptions="Center" VerticalOptions="Start" FontFamily="Nunito" 
+                               TextColor="{StaticResource IceBlue}" HorizontalTextAlignment="Center" FontSize="15"/>
+
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" Margin="0,0,0,0">
+
+                            <imageControls:ProgressControl Opacity="0" IsVisible="{Binding ShowProgress}" ProgressValue="{Binding Progress}" HorizontalOptions="CenterAndExpand"
+                                                  VerticalOptions="CenterAndExpand"/>
+                            <layoutControls:PersentDiagramControl WidthRequest="100" HeightRequest="100" Percent="{Binding Percent}" FontColor="{StaticResource IceBlue}"
+                                                                  FontSize="30" HorizontalOptions="CenterAndExpand" 
+                                                                  VerticalOptions="CenterAndExpand"/>
+                            <imageControls:ProgressControl IsVisible="{Binding ShowProgress}" ProgressValue="{Binding Progress}" HorizontalOptions="CenterAndExpand"
+                                                  VerticalOptions="CenterAndExpand"/>
+                        </StackLayout>
+
+                        <Label Text="{appResources:Translate QuestionReviewNoteString}" HorizontalOptions="Center" VerticalOptions="Start" FontFamily="Nunito" TextColor="{StaticResource IceBlue}" 
+                   HorizontalTextAlignment="Center" FontSize="15"/>
+                        <layoutControls:HexagonResultControl x:Name="QuestionsList" Elements="{Binding Questions}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" FontSize="15" 
+                                                 FontColor="{StaticResource IceBlue}" Touched="QuestionsList_OnTouched" Margin="15"/>
+                    </StackLayout>
+
+                    <buttons:RoundedButton Grid.Column="0" Grid.Row="2" HeightRequest="35" WidthRequest="130" FillColor="{x:Static customControls:CustomColors.DarkMain}" BorderColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                 FontColor="{StaticResource IceBlue}" Text="{appResources:Translate NextTopicString}" FontSize="15" HorizontalOptions="EndAndExpand" VerticalOptions="End" 
+                                 Touched="Button_OnClicked" Type="Both" Margin="0,0,15,30" IsVisible="{Binding IsNextTopicVisible}"/>
+                    <buttons:RoundedButton Grid.Column="1" Grid.Row="2" HeightRequest="35" WidthRequest="130" FillColor="{StaticResource IceBlue}" BorderColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                 FontColor="{x:Static customControls:CustomColors.DarkMain}" Text="{appResources:Translate NextLevelString}" FontSize="15" HorizontalOptions="StartAndExpand" VerticalOptions="End"
+                                 Touched="NextButton_OnClicked" Type="Both" Margin="15,0,0,30" IsVisible="{Binding IsNextLevelVisible}"/>
+                </Grid>
+            </ScrollView>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                                Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+
+        </StackLayout>
+
+        <ContentView x:Name="LikePopup" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Transparent" Opacity="0">
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="LikeTapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+            </ContentView.GestureRecognizers>
+            <layoutControls:RoundedBoxView HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="10,0" Padding="5" 
+                                           BackgroundColor="{StaticResource IceBlue}" IsVisible="True" Orientation="Vertical"
+                                           effects:RoundedCornerProperties.RoundRadius="15" effects:RoundedCornerProperties.BorderThickness="4"
+                                           effects:RoundedCornerProperties.BorderColor="{x:Static customControls:CustomColors.DarkMain}">
+                <layoutControls:RoundedBoxView.Effects>
+                    <effects:RoundedCorners/>
+                </layoutControls:RoundedBoxView.Effects>
+                <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                         BackgroundColor="{StaticResource IceBlue}"  Spacing="10" Padding="10">
+                    <Image HorizontalOptions="Center" VerticalOptions="Start" Margin="0" HeightRequest="60" WidthRequest="60"
+                           Source="inappicon.png"/>
+                    <Label Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate LoveBiobrainString}" HorizontalOptions="Center" 
+                           HorizontalTextAlignment="Center"/>
+                    <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="Center" Spacing="10">
+                        <buttons:RoundedButton x:Name="NoButton" Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate NoString}"
+                                           Touched="No_OnClicked" HorizontalOptions="Center" WidthRequest="60" HeightRequest="35" IsVisible="True"
+                                               Margin="0"/>
+                        <buttons:RoundedButton x:Name="YesButton" Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate YesString}"
+                                           Touched="Yes_OnClicked" HorizontalOptions="Center" WidthRequest="60" HeightRequest="35" IsVisible="True"
+                                               Margin="0"/>
+                    </StackLayout>
+                </StackLayout>
+            </layoutControls:RoundedBoxView>
+        </ContentView>
+        
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" IsVisible="False" Margin="10,70"
+                                      Link="{Binding Source={x:Static appResources:Links.ShareLink}}" Text="{appResources:Translate TextToShare}"/>
+    </Grid>
+</views:BaseView>

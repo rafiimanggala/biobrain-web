@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:effects="clr-namespace:BioBrain.Effects;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.WordView" x:Name="This">
+
+    <Grid VerticalOptions="FillAndExpand">
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}">
+
+            <!--Header-->
+            <controls:TopBaner Text="{Binding Term}" Share="TopBaner_OnShare"/>
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+
+                <!--<ContentView Style="{StaticResource WordLabelContentStyle}" Margin="15,20,15,5" Padding="15,0,0,0">
+                    <Label Text="{Binding Term}" Style="{StaticResource WordLabelStyle}"/>
+                </ContentView>-->
+
+                <layoutControls:RoundedBoxView VerticalOptions="FillAndExpand" BackgroundColor="White" Margin="15" Padding="8" effects:RoundedCornerProperties.RoundRadius="15" 
+                   effects:RoundedCornerProperties.BorderThickness="4" effects:RoundedCornerProperties.BorderColor="{x:Static customControls:CustomColors.DarkMain}">
+                    <layoutControls:RoundedBoxView.Effects>
+                        <effects:RoundedCorners/>
+                    </layoutControls:RoundedBoxView.Effects>
+                    <WebView x:Name="MaterialWebView" Source="{Binding FilePath}" VerticalOptions="FillAndExpand" Navigating="WebView_OnNavigating" Margin="0"/>
+                </layoutControls:RoundedBoxView>
+
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}"></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="SharePopup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+
+        <layoutControls:PopupWebView x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5, 170" ContentChaging="PopupWebView_OnContentChaging" 
+                                 MaxWidth="500" MaxHeight="350"/>
+    </Grid>
+</views:BaseView>

@@ -1,0 +1,117 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-ios;net9.0-android</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BioBrain</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- Display name -->
+    <ApplicationTitle>BioBrain</ApplicationTitle>
+
+    <!-- App Identifier -->
+    <ApplicationId>com.biobrain.app</ApplicationId>
+
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <!-- Default compilation symbols: Biology -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>$(DefineConstants);Biology</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DefineConstants>$(DefineConstants);Biology</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Subject configurations -->
+  <PropertyGroup Condition="$(Configuration.Contains('Biology'))">
+    <DefineConstants>$(DefineConstants);Biology</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Chemistry'))">
+    <DefineConstants>$(DefineConstants);Chemistry</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('Physics'))">
+    <DefineConstants>$(DefineConstants);Physics</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Region configurations -->
+  <PropertyGroup Condition="$(Configuration.Contains('US'))">
+    <DefineConstants>$(DefineConstants);US</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('EU'))">
+    <DefineConstants>$(DefineConstants);EU</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.Contains('AU'))">
+    <DefineConstants>$(DefineConstants);AU</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Bundled demo database -->
+  <ItemGroup>
+    <EmbeddedResource Include="AppResources\ProjectData.db3" />
+    <EmbeddedResource Include="CustomControls\LayoutControls\ChemicalElements\InappIcon.png" />
+    <EmbeddedResource Include="CustomControls\LayoutControls\ChemicalElements\HintCross.png" />
+  </ItemGroup>
+
+  <!-- Exclude Chemistry/Physics StringResource duplicates (Biology is default) -->
+  <ItemGroup>
+    <Compile Remove="Common\ChemistryFiles\StringResource.Designer.cs" />
+    <Compile Remove="Common\PhysicsFiles\StringResource.Designer.cs" />
+    <!-- Exclude duplicate BoolInvertConverter from CustomControls (keep Converters/) -->
+    <Compile Remove="CustomControls\Converters\BoolInvertConverter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- App Icon -->
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+
+    <!-- Splash Screen -->
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+    <!-- Images -->
+    <MauiImage Include="Resources\Images\*" />
+
+    <!-- Custom Fonts -->
+    <MauiFont Include="Resources\Fonts\*" />
+
+    <!-- Raw Assets -->
+    <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MAUI Core -->
+    <PackageReference Include="akgul.Maui.DataGrid" Version="4.0.6" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+
+    <!-- In-App Billing -->
+    <PackageReference Include="Plugin.InAppBilling" Version="7.1.0" />
+
+    <!-- JSON -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- SkiaSharp -->
+    <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.116.1" />
+
+    <!-- SQLite -->
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
+
+    <!-- Firebase Storage -->
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+
+    <!-- App Center -->
+    <!-- AppCenter deprecated - TODO: migrate to Firebase Crashlytics -->
+    <!-- <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.5" /> -->
+    <!-- <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.5" /> -->
+  </ItemGroup>
+
+</Project>

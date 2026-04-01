@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePurchaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             x:Class="BioBrain.Views.MaterialView" x:Name="This">
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}">
+            <!--Header-->
+            <controls:TopBaner Text="{Binding TopicName}" Share="TopBaner_OnShare"/>
+
+            <ContentView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" Margin="0, 20">
+                    <buttons:LevelsBar BorderColor="{x:Static customControls:CustomColors.DarkMain}" BorderWidth="2" DefaultFillColor="White" SelectedFillColor="{x:Static customControls:CustomColors.DarkMain}" Touched="LevelsBar_OnTouched"
+                                  FontColor="{x:Static customControls:CustomColors.DarkMain}" SelectedFontColor="White" FontSize="15" Elements="{Binding Levels}" MinimumHeightRequest="32" HeightRequest="35" HorizontalOptions="FillAndExpand"
+                                  Margin="0,15,0,0" x:Name="LevelsBarControl"/>
+
+                    <buttons:RoundedButton HeightRequest="35" WidthRequest="180" MinimumHeightRequest="35" FillColor="{x:Static customControls:CustomColors.LightMain}" BorderColor="{x:Static customControls:CustomColors.LightMain}"
+                                           FontColor="{StaticResource IceBlue}" Text="{Binding TakeQuizButtonText, Mode=TwoWay}" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="Start"
+                                           Touched="RoundedButton_OnTouched" Type="Both" Margin="0"/>
+
+                    <WebView x:Name="MaterialWebView" Source="{Binding FilePath}" VerticalOptions="FillAndExpand" Navigating="WebView_OnNavigating"/>
+                </StackLayout>
+            </ContentView>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" ></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="SharePopup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60"
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}"
+                                         Text="{appResources:Translate TextToShare}"/>
+
+        <layoutControls:PopupWebView x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5, 150" ContentChaging="PopupWebView_OnContentChaging"
+                                 Closed="Popup_OnClosed" MaxWidth="500" MaxHeight="400"/>
+    </Grid>
+</views:BasePurchaseView>

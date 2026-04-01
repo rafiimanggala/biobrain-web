@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+                    xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+                    xmlns:converters="clr-namespace:BioBrain.Converters;assembly=BioBrain"
+                    xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain">
+
+    <!-- Converters -->
+    <converters:BoolInvertConverter x:Key="InverseBooleanConverter" />
+    <converters:StringImageSourceConverter x:Key="StringImageSourceConverter" />
+    <converters:StringUppercaseConverter x:Key="StringUppercaseConverter" />
+
+    <!-- Named Colors -->
+    <Color x:Key="VeryDarkBlue">#002857</Color>
+    <Color x:Key="IceBlue">#E8F6FE</Color>
+    <Color x:Key="LightGreen">#95D65C</Color>
+    <Color x:Key="DarkGreen">#4ead33</Color>
+    <Color x:Key="Red">#e30918</Color>
+
+    <!-- SpinnerStyle -->
+    <Style x:Key="SpinnerStyle" TargetType="ActivityIndicator">
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="WidthRequest" Value="50"/>
+        <Setter Property="Color" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <!-- BackStackStyle -->
+    <Style x:Key="BackStackStyle" TargetType="StackLayout">
+        <Setter Property="BackgroundColor" Value="Black"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+    </Style>
+
+    <!-- HeaderStyle -->
+    <Style x:Key="HeaderStyle" TargetType="StackLayout">
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HeightRequest" Value="60"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="0"/>
+    </Style>
+
+    <!-- MainContainerStyle -->
+    <Style x:Key="MainContainerStyle" TargetType="StackLayout">
+        <Setter Property="BackgroundColor" Value="White"/>
+        <Setter Property="Spacing" Value="3"/>
+        <Setter Property="Orientation" Value="Vertical"/>
+    </Style>
+
+    <!-- HeaderLabelStyle -->
+    <Style x:Key="HeaderLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+    </Style>
+
+    <!-- ListViewLabelStyle -->
+    <Style x:Key="ListViewLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+    </Style>
+
+    <!-- StatsListLabelStyle -->
+    <Style x:Key="StatsListLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+    </Style>
+
+    <!-- DarkBigLabelStyle -->
+    <Style x:Key="DarkBigLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <!-- ProgressLabelStyle -->
+    <Style x:Key="ProgressLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+    </Style>
+
+    <!-- UpdateStatusLabelStyle -->
+    <Style x:Key="UpdateStatusLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
+    </Style>
+
+    <!-- UpdateProgressLabelStyle -->
+    <Style x:Key="UpdateProgressLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- VersionLabelStyle -->
+    <Style x:Key="VersionLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="Margin" Value="10,0,10,0"/>
+    </Style>
+
+    <!-- FooterStyle -->
+    <Style x:Key="FooterStyle" TargetType="StackLayout">
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="Padding" Value="-5,0"/>
+    </Style>
+
+    <!-- ListButtonStyle -->
+    <Style x:Key="ListButtonStyle" TargetType="Button">
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.LightMain}"/>
+        <Setter Property="Text" Value=""/>
+    </Style>
+
+    <!-- ShareButtonStyle -->
+    <Style x:Key="ShareButtonStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0,10"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="40"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <!-- FastImageStyle -->
+    <Style x:Key="FastImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0,10,0,10"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="40"/>
+    </Style>
+
+    <!-- PanelImageStyle -->
+    <Style x:Key="PanelImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="WidthRequest" Value="50"/>
+    </Style>
+
+    <!-- ListImageStyle -->
+    <Style x:Key="ListImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="15,5"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="40"/>
+    </Style>
+
+    <!-- HeaderImageStyle -->
+    <Style x:Key="HeaderImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="15"/>
+        <Setter Property="HeightRequest" Value="30"/>
+        <Setter Property="WidthRequest" Value="30"/>
+    </Style>
+
+    <!-- BackImageStyle (BasedOn FastImageStyle) -->
+    <Style x:Key="BackImageStyle" BasedOn="{StaticResource FastImageStyle}" TargetType="Image">
+        <Setter Property="Margin" Value="15,20"/>
+        <Setter Property="HeightRequest" Value="20"/>
+        <Setter Property="WidthRequest" Value="20"/>
+    </Style>
+
+    <!-- BackButtonStyle -->
+    <Style x:Key="BackButtonStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HeightRequest" Value="60"/>
+        <Setter Property="WidthRequest" Value="50"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+
+    <!-- AboutImageStyle (BasedOn FastImageStyle) -->
+    <Style x:Key="AboutImageStyle" BasedOn="{StaticResource FastImageStyle}" TargetType="Image">
+        <Setter Property="Margin" Value="0,10"/>
+    </Style>
+
+    <!-- ImageButtonStyle -->
+    <Style x:Key="ImageButtonStyle" TargetType="Button">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="WidthRequest" Value="40"/>
+    </Style>
+
+    <!-- Default Label style (implicit) -->
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+    </Style>
+
+    <!-- Default ListView style (implicit) -->
+    <Style TargetType="ListView">
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.LightMain}"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+    </Style>
+
+    <!-- HexahedronSvgImageStyle -->
+    <Style x:Key="HexahedronSvgImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="HeightRequest" Value="100"/>
+        <Setter Property="WidthRequest" Value="100"/>
+    </Style>
+
+    <!-- CompletionLableStyle -->
+    <Style x:Key="CompletionLableStyle" TargetType="Label">
+        <Setter Property="HorizontalTextAlignment" Value="End"/>
+        <Setter Property="Margin" Value="5,5,15,5"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="End"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+    </Style>
+
+    <!-- HexagonButtonStyle -->
+    <Style x:Key="HexagonButtonStyle" TargetType="buttons:HexagonButton">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HeightRequest" Value="68.5"/>
+        <Setter Property="WidthRequest" Value="60"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <!-- Level1Button -->
+    <Style x:Key="Level1Button" TargetType="buttons:HexagonButton" BasedOn="{StaticResource HexagonButtonStyle}">
+        <Setter Property="FillColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+    </Style>
+
+    <!-- Level2Button -->
+    <Style x:Key="Level2Button" TargetType="buttons:HexagonButton" BasedOn="{StaticResource HexagonButtonStyle}">
+        <Setter Property="FillColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+    </Style>
+
+    <!-- Level3Button -->
+    <Style x:Key="Level3Button" TargetType="buttons:HexagonButton" BasedOn="{StaticResource HexagonButtonStyle}">
+        <Setter Property="FillColor" Value="{StaticResource VeryDarkBlue}"/>
+    </Style>
+
+    <!-- WordLabelStyle -->
+    <Style x:Key="WordLabelStyle" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+    </Style>
+
+    <!-- WordLabelContentStyle -->
+    <Style x:Key="WordLabelContentStyle" TargetType="ContentView">
+        <Setter Property="MinimumHeightRequest" Value="40"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+    </Style>
+
+    <!-- SearchContentStyle -->
+    <Style x:Key="SearchContentStyle" TargetType="StackLayout">
+        <Setter Property="MinimumHeightRequest" Value="45"/>
+        <Setter Property="HeightRequest" Value="45"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="Padding" Value="10,5,10,5"/>
+    </Style>
+
+    <!-- PopupLabelStyle -->
+    <Style x:Key="PopupLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+    <!-- AboutButtonStyle -->
+    <Style x:Key="AboutButtonStyle" TargetType="buttons:RoundedButton">
+        <Setter Property="HeightRequest" Value="35"/>
+        <Setter Property="FillColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="BorderColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="Margin" Value="55,0"/>
+    </Style>
+
+    <!-- BannerStyle -->
+    <Style x:Key="BannerStyle" TargetType="Label">
+        <Setter Property="BackgroundColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="MinimumHeightRequest" Value="40"/>
+        <Setter Property="Margin" Value="0,60,0,15"/>
+    </Style>
+
+    <!-- AccountLabelStyle -->
+    <Style x:Key="AccountLabelStyle" TargetType="Label">
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="HeightRequest" Value="30"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Bold"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- TextLabelStyle -->
+    <Style x:Key="TextLabelStyle" TargetType="Label">
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Bold"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+
+    <!-- TextFieldStyle -->
+    <Style x:Key="TextFieldStyle" TargetType="layoutControls:TextFieldControl">
+        <Setter Property="FontFamily" Value="Arial Regular"/>
+        <Setter Property="HeightRequest" Value="35"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="FillColor" Value="{StaticResource IceBlue}"/>
+    </Style>
+
+    <!-- MaterialInputStyle -->
+    <Style x:Key="MaterialInputStyle" TargetType="layoutControls:MaterialInput">
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="Color" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="PlaceholderColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+    </Style>
+
+    <!-- MaterialDropDownStyle -->
+    <Style x:Key="MaterialDropDownStyle" TargetType="layoutControls:MaterialDropDown">
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="Color" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="PlaceholderColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+    </Style>
+
+    <!-- TextAreaStyle -->
+    <Style x:Key="TextAreaStyle" TargetType="layoutControls:TextAreaControl">
+        <Setter Property="FontFamily" Value="Arial Regular"/>
+        <Setter Property="HeightRequest" Value="35"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="FillColor" Value="{StaticResource IceBlue}"/>
+    </Style>
+
+    <!-- SubHeaderLabelStyle -->
+    <Style x:Key="SubHeaderLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource IceBlue}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <!-- AccountDeleteHeaderLabelStyle -->
+    <Style x:Key="AccountDeleteHeaderLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <!-- AccountDeleteTextLabelStyle -->
+    <Style x:Key="AccountDeleteTextLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Roboto"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="LineBreakMode" Value="WordWrap"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+    <!-- AccountDeleteRadioButtonStyle -->
+    <Style x:Key="AccountDeleteRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="TextColor" Value="{x:Static customControls:CustomColors.DarkMain}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
+</ResourceDictionary>

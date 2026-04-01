@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutString" xml:space="preserve">
+    <value>ABOUT BIOBRAIN BIOLOGY</value>
+  </data>
+  <data name="AboutViewHeaderString" xml:space="preserve">
+    <value>TUTORIAL</value>
+  </data>
+  <data name="AreasOfStudyString" xml:space="preserve">
+    <value>AREAS OF STUDY</value>
+  </data>
+  <data name="ComingSoonString" xml:space="preserve">
+    <value>Coming soon...</value>
+  </data>
+  <data name="CorrectString" xml:space="preserve">
+    <value>Correct answer:</value>
+  </data>
+  <data name="DateOfBirthString" xml:space="preserve">
+    <value>Date of Birth</value>
+  </data>
+  <data name="DefaultPage" xml:space="preserve">
+    <value>Default.html</value>
+  </data>
+  <data name="DoYouLikeString" xml:space="preserve">
+    <value>Do you like the app?</value>
+  </data>
+  <data name="EducationLevelString" xml:space="preserve">
+    <value>What level are you currently studying?</value>
+  </data>
+  <data name="EmailString" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="FeedbackString" xml:space="preserve">
+    <value>FEEDBACK</value>
+  </data>
+  <data name="FeedbackThankString" xml:space="preserve">
+    <value>Thank you for using Biobrain.</value>
+  </data>
+  <data name="FirstNameString" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="FirstTryString" xml:space="preserve">
+    <value>&lt;html&gt;&lt;p class="correctString"&gt;Incorrect.&lt;/p&gt;&lt;p&gt;Please try again.&lt;/p&gt;{0}&lt;/html&gt;</value>
+  </data>
+  <data name="GenderString" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="GiveFeedbackString" xml:space="preserve">
+    <value>FEEDBACK</value>
+  </data>
+  <data name="GlossaryString" xml:space="preserve">
+    <value>GLOSSARY</value>
+  </data>
+  <data name="HintHeader" xml:space="preserve">
+    <value>&lt;p class="correctString"&gt;HINT:&lt;/p&gt;</value>
+  </data>
+  <data name="HintTextForWrongAnswer" xml:space="preserve">
+    <value>&lt;p&gt;&lt;span&gt;Tap &lt;img src="Icons/LightGlobeIcon.png" height="40px" width="40px" style="vertical-align: middle"/&gt; for a hint.&lt;/span&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="HistoryHeaderString" xml:space="preserve">
+    <value>HISTORY</value>
+  </data>
+  <data name="IconsPath" xml:space="preserve">
+    <value>file:/sdcard/Download/Icons/</value>
+  </data>
+  <data name="LeaveAReviewString" xml:space="preserve">
+    <value>LEAVE A REVIEW</value>
+  </data>
+  <data name="LikeString" xml:space="preserve">
+    <value>I LIKE THE APP</value>
+  </data>
+  <data name="ManString" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="MaybeLaterString" xml:space="preserve">
+    <value>MAYBE LATER</value>
+  </data>
+  <data name="NextLevelString" xml:space="preserve">
+    <value>NEXT LEVEL</value>
+  </data>
+  <data name="NextTopicString" xml:space="preserve">
+    <value>NEXT TOPIC</value>
+  </data>
+  <data name="NotStudingString" xml:space="preserve">
+    <value>I am not currently studying</value>
+  </data>
+  <data name="OtherString" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="PagesPath" xml:space="preserve">
+    <value>file:///sdcard/Download/</value>
+  </data>
+  <data name="PaymentPolicyString" xml:space="preserve">
+    <value>PAYMENT POLICY</value>
+  </data>
+  <data name="PrimaryString" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="PrivacyPolicyString" xml:space="preserve">
+    <value>PRIVACY POLICY</value>
+  </data>
+  <data name="ProblemPolicyString" xml:space="preserve">
+    <value>THERE'S A PROBLEM</value>
+  </data>
+  <data name="ProblemSubjectString" xml:space="preserve">
+    <value>I%20have%20a%20problem%20with%20Biobrain</value>
+  </data>
+  <data name="QuestionReviewNoteString" xml:space="preserve">
+    <value>Click the question to review</value>
+  </data>
+  <data name="ResultHeaderString" xml:space="preserve">
+    <value>RESULTS</value>
+  </data>
+  <data name="Review1String" xml:space="preserve">
+    <value>Thank you! Please leave us</value>
+  </data>
+  <data name="Review2IOSString" xml:space="preserve">
+    <value>a review in the App Store.</value>
+  </data>
+  <data name="SaveString" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
+  <data name="SearchPlaceholderString" xml:space="preserve">
+    <value>Enter search term</value>
+  </data>
+  <data name="SecondaryString" xml:space="preserve">
+    <value>Secondary</value>
+  </data>
+  <data name="SecondTryString" xml:space="preserve">
+    <value>&lt;html&gt;&lt;p class="correctString"&gt;Incorrect response.&lt;/p&gt;&lt;p&gt;Correct answer is {0}&lt;/p&gt;&lt;p&gt;{1}&lt;/p&gt;&lt;/html&gt;</value>
+  </data>
+  <data name="SelectALevelString" xml:space="preserve">
+    <value>SELECT A LEVEL</value>
+  </data>
+  <data name="SuccessRateString" xml:space="preserve">
+    <value>SUCCESS RATE</value>
+  </data>
+  <data name="SuggestionString" xml:space="preserve">
+    <value>SUGGESTIONS</value>
+  </data>
+  <data name="SuggestionSubjectString" xml:space="preserve">
+    <value>Suggestions%20for%20Biobrain</value>
+  </data>
+  <data name="SurnameString" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="TermsOfServiceString" xml:space="preserve">
+    <value>TERMS OF SERVICE</value>
+  </data>
+  <data name="TertiaryString" xml:space="preserve">
+    <value>Tertiary</value>
+  </data>
+  <data name="TextToShare" xml:space="preserve">
+    <value>I%20recommend%20you%20try%20out%20Biobrain%2C%20a%20Biology%20learning%20app.%0AAvailable%20in%20the%20AppStore%20and%20Google%20Play%20Store.%0Awww.biobrain.com.au</value>
+  </data>
+  <data name="VisitHelpString" xml:space="preserve">
+    <value>TUTORIAL</value>
+  </data>
+  <data name="WomanString" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="WordNotFoundString" xml:space="preserve">
+    <value>&lt;html&gt;&lt;p&gt;The word could not be found!&lt;/p&gt;&lt;p&gt;Please check the spelling and try again.&lt;/p&gt;&lt;/html&gt;</value>
+  </data>
+  <data name="YouAcirrecrString" xml:space="preserve">
+    <value>&lt;html&gt;&lt;p class="correctString"&gt;You are correct!&lt;/p&gt;&lt;/html&gt;</value>
+  </data>
+  <data name="YouAreCorrectReplaceString" xml:space="preserve">
+    <value>&lt;html&gt;&lt;p class="correctString"&gt;You are correct!&lt;/p&gt;</value>
+  </data>
+  <data name="YourAccountString" xml:space="preserve">
+    <value>MY ACCOUNT</value>
+  </data>
+  <data name="Review2DroidString" xml:space="preserve">
+    <value>a review in the Google Play.</value>
+  </data>
+  <data name="CancelString" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="GetFullString" xml:space="preserve">
+    <value>Buy full content</value>
+  </data>
+  <data name="GetFullVersionString" xml:space="preserve">
+    <value>You need to pay {0} to access full content.</value>
+  </data>
+  <data name="LiteVersionHeader" xml:space="preserve">
+    <value>Biobrain Biology</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>Application vesrsion</value>
+  </data>
+  <data name="AppVersionError" xml:space="preserve">
+    <value>Your application version is to low. Please, update the application.</value>
+  </data>
+  <data name="UpdateString" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="LoadingLabelString" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="DataSyncString" xml:space="preserve">
+    <value>Preparing...</value>
+  </data>
+  <data name="VersionCheckString" xml:space="preserve">
+    <value>Comparing versions</value>
+  </data>
+  <data name="OkString" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="SelectEmailString" xml:space="preserve">
+    <value>To receive updates you need to specify your email.</value>
+  </data>
+  <data name="AddEmailString" xml:space="preserve">
+    <value>Add email</value>
+  </data>
+  <data name="NoInternetError" xml:space="preserve">
+    <value>Please check your internet connection.</value>
+  </data>
+  <data name="NotConnectedException" xml:space="preserve">
+    <value>Can't connect to the app store. Please check your internet connection.</value>
+  </data>
+  <data name="PurchaseError" xml:space="preserve">
+    <value>Can't make purchase.</value>
+  </data>
+  <data name="PurchasesString" xml:space="preserve">
+    <value>PURCHASES</value>
+  </data>
+  <data name="StoreVersionError" xml:space="preserve">
+    <value>Can't store version. Please contact us </value>
+  </data>
+  <data name="SendLogString" xml:space="preserve">
+    <value>SEND LOG</value>
+  </data>
+  <data name="DownloadingContentString" xml:space="preserve">
+    <value>Downloading content</value>
+  </data>
+  <data name="ErrorString" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CancelUpperString" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="EnterPromoCodeString" xml:space="preserve">
+    <value>APPLY PROMO CODE</value>
+  </data>
+  <data name="PromoCodeError" xml:space="preserve">
+    <value>Invalid promo code.</value>
+  </data>
+  <data name="PromoCodeString" xml:space="preserve">
+    <value>Promo Code</value>
+  </data>
+  <data name="ApplyString" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="RateTheAppString" xml:space="preserve">
+    <value>RATE THE APP</value>
+  </data>
+  <data name="LogsSendedMessage" xml:space="preserve">
+    <value>Logs have been successfully sent</value>
+  </data>
+  <data name="LogsString" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="YourNotSignedGPString" xml:space="preserve">
+    <value>You are not signed in to Google Play.</value>
+  </data>
+  <data name="LoveBiobrainString" xml:space="preserve">
+    <value>Do you love Biobrain?</value>
+  </data>
+  <data name="NoString" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="YesString" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="SendString" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="WeAreSorryString" xml:space="preserve">
+    <value>We're sorry.</value>
+  </data>
+  <data name="WhatCanWeDoString" xml:space="preserve">
+    <value>What can we do to ensure you love our app? We appreciate your constructive feedback.</value>
+  </data>
+  <data name="PeriodicTableString" xml:space="preserve">
+    <value>Periodic table</value>
+  </data>
+  <data name="DBlockString" xml:space="preserve">
+    <value>d Block</value>
+  </data>
+  <data name="FBlockString" xml:space="preserve">
+    <value>f Block</value>
+  </data>
+  <data name="PBlockString" xml:space="preserve">
+    <value>p Block</value>
+  </data>
+  <data name="SBlockString" xml:space="preserve">
+    <value>s Block</value>
+  </data>
+  <data name="AtomicMassString" xml:space="preserve">
+    <value>Atomic Mass</value>
+  </data>
+  <data name="AtomicString" xml:space="preserve">
+    <value>Atomic</value>
+  </data>
+  <data name="GroupsString" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="NameString" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NumberString" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="PeriodsString" xml:space="preserve">
+    <value>Periods</value>
+  </data>
+  <data name="SymbolString" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="PurchaseString" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="AlreadyPurchasedMessage" xml:space="preserve">
+    <value>You have already purchased the full version, but for some reason have not downloaded full content. Download?</value>
+  </data>
+  <data name="NoQuestionString" xml:space="preserve">
+    <value>Questions to follow.</value>
+  </data>
+  <data name="QuestionString" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="SearchString" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="GetFullVersionOrAuthorizeString" xml:space="preserve">
+    <value>You need to pay {0} to access full content. If you had bought Biobrain Biology earlier, please provide your email.</value>
+  </data>
+  <data name="ProvideEmailString" xml:space="preserve">
+    <value>Provide email</value>
+  </data>
+  <data name="AppUpdateNeedString" xml:space="preserve">
+    <value>You need to upgrade the app to latest version to receive updates.</value>
+  </data>
+  <data name="AppStore" xml:space="preserve">
+    <value>App Store</value>
+  </data>
+  <data name="GooglePlay" xml:space="preserve">
+    <value>Google Play</value>
+  </data>
+  <data name="NavigateToString" xml:space="preserve">
+    <value>Navigate to</value>
+  </data>
+  <data name="EmptyLogsError" xml:space="preserve">
+    <value>Logs are empty!</value>
+  </data>
+  <data name="SendLogError" xml:space="preserve">
+    <value>Can't send logs! Please contact us via email: support@biobrain.com.au</value>
+  </data>
+  <data name="UpgradeString" xml:space="preserve">
+    <value>Upgrade</value>
+  </data>
+  <data name="UnspecifiedString" xml:space="preserve">
+    <value>Unspecified</value>
+  </data>
+  <data name="StatsHeaderString" xml:space="preserve">
+    <value>Quiz results</value>
+  </data>
+  <data name="RetakeQuizString" xml:space="preserve">
+    <value>Retake quiz</value>
+  </data>
+  <data name="TakeQuizString" xml:space="preserve">
+    <value>Take quiz</value>
+  </data>
+  <data name="StatsSummaryHeaderString" xml:space="preserve">
+    <value>Quiz results summary</value>
+  </data>
+  <data name="AverageQuizScoreString" xml:space="preserve">
+    <value>Average quiz score</value>
+  </data>
+  <data name="QuizzesCompletedString" xml:space="preserve">
+    <value>Quizes completed</value>
+  </data>
+  <data name="RecentQuizzesString" xml:space="preserve">
+    <value>RECENT QUIZZES</value>
+  </data>
+  <data name="DateString" xml:space="preserve">
+    <value>DATE</value>
+  </data>
+  <data name="RepeatString" xml:space="preserve">
+    <value>REPEAT</value>
+  </data>
+  <data name="ScoreString" xml:space="preserve">
+    <value>SCORE</value>
+  </data>
+  <data name="TopicString" xml:space="preserve">
+    <value>TOPIC</value>
+  </data>
+  <data name="ShowMoreString" xml:space="preserve">
+    <value>SHOW MORE RESULTS</value>
+  </data>
+  <data name="AverageString" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="CompletedString" xml:space="preserve">
+    <value>completed</value>
+  </data>
+  <data name="QuizesString" xml:space="preserve">
+    <value>Quizzes</value>
+  </data>
+  <data name="QuizScoreString" xml:space="preserve">
+    <value>quiz score</value>
+  </data>
+  <data name="GetPriceErrorString" xml:space="preserve">
+    <value>Failed to get product info.</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="NeedUpdateMessage" xml:space="preserve">
+    <value>Content update is available. Download?</value>
+  </data>
+  <data name="DatePrefix" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="LevelPrefix" xml:space="preserve">
+    <value>Level:</value>
+  </data>
+  <data name="ScorePrefix" xml:space="preserve">
+    <value>Score:</value>
+  </data>
+  <data name="RetakeQuiz" xml:space="preserve">
+    <value>RETAKE QUIZ</value>
+  </data>
+  <data name="Study" xml:space="preserve">
+    <value>STUDY</value>
+  </data>
+  <data name="AppName" xml:space="preserve">
+    <value>Biobrain - Biology</value>
+  </data>
+  <data name="DateCompleted" xml:space="preserve">
+    <value>Date completed</value>
+  </data>
+  <data name="Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="My" xml:space="preserve">
+    <value>My</value>
+  </data>
+  <data name="ResultEmailSubject" xml:space="preserve">
+    <value>Biobrain - Biology Result</value>
+  </data>
+  <data name="ResultsString" xml:space="preserve">
+    <value>results</value>
+  </data>
+  <data name="Topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="ConfirmPasswordString" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CountryString" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="PasswordString" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="StateString" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="RegistrationScreenString" xml:space="preserve">
+    <value>REGISTRATION SCREEN</value>
+  </data>
+  <data name="CreateAccountString" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+  <data name="LoginString" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="OrString" xml:space="preserve">
+    <value>Or</value>
+  </data>
+  <data name="InvalidEmailOrPasswordError" xml:space="preserve">
+    <value>Invalid email or password.</value>
+  </data>
+  <data name="UnhandledLoginError" xml:space="preserve">
+    <value>Something went wrong during authentication. Try the following steps:
+1. Delete the app
+2. Install the app from the App Store
+3. Create an account by completing the registration page</value>
+  </data>
+  <data name="RequiredFieldError" xml:space="preserve">
+    <value>{0} field is required</value>
+  </data>
+  <data name="ConfirmPasswordError" xml:space="preserve">
+    <value>Password and Confirm Password should be the same</value>
+  </data>
+  <data name="UsedEmailError" xml:space="preserve">
+    <value>Email address already exists</value>
+  </data>
+  <data name="WeakPasswordError" xml:space="preserve">
+    <value>Weak password, must be at least 6 characters</value>
+  </data>
+  <data name="ForgotPasswordString" xml:space="preserve">
+    <value>Forgot Password?</value>
+  </data>
+  <data name="SendResetPasswordString" xml:space="preserve">
+    <value>RESET PASSWORD</value>
+  </data>
+  <data name="ResetEmailSentString" xml:space="preserve">
+    <value>An email with password reset instructions was sent to the email address</value>
+  </data>
+  <data name="GetAccountError" xml:space="preserve">
+    <value>Error to get account data from remote server.</value>
+  </data>
+  <data name="UpdateAccountError" xml:space="preserve">
+    <value>Error to update account data on remote server.</value>
+  </data>
+  <data name="InvalidEmailError" xml:space="preserve">
+    <value>Email address not found</value>
+  </data>
+  <data name="InvalidPasswordError" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="TooManyAttemptsError" xml:space="preserve">
+    <value>Too many attempts. Please try again later.</value>
+  </data>
+  <data name="AlreadyOwnedError" xml:space="preserve">
+    <value>Product is already owned.</value>
+  </data>
+  <data name="CheckForUpdatesError" xml:space="preserve">
+    <value>An error occurred while receiving an update. Please contact support.</value>
+  </data>
+  <data name="CheckingForUpdatesString" xml:space="preserve">
+    <value>Checking for updates</value>
+  </data>
+  <data name="ClickDownloadString" xml:space="preserve">
+    <value>Please click download button below to start</value>
+  </data>
+  <data name="DoneString" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="DownloadingString" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+  <data name="DownloadString" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="FilesFailedString" xml:space="preserve">
+    <value>files failed to download</value>
+  </data>
+  <data name="FullCompleteString" xml:space="preserve">
+    <value>100% complete</value>
+  </data>
+  <data name="InvalidProductError" xml:space="preserve">
+    <value>Invalid product.</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="NewVersionAvailableString" xml:space="preserve">
+    <value>An update is available</value>
+  </data>
+  <data name="NoInternetConnection" xml:space="preserve">
+    <value>Can't connect to the server. Please check your internet connection.</value>
+  </data>
+  <data name="NoUpdatesAvailableString" xml:space="preserve">
+    <value>No updates available</value>
+  </data>
+  <data name="PaymentInvalidError" xml:space="preserve">
+    <value>Invalid payment.</value>
+  </data>
+  <data name="PaymentNotAllowedError" xml:space="preserve">
+    <value>Payment not alowed.</value>
+  </data>
+  <data name="SaveSubscriptionString" xml:space="preserve">
+    <value>(Save 50%, 12 months at {0}/mo)</value>
+  </data>
+  <data name="UpdateError" xml:space="preserve">
+    <value>An error occurred while downloading an update. Please try again later.</value>
+  </data>
+  <data name="UpdatesString" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
+  <data name="UserCanceledError" xml:space="preserve">
+    <value>Purchase was canceled by user.</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="SubjectRegistrationString" xml:space="preserve">
+    <value>BIOLOGY REGISTRATION</value>
+  </data>
+  <data name="SubjectString" xml:space="preserve">
+    <value>BIOLOGY</value>
+  </data>
+  <data name="WelcomeBackString" xml:space="preserve">
+    <value>Welcome Back</value>
+  </data>
+  <data name="CreateAccountUpperString" xml:space="preserve">
+    <value>CREATE ACCOUNT</value>
+  </data>
+  <data name="LoginUpperString" xml:space="preserve">
+    <value>LOG IN</value>
+  </data>
+  <data name="AllContentPackageString" xml:space="preserve">
+    <value>All Content Package</value>
+  </data>
+  <data name="ComingSoonLevel" xml:space="preserve">
+    <value>This level is coming soon</value>
+  </data>
+  <data name="DeleteMyAccount" xml:space="preserve">
+    <value>DELETE MY ACCOUNT</value>
+  </data>
+  <data name="AccountDeleted" xml:space="preserve">
+    <value>Account deleted</value>
+  </data>
+  <data name="AccountDeletedDescription" xml:space="preserve">
+    <value>Your BioBrain Account and all its data has been deleted.</value>
+  </data>
+  <data name="AreYouSubscriber" xml:space="preserve">
+    <value>Are you a subscriber?</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="ContinueAccountDeletion" xml:space="preserve">
+    <value>Continue to Account Deletion</value>
+  </data>
+  <data name="DeleteAccountDescription" xml:space="preserve">
+    <value>When you delete your BioBrain account, you won’t be able to retrieve the learning material, the glossary or quizzes. All your results will also be deleted.</value>
+  </data>
+  <data name="DeleteAccountLastDescription" xml:space="preserve">
+    <value>When you press the button below, your account will be deleted, until you subscribe again. Thank you for using BioBrain.</value>
+  </data>
+  <data name="DeletingAccountPermanent" xml:space="preserve">
+    <value>Deleting your account is permanent.</value>
+  </data>
+  <data name="LeavingDescription" xml:space="preserve">
+    <value>We’re sorry to see you go! We’d love to know why you want to delete your account, so we can improve the app and support our community</value>
+  </data>
+  <data name="ReasonBadContent" xml:space="preserve">
+    <value>The content is not what I am after</value>
+  </data>
+  <data name="ReasonContentNotRelevant" xml:space="preserve">
+    <value>The content is not relevant</value>
+  </data>
+  <data name="ReasonFinishCourse" xml:space="preserve">
+    <value>I have finished studying my course</value>
+  </data>
+  <data name="ReasonOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="ReasonTooHard" xml:space="preserve">
+    <value>The content is too hard</value>
+  </data>
+  <data name="SubscriberDescription" xml:space="preserve">
+    <value>Please take into account that billing will continue through Apple. Please cancel your subscription before continuing.</value>
+  </data>
+  <data name="WhyAreYouLeaving" xml:space="preserve">
+    <value>Why are you leaving BioBrain?</value>
+  </data>
+  <data name="Goodbye" xml:space="preserve">
+    <value>GOODBYE</value>
+  </data>
+</root>

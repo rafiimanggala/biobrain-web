@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePurchaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             x:Class="BioBrain.Views.DataUpdateView" x:Name="This">
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate UpdatesString}" IsBackVisible="True" IsShareVisible="True" IsLogoVisible="False"/>
+
+            <!--Body-->
+            <RefreshView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}"
+                        Refreshing="RefreshView_OnRefreshing" Padding="0">
+                <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}"
+                             Padding="0">
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="15,10,15,15" 
+                                 Padding="50, 0" Spacing="0" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+
+                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Spacing="10">
+                            <Label Style="{StaticResource UpdateStatusLabelStyle}" Text="{Binding UpdateStatusLabel}"></Label>
+                            <Label Style="{StaticResource UpdateProgressLabelStyle}" Text="{Binding ProcessLabel}" 
+                                   IsVisible="{Binding ProcessLabelVisible}"></Label>
+                        </StackLayout>
+
+                        <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate DownloadString}" 
+                                               Touched="DownloadButton_OnClicked" IsVisible="{Binding DownloadButtonVisible}" 
+                                               VerticalOptions="EndAndExpand" HeightRequest="40" Margin="0,0,0,5"/>
+                        <!--Placeholder-->
+                        <StackLayout IsVisible="{Binding DownloadButtonVisible, Converter={StaticResource InverseBooleanConverter}}"
+                                     VerticalOptions="EndAndExpand"></StackLayout>
+
+                    </StackLayout>
+                </ScrollView>
+            </RefreshView>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" ></controls:BottomBar>
+        </StackLayout>
+    </Grid>
+</views:BasePurchaseView>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BasePurchaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+                        xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+                        xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+                        xmlns:common="clr-namespace:Common;assembly=BioBrain"
+                        xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+                        xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+                        x:Class="BioBrain.Views.AreasView" x:Name="This">
+
+    <Grid x:Name="BaseGrid">
+
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                     Orientation="Vertical">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate AreasOfStudyString}" IsBackVisible="False" Navigating="BottomBar_OnNavigating" Share="TopBaner_OnShare"
+                               IsVisible="{Binding IsLocked, Converter={StaticResource InverseBooleanConverter}}"/>
+
+            <!--Body-->
+            <StackLayout BackgroundColor="{x:Static customControls:CustomColors.LightMain}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                         Orientation="Vertical">
+                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                    <!--This control create cache for alphabet control of glossary-->
+                    <customControls:CachingControl HeightRequest="1" WidthRequest="1" BackgroundColor="Transparent"/>
+
+                    <ScrollView Orientation="Vertical" VerticalOptions="FillAndExpand" IsVisible="{Binding IsShowData}" HorizontalOptions="FillAndExpand" Padding="0">
+                        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" IsVisible="{Binding IsShowData}" HorizontalOptions="FillAndExpand" Padding="0">
+                            <layoutControls:SearchBar x:Name="SearchContentBar" HeightRequest="30" HorizontalOptions="FillAndExpand" FontSize="13" 
+                                                          FontColor="{x:Static customControls:CustomColors.DarkMain}" FontFamily="Arial Regular"
+                                                          FillColor="{StaticResource IceBlue}" OnSearch="SearchBar_OnOnSearch" Margin="15, 20, 15, 0"
+                                                          IsVisible="{Binding BindingContext.IsShowData, Source={x:Reference This}}"/>
+
+                            <layoutControls:ListOfAreasControl x:Name="AreasList" ItemTapped="Button_OnClicked" ItemsSource="{Binding Areas}" 
+                                                                   HorizontalOptions="FillAndExpand" VerticalOptions="Start" 
+                                                                   HeightRequest="{Binding AreasListHeight}" SelectionMode="None">
+                                <layoutControls:ListOfAreasControl.Triggers>
+                                    <DataTrigger Binding="{Binding IsComingSoonVisible}" Value="False" TargetType="layoutControls:ListOfAreasControl">
+                                        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                                    </DataTrigger>
+                                </layoutControls:ListOfAreasControl.Triggers>
+                            </layoutControls:ListOfAreasControl>
+                            <Label Text="{appResources:Translate ComingSoonString}" Style="{StaticResource ListViewLabelStyle}" Margin="15,0,0,0" 
+                                       IsVisible="{Binding IsComingSoonVisible}" VerticalOptions="Start"/>
+                            <layoutControls:ListOfAreasControl ItemsSource="{Binding ComingSoonAreas}" VerticalOptions="FillAndExpand" HasUnevenRows="False" RowHeight="50"
+                                                               IsVisible="{Binding IsComingSoonVisible}" x:Name="ComingSoonAreasList" SelectionMode="None"/>
+                        </StackLayout>
+                    </ScrollView>
+                </Grid>
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                                Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+        </StackLayout>
+        
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" IsVisible="{Binding IsBusy}"
+                     BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+
+            <StackLayout IsVisible="{Binding IsBusy}" Style="{StaticResource BackStackStyle}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="FakeTap"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+
+            <Label  HorizontalOptions="CenterAndExpand" VerticalOptions="End" HorizontalTextAlignment="Center" FontSize="14" Margin="0,0,0,34"
+                VerticalTextAlignment="Center" TextColor="{x:Static customControls:CustomColors.DarkMain}" IsVisible="{Binding IsBusy}" Text="{Binding ProcessLabel}"/>
+        </StackLayout>
+
+        <Image Source="{Binding SplashImageSource}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Aspect="AspectFit"
+               IsVisible="{Binding IsBusy}" WidthRequest="290.5" HeightRequest="312" x:Name="HeadImage"/>
+
+        <Image x:Name="LabelBackground" Source="darkbackground.png" HorizontalOptions="FillAndExpand" VerticalOptions="End" Aspect="AspectFill"
+               IsVisible="{Binding IsBusy}"  HeightRequest="66" Margin="0,0,0,67"/>
+
+        <Image x:Name="LabelText" Source="biology.png" HorizontalOptions="CenterAndExpand" VerticalOptions="End" Aspect="AspectFit"
+               IsVisible="{Binding IsBusy}" WidthRequest="156"  HeightRequest="22" Margin="0,0,0,89"/>
+        
+        <!--<Label  x:Name="ProcessLabel" HorizontalOptions="CenterAndExpand" VerticalOptions="End" HorizontalTextAlignment="Center" FontSize="16"
+                VerticalTextAlignment="Center" TextColor="{StaticResource IceBlue}" IsVisible="{Binding ProgressLabelIsVisible}"
+                Text="{Binding ProgressLabel}" Margin="0, 0, 0, 34"/>-->
+    </Grid>
+</views:BasePurchaseView>

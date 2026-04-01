@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.StatsView" x:Name="This">
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical">
+                <controls:TopBaner Text="{Binding ViewHeader}" Share="TopBaner_OnShare" IsBackVisible="False" IsSendVisible="True" IsShareVisible="False"
+                                   Send="TopBaner_OnSend"/>
+
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+
+                    <!--<StackLayout Orientation="Horizontal" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand">-->
+                    <Grid HorizontalOptions="CenterAndExpand" Margin="0,10" RowSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <layoutControls:PersentDiagramControl Grid.Row="0" Grid.Column="0" WidthRequest="100" HeightRequest="100" Percent="{Binding AverageQuizRating}" FontColor="{StaticResource IceBlue}"
+                                                    FontSize="25" HorizontalOptions="CenterAndExpand" VerticalOptions="Start"
+                                                    MainColor="{x:Static customControls:CustomColors.DarkMain}" AccentColor="White" Margin="10"/>
+                        <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource DarkBigLabelStyle}" Text="{appResources:Translate AverageString}" HorizontalOptions="CenterAndExpand"
+                     HorizontalTextAlignment="Center" WidthRequest="100" LineBreakMode="WordWrap" VerticalOptions="Start" >
+                            <Label.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <OnPlatform.Platforms>
+                                        <On Platform="iOS" Value="18" />
+                                        <On Platform="Android" Value="24" />
+                                    </OnPlatform.Platforms>
+                                </OnPlatform>
+                            </Label.HeightRequest>
+                        </Label>
+                        <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource DarkBigLabelStyle}" Text="{appResources:Translate QuizScoreString}" HorizontalOptions="CenterAndExpand"
+                     HorizontalTextAlignment="Center" WidthRequest="100" LineBreakMode="WordWrap" VerticalOptions="Start"  >
+                            <Label.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <OnPlatform.Platforms>
+                                        <On Platform="iOS" Value="18" />
+                                        <On Platform="Android" Value="24" />
+                                    </OnPlatform.Platforms>
+                                </OnPlatform>
+                            </Label.HeightRequest>
+                        </Label>
+                        <layoutControls:PersentDiagramControl Grid.Row="0" Grid.Column="1" WidthRequest="100" HeightRequest="100" Percent="{Binding QuizzesCompleted}" FontColor="{StaticResource IceBlue}"
+                                                    FontSize="25" HorizontalOptions="CenterAndExpand" VerticalOptions="Start"
+                                                    MainColor="{x:Static customControls:CustomColors.DarkMain}" AccentColor="White" Margin="10"/>
+                        <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource DarkBigLabelStyle}" Text="{appResources:Translate QuizesString}" HorizontalOptions="CenterAndExpand"
+                     HorizontalTextAlignment="Center" WidthRequest="100" LineBreakMode="WordWrap" VerticalOptions="Start" Margin="0"  >
+                            <Label.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <OnPlatform.Platforms>
+                                        <On Platform="iOS" Value="18" />
+                                        <On Platform="Android" Value="24" />
+                                    </OnPlatform.Platforms>
+                                </OnPlatform>
+                            </Label.HeightRequest>
+                        </Label>
+                        <Label Grid.Row="2" Grid.Column="1" Style="{StaticResource DarkBigLabelStyle}" Text="{appResources:Translate CompletedString}" HorizontalOptions="CenterAndExpand"
+                     HorizontalTextAlignment="Center" WidthRequest="100" LineBreakMode="WordWrap" VerticalOptions="Start"  >
+                            <Label.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double">
+                                    <OnPlatform.Platforms>
+                                        <On Platform="iOS" Value="18" />
+                                        <On Platform="Android" Value="24" />
+                                    </OnPlatform.Platforms>
+                                </OnPlatform>
+                            </Label.HeightRequest>
+                        </Label>
+                    </Grid>
+                    <!--</StackLayout>-->
+
+                    <Label Style="{StaticResource BannerStyle}" Text="{appResources:Translate RecentQuizzesString}" HorizontalOptions="FillAndExpand" Margin="0,0,0,-5"
+                 VerticalOptions="Start" FontSize="20"/>
+
+                    <!--<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Start" Orientation="Horizontal">
+                        <Label Style="{StaticResource ListViewLabelStyle}" HorizontalOptions="FillAndExpand" LineBreakMode="TailTruncation" Text="{appResources:Translate TopicString}"
+                   Margin="10,0,0,0"/>
+                        <Label Style="{StaticResource ListViewLabelStyle}" HorizontalOptions="End" Text="{appResources:Translate ScoreString}" WidthRequest="60" HorizontalTextAlignment="Center"/>
+                        <Label Style="{StaticResource ListViewLabelStyle}" HorizontalOptions="End" Text="{appResources:Translate DateString}" WidthRequest="60" HorizontalTextAlignment="Center"/>
+                    </StackLayout>-->
+
+                    <ListView x:Name="StatsList" CachingStrategy="RecycleElement" ItemsSource="{Binding StatsList, Mode=TwoWay}" VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" SeparatorVisibility="None" HasUnevenRows="True" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.View>
+                                        <Grid Padding="0,10,0,0" BackgroundColor="White">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.8*"/>
+                                                <ColumnDefinition Width="0.9*"/>
+                                                <ColumnDefinition Width="1.75*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                                                <Label Style="{StaticResource StatsListLabelStyle}" HorizontalOptions="StartAndExpand" LineBreakMode="TailTruncation" Text="{Binding Topic}"
+                                                       TextColor="{x:Static customControls:CustomColors.DarkMain}" VerticalTextAlignment="Center" FontAttributes="Bold" Margin="15,0"/>
+                                                <CheckBox IsChecked="{Binding IsNeedToSend}" Margin="0, -12" Color="{x:Static customControls:CustomColors.DarkMain}" />
+                                            </StackLayout>
+
+                                            <StackLayout Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0" Spacing="0">
+                                                <StackLayout Orientation="Horizontal" HorizontalOptions="Start" Margin="15,0,5,0" Spacing="0">
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" HorizontalOptions="Start" LineBreakMode="NoWrap" Text="{appResources:Translate LevelPrefix}"
+                                                           TextColor="{x:Static customControls:CustomColors.DarkMain}" VerticalTextAlignment="Center"/>
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" HorizontalOptions="Start" LineBreakMode="NoWrap" Text="{Binding Level}"
+                                                           TextColor="{x:Static customControls:CustomColors.DarkMain}" VerticalTextAlignment="Center"/>
+                                                </StackLayout>
+                                                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5,0" Spacing="0">
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" HorizontalOptions="Start" LineBreakMode="NoWrap" Text="{appResources:Translate ScorePrefix}"
+                                                           TextColor="{x:Static customControls:CustomColors.DarkMain}" VerticalTextAlignment="Center"/>
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" VerticalOptions="Center" HorizontalOptions="Start" Text="{Binding Score}"
+                                                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="{x:Static customControls:CustomColors.DarkMain}"/>
+                                                </StackLayout>
+                                                <StackLayout Orientation="Horizontal" Margin="5,0,15,0" HorizontalOptions="End" Spacing="0">
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" HorizontalOptions="EndAndExpand" LineBreakMode="NoWrap" Text="{appResources:Translate DatePrefix}"
+                                                           TextColor="{x:Static customControls:CustomColors.DarkMain}" VerticalTextAlignment="Center"/>
+                                                    <Label Style="{StaticResource StatsListLabelStyle}" VerticalOptions="CenterAndExpand" HorizontalOptions="End" Text="{Binding Date}"
+                                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center" TextColor="{x:Static customControls:CustomColors.DarkMain}"/>
+                                                </StackLayout>
+                                            </StackLayout>
+                                            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Margin="15,0,15,5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <buttons:RoundedButton Grid.Column="0"  HeightRequest="35" FillColor="{x:Static customControls:CustomColors.LightMain}" BorderColor="{x:Static customControls:CustomColors.LightMain}"
+                                                                       FontColor="{StaticResource IceBlue}" Text="{appResources:Translate Study}" FontSize="18" HorizontalOptions="StartAndExpand" VerticalOptions="Center"
+                                                                       Touched="StudyButton_OnTouched" Type="Both" Margin="0,0,12,0" MinimumHeightRequest="35"/>
+                                                <buttons:RoundedButton Grid.Column="1" HeightRequest="35"  FillColor="{x:Static customControls:CustomColors.LightMain}" BorderColor="{x:Static customControls:CustomColors.LightMain}"
+                                                                       FontColor="{StaticResource IceBlue}" Text="{appResources:Translate RetakeQuiz}" FontSize="18" HorizontalOptions="EndAndExpand" VerticalOptions="Center"
+                                                                       Touched="Retake_OnTapped" Type="Both" Margin="12,0,0,0" MinimumHeightRequest="35"/>
+                                            </Grid>
+                                            <BoxView Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" HeightRequest="1" Color="{x:Static customControls:CustomColors.DarkMain}" Margin="3,0"/>
+                                        </Grid>
+                                    </ViewCell.View>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <buttons:RoundedButton HeightRequest="35" WidthRequest="180" FillColor="{x:Static customControls:CustomColors.DarkMain}" BorderColor="{x:Static customControls:CustomColors.DarkMain}"
+                                   FontColor="{StaticResource IceBlue}" Text="{appResources:Translate ShowMoreString}" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="End"
+                                   Touched="More_OnClicked" Type="Both" Margin="10" IsVisible="{Binding IsNextTopicVisible}" MinimumHeightRequest="35"/>
+
+                </StackLayout>
+
+                <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}"></controls:BottomBar>
+            </StackLayout>
+
+            <!--Popup-->
+            <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand"
+                                   VerticalOptions="EndAndExpand" HeightRequest="60" IsVisible="False"
+                                   Margin="10,70"
+                                   Link="{Binding Source={x:Static appResources:Links.ShareLink}}"
+                                   Text="{appResources:Translate TextToShare}" />
+
+        </Grid>
+    </ContentPage.Content>
+</views:BaseView>

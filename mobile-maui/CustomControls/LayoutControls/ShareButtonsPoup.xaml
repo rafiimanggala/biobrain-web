@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:CustomControls"
+             x:Class="CustomControls.LayoutControls.ShareButtonsPoup">
+  <ContentView.Content>
+    <Border BackgroundColor="White"
+            StrokeShape="RoundRectangle 15"
+            Stroke="{x:Static customControls:CustomColors.DarkMain}"
+            StrokeThickness="4"
+            Padding="10,0"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand">
+      <HorizontalStackLayout x:Name="PopupView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Image Style="{StaticResource ShareButtonStyle}" Source="mailicon.png" HorizontalOptions="CenterAndExpand">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="MailButton_OnClicked"/>
+          </Image.GestureRecognizers>
+        </Image>
+
+        <Image Style="{StaticResource ShareButtonStyle}" Source="facebookicon.png" HorizontalOptions="CenterAndExpand">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="FacebookButton_OnClicked"/>
+          </Image.GestureRecognizers>
+        </Image>
+
+        <Image Style="{StaticResource ShareButtonStyle}" Source="twittericon.png" HorizontalOptions="CenterAndExpand">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TwitterButton_OnClicked"/>
+          </Image.GestureRecognizers>
+        </Image>
+
+        <Image Style="{StaticResource ShareButtonStyle}" Source="linkedinicon.png" HorizontalOptions="CenterAndExpand">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="LinkedinButton_OnClicked"/>
+          </Image.GestureRecognizers>
+        </Image>
+
+        <Image Style="{StaticResource ShareButtonStyle}" Source="whatsappicon.png" HorizontalOptions="CenterAndExpand">
+          <Image.GestureRecognizers>
+            <TapGestureRecognizer Tapped="WhatsappButton_OnClicked"/>
+          </Image.GestureRecognizers>
+        </Image>
+      </HorizontalStackLayout>
+    </Border>
+  </ContentView.Content>
+</ContentView>

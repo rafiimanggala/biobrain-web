@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "940998509866",
+    "firebase_url": "https://cecbiobrain.firebaseio.com",
+    "project_id": "cecbiobrain",
+    "storage_bucket": "cecbiobrain.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940998509866:android:ac06df1e3dc6a0fea98a53",
+        "android_client_info": {
+          "package_name": "com.cec.biobrain"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940998509866-kk4rjduitv0bgb5odcdqpetk79va3h07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxzF1mREtz0ruB00ttThZtZSXX-9bmuTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940998509866-kk4rjduitv0bgb5odcdqpetk79va3h07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "940998509866-otgtij251s2i57lfp7m5idvnqqvs7l23.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cecapp.biobrain"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

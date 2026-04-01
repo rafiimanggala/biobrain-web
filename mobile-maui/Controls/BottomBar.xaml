@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             x:Class="BioBrain.Controls.BottomBar" x:Name="This">
+    <!-- TODO: BadgeView.Shared xmlns removed - needs MAUI-compatible badge library -->
+    <ContentView.Content>
+        <StackLayout Style="{StaticResource FooterStyle}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Style="{StaticResource FooterStyle}" Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="0">
+                <Image Style="{StaticResource PanelImageStyle}" Source="homeicon.png" HorizontalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Home_OnTapped"/>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference This}, Path=CurrentMenyItem}" Value="Home" TargetType="Image">
+                            <Setter Property="Source" Value="homeiconselected.png"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <Image Style="{StaticResource PanelImageStyle}"  Source="glossaryicon.png" HorizontalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Glossary_OnTapped"/>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference This}, Path=CurrentMenyItem}" Value="Glossary" TargetType="Image">
+                            <Setter Property="Source" Value="glossaryiconselected.png"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <Image Style="{StaticResource PanelImageStyle}"  Source="periodictable.png" IsVisible="{Binding Source={x:Reference This}, Path=IsPeriodicTableVisible}" HorizontalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="PeriodicTabler_OnTapped"/>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference This}, Path=CurrentMenyItem}" Value="PeriodicTable" TargetType="Image">
+                            <Setter Property="Source" Value="periodictableselected.png"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <Image Style="{StaticResource PanelImageStyle}"  Source="statsicon.png" HorizontalOptions="CenterAndExpand">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Stats_OnTapped"/>
+                    </Image.GestureRecognizers>
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference This}, Path=CurrentMenyItem}" Value="Stats" TargetType="Image">
+                            <Setter Property="Source" Value="statsiconselected.png"></Setter>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+                <Grid HorizontalOptions="CenterAndExpand">
+                    <Image Style="{StaticResource PanelImageStyle}"  Source="moreicon.png" HorizontalOptions="CenterAndExpand">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="More_OnTapped"/>
+                        </Image.GestureRecognizers>
+                        <Image.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Reference This}, Path=CurrentMenyItem}" Value="More" TargetType="Image">
+                                <Setter Property="Source" Value="moreiconselected.png"></Setter>
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Frame x:Name="UpdateBadge" CornerRadius="7.5" WidthRequest="15" HeightRequest="15" HorizontalOptions="EndAndExpand" VerticalOptions="StartAndExpand"
+                           BackgroundColor="Red" BorderColor="Transparent" HasShadow="False" Padding="0,0,1,0" IsVisible="{x:Static common:Settings.IsUpdateAvailable}">
+                        <Label Text="!" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" TextColor="White"
+                               VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="11"/>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

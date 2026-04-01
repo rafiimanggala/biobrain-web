@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             x:Class="BioBrain.Views.PurchasesPage">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0, 20, 0, 0"/>
+        </OnPlatform>
+    </ContentPage.Padding>
+
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+    <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+        <!--Header-->
+        <layoutControls:TopBaner Image="mainicon.png" Text="{appResources:Translate PurchasesString}" IsAboutVisible="False" EmblemTapped="HomeButton_OnClicked"/>
+
+        <!--Body-->
+            <StackLayout BackgroundColor="{x:Static customControls:CustomColors.LightMain}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                <!--head image-->
+                <Image Source="headimage.png" HeightRequest="160" VerticalOptions="End" HorizontalOptions="End" Margin="0, 0, 15, 25">
+                    <Image.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="False" TargetType="Image">
+                            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                        </DataTrigger>
+                    </Image.Triggers>
+                </Image>
+
+                <ListView HasUnevenRows="True" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="0, 40, 0, 0"
+                          ItemsSource="{Binding Purchases}"
+                          IsVisible="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}">
+                     <ListView.ItemTemplate>
+                         <DataTemplate>
+                             <ViewCell>
+                                <ViewCell.View>
+                                    <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{Binding PurchaseDisplayName}" 
+                                           Touched="Purchase_OnClicked"/>
+                                </ViewCell.View>
+                             </ViewCell>
+                         </DataTemplate>
+                     </ListView.ItemTemplate>
+
+                </ListView>
+
+            </Grid>
+        </StackLayout>
+
+        <!--Footer-->
+        <StackLayout Style="{StaticResource FooterStyle}" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <Image Style="{StaticResource FastImageStyle}" Source="homeicon.png">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="HomeButton_OnClicked"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Image Style="{StaticResource FastImageStyle}" Source="backicon.png" HorizontalOptions="CenterAndExpand">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BackButton_OnClicked"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Image Style="{StaticResource FastImageStyle}" BackgroundColor="Transparent" HorizontalOptions="End"/>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout IsVisible="{Binding IsBusy}" Style="{StaticResource BackStackStyle}">
+        <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer Tapped="FakeTap"/>
+        </StackLayout.GestureRecognizers>
+    </StackLayout>
+    </Grid>
+</ContentPage>

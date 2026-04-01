@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:effects="clr-namespace:BioBrain.Effects;assembly=BioBrain"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             x:Class="BioBrain.Views.TextView" x:Name="This">
+
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}">
+
+            <!--Header-->
+            <controls:TopBaner Text="{Binding PageHeader}"  Navigating="BottomBar_OnNavigating" Share="TopBaner_OnShare"/>
+
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+
+                <layoutControls:RoundedBoxView VerticalOptions="FillAndExpand" BackgroundColor="White" Margin="15" Padding="8" effects:RoundedCornerProperties.RoundRadius="15"
+                      effects:RoundedCornerProperties.BorderThickness="4" effects:RoundedCornerProperties.BorderColor="{x:Static customControls:CustomColors.DarkMain}">
+                    <layoutControls:RoundedBoxView.Effects>
+                        <effects:RoundedCorners/>
+                    </layoutControls:RoundedBoxView.Effects>
+                    <WebView x:Name="AboutWebView" Source="{Binding FilePath}" VerticalOptions="FillAndExpand" Navigating="AboutWebView_OnNavigating"/>
+                </layoutControls:RoundedBoxView>
+
+            </StackLayout>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                            Navigating="BottomBar_OnNavigating"></controls:BottomBar>
+
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" IsVisible="False" Margin="10,70"
+                                      Link="{Binding Source={x:Static appResources:Links.ShareLink}}" Text="{appResources:Translate TextToShare}"/>
+    </Grid>
+</views:BaseView>

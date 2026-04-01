@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             x:Class="BioBrain.Views.AuthorizationView" x:Name="This">
+
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate SubjectString}" IsBackVisible="False" IsShareVisible="True" IsLogoVisible="True" 
+                               IsRightPlaceholderVisible="false" Share="TopBaner_OnShare">
+                <controls:TopBaner.Triggers>
+                    <DataTrigger Binding="{Binding IsRegistrationVisible}" Value="True" TargetType="controls:TopBaner">
+                        <Setter Property="Text" Value="{appResources:Translate SubjectRegistrationString}"></Setter>
+                    </DataTrigger>
+                </controls:TopBaner.Triggers>
+            </controls:TopBaner>
+
+            <!--Body-->
+            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="15,10,15,15" Padding="30, 0" Spacing="0">
+
+                    <!--<Label Style="{StaticResource HeaderLabelStyle}" Text="{appResources:Translate RegistrationScreenString}" IsVisible="{Binding IsRegistrationVisible}"/>-->
+                    <StackLayout Orientation="Vertical" IsVisible="{Binding IsRegistrationVisible, Converter={StaticResource InverseBooleanConverter}}" 
+                                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,20,0,0">
+                        <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                            <Image Source="headimagewithouttext" IsVisible="{Binding IsRegistrationVisible, Converter={StaticResource InverseBooleanConverter}}" HorizontalOptions="CenterAndExpand" 
+                                   HeightRequest="80" WidthRequest="80" VerticalOptions="Center"/>
+                            <Label Style="{StaticResource HeaderLabelStyle}" Text="{appResources:Translate WelcomeBackString}" 
+                                   IsVisible="{Binding IsRegistrationVisible, Converter={StaticResource InverseBooleanConverter}}" FontSize="26" Margin="20" 
+                                   VerticalOptions="Center"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <layoutControls:AvatarControl HorizontalOptions="FillAndExpand" AvatarPath="{Binding AvatarPath}" AvatarSelected="AvatarControl_OnAvatarSelected"
+                                              AvatarSelecting="AvatarControl_OnAvatarSelecting" x:Name="UserAvatarControl" DefaultAvatar="empty" VerticalOptions="EndAndExpand"
+                                              BorderColor="{x:Static customControls:CustomColors.DarkMain}" BorderThickness="7" IsVisible="{Binding IsRegistrationVisible}"/>
+
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Margin="0,0,0,20" Spacing="10">
+
+                        <StackLayout.Triggers>
+                            <DataTrigger Binding="{Binding IsLoginVisible}" Value="True" TargetType="StackLayout">
+                                <Setter Property="Spacing" Value="20"></Setter>
+                                <Setter Property="Margin" Value="0,0,0,30"></Setter>
+                            </DataTrigger>
+                        </StackLayout.Triggers>
+
+                        <layoutControls:MaterialInput Style="{StaticResource MaterialInputStyle}" Text="{Binding FirstName}"
+                                                      Placeholder="{appResources:Translate FirstNameString}" IsVisible="{Binding IsRegistrationVisible}"
+                                                      PrefixSource="user.png" FontSize="18"/>
+
+                        <layoutControls:MaterialInput Style="{StaticResource MaterialInputStyle}" Text="{Binding LastName}" 
+                                                         Placeholder="{appResources:Translate SurnameString}" IsVisible="{Binding IsRegistrationVisible}"
+                                                         PrefixSource="user.png" FontSize="18"/>
+
+                        <layoutControls:MaterialInput Style="{StaticResource MaterialInputStyle}" Text="{Binding Email}"
+                                                         Placeholder="{appResources:Translate EmailString}" PrefixSource="email.png" FontSize="18"/>
+
+
+                        <layoutControls:MaterialInput Style="{StaticResource MaterialInputStyle}" Text="{Binding Password}"
+                                                      Placeholder="{appResources:Translate PasswordString}" IsPassword="True" PrefixSource="password.png"
+                                                      IsVisible="{Binding IsPasswordVisible}" FontSize="18"/>
+
+                        <layoutControls:MaterialInput Style="{StaticResource MaterialInputStyle}" Text="{Binding ConfirmPassword}"
+                                                             Placeholder="{appResources:Translate ConfirmPasswordString}" IsPassword="True"  
+                                                             IsVisible="{Binding IsRegistrationVisible}" PrefixSource="password.png" FontSize="18"/>
+
+                        <layoutControls:MaterialDropDown Style="{StaticResource MaterialDropDownStyle}" SelectedItem="{Binding Country}"
+                                                             Placeholder="{appResources:Translate CountryString}" IsVisible="{Binding IsRegistrationVisible}"
+                                                             ItemsSource="{Binding Countries}" PrefixSource="pin.png" FontSize="18"/>
+
+                        <layoutControls:MaterialDropDown Style="{StaticResource MaterialDropDownStyle}" SelectedItem="{Binding State}"
+                                                             Placeholder="{appResources:Translate StateString}" IsVisible="{Binding IsStateVisible}"
+                                                             ItemsSource="{Binding AustralianStates}" PrefixSource="pin.png" FontSize="18"/>
+                    </StackLayout>
+
+                    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical">
+                        <buttons:RoundedButton HeightRequest="35" WidthRequest="180" FillColor="{x:Static customControls:CustomColors.DarkMain}" 
+                                               BorderColor="{x:Static customControls:CustomColors.DarkMain}" HorizontalOptions="CenterAndExpand" 
+                                               VerticalOptions="Start" MinimumHeightRequest="35" FontColor="{StaticResource IceBlue}" 
+                                               Text="{appResources:Translate CreateAccountString}" FontSize="16" Touched="Register_OnClicked" Type="Both" 
+                                               Margin="0,0,0,5">
+                            <buttons:RoundedButton.Triggers>
+                                <DataTrigger Binding="{Binding IsRegistrationVisible}" Value="True" TargetType="buttons:RoundedButton">
+                                    <Setter Property="Text" Value="{appResources:Translate CreateAccountUpperString}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsRegistrationVisible}" Value="False" TargetType="buttons:RoundedButton">
+                                    <Setter Property="Text" Value="{appResources:Translate LoginUpperString}"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsResetVisible}" Value="True" TargetType="buttons:RoundedButton">
+                                    <Setter Property="Text" Value="{appResources:Translate SendResetPasswordString}"></Setter>
+                                </DataTrigger>
+                            </buttons:RoundedButton.Triggers>
+                        </buttons:RoundedButton>
+
+                        <Label Style="{StaticResource SubHeaderLabelStyle}" Text="{appResources:Translate OrString}"/>
+
+                        <Label Style="{StaticResource SubHeaderLabelStyle}" Text="{appResources:Translate LoginString}" 
+                               IsVisible="{Binding IsRegistrationVisible}" TextDecorations="Underline" FontSize="14">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="LoginMode_OnTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Style="{StaticResource SubHeaderLabelStyle}" Text="{appResources:Translate CreateAccountString}" 
+                               IsVisible="{Binding IsLoginVisible}" TextDecorations="Underline" FontSize="14">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RegisterMode_OnTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Style="{StaticResource SubHeaderLabelStyle}" Text="{appResources:Translate ForgotPasswordString}" 
+                               IsVisible="{Binding IsLoginVisible}" TextDecorations="Underline" Margin="0,5,0,0" FontSize="14">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ForgotPassword_OnTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Style="{StaticResource SubHeaderLabelStyle}" Text="{appResources:Translate CancelString}" 
+                               IsVisible="{Binding IsResetVisible}" TextDecorations="Underline" FontSize="14">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="LoginMode_OnTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="SharePopup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+
+        <ActivityIndicator HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Style="{StaticResource SpinnerStyle}"
+                           IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+    </Grid>
+</views:BaseView>

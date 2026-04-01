@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:layoutControls="clr-namespace:CustomControls.LayoutControls;assembly=BioBrain"
+             xmlns:appResources="clr-namespace:BioBrain.AppResources;assembly=BioBrain"
+             xmlns:effects="clr-namespace:CustomControls.Effects;assembly=BioBrain"
+             xmlns:customControls="clr-namespace:CustomControls;assembly=BioBrain"
+             xmlns:controls="clr-namespace:BioBrain.Controls;assembly=BioBrain"
+             xmlns:common="clr-namespace:Common;assembly=BioBrain"
+             xmlns:views="clr-namespace:BioBrain.Views;assembly=BioBrain"
+             xmlns:buttons="clr-namespace:CustomControls.Buttons;assembly=BioBrain"
+             x:Class="BioBrain.Views.AccountView" x:Name="This">
+    <Grid>
+        <StackLayout x:Name="MainStack" Style="{StaticResource MainContainerStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <!--Header-->
+            <controls:TopBaner Text="{appResources:Translate YourAccountString}" Share="TopBaner_OnShare"/>
+
+            <!--Body-->
+            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static customControls:CustomColors.LightMain}">
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical" Margin="15,10,15,15">
+
+                    <layoutControls:AvatarControl HorizontalOptions="FillAndExpand" AvatarPath="{Binding AvatarPath}" AvatarSelected="AvatarControl_OnAvatarSelected"
+                                              AvatarSelecting="AvatarControl_OnAvatarSelecting" x:Name="UserAvatarControl"/>
+
+                    <Grid VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate FirstNameString}" />
+                        <layoutControls:TextFieldControl Grid.Column="1" Grid.Row="0"  Style="{StaticResource TextFieldStyle}" Text="{Binding FirstName}"/>
+
+                        <Label Grid.Column="0" Grid.Row="1"  Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate SurnameString}"/>
+                        <layoutControls:TextFieldControl Grid.Column="1" Grid.Row="1"  Style="{StaticResource TextFieldStyle}" Text="{Binding Surname}" />
+
+                        <Label Grid.Column="0" Grid.Row="2"  Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate EmailString}"/>
+                        <layoutControls:TextFieldControl Grid.Column="1" Grid.Row="2"  Style="{StaticResource TextFieldStyle}" Text="{Binding Email}" 
+                                                     Editable="False"/>
+
+                        <Label Grid.Column="0" Grid.Row="3"  Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate GenderString}"/>
+                        <!--bind in back code-->
+                        <Picker Grid.Column="1" Grid.Row="3"  x:Name="GenderPicker" HeightRequest="35" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource IceBlue}" TextColor="{x:Static customControls:CustomColors.DarkMain}"
+                SelectedIndex="{Binding Gender}" effects:BorderEffect.HasNoBorder="True"/>
+
+                        <Label  Grid.Column="0" Grid.Row="4" Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate DateOfBirthString}"/>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="4"  BackgroundColor="{StaticResource IceBlue}">
+                            <DatePicker  HeightRequest="35" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource IceBlue}" TextColor="{x:Static customControls:CustomColors.DarkMain}"
+                            Date="{Binding DateOfBirdth}" effects:BorderEffect.HasNoBorder="True">
+                                <DatePicker.Triggers>
+                                    <DataTrigger Binding="{Binding IsDoBVisible}" Value="False" TargetType="DatePicker">
+                                        <Setter Property="TextColor" Value="{StaticResource IceBlue}"></Setter>
+                                    </DataTrigger>
+                                </DatePicker.Triggers>
+
+                            </DatePicker>
+                            <Label Text="x" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="End" TextColor="Black" 
+                               HeightRequest="35" WidthRequest="35" Margin="0,0,5,0" FontSize="16">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+
+                    </Grid>
+                    <Label Style="{StaticResource AccountLabelStyle}" Text="{appResources:Translate EducationLevelString}"/>
+                    <!--bind in back code-->
+                    <Picker x:Name="EducationLevelPicker" HeightRequest="35" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource IceBlue}" TextColor="{x:Static customControls:CustomColors.DarkMain}"
+                        SelectedIndex="{Binding EducationLevel}" Margin="0,0,0,10" effects:BorderEffect.HasNoBorder="True"/>
+
+                    <!--DeleteAccount-->
+                    <buttons:RoundedButton Style="{StaticResource AboutButtonStyle}" Text="{appResources:Translate DeleteMyAccount}" Touched="RoundedButton_OnTouched" VerticalOptions="EndAndExpand"/>
+
+                </StackLayout>
+            </ScrollView>
+
+            <!--Footer-->
+            <controls:BottomBar CurrentMenyItem="{Binding Source={x:Reference This}, Path=MenuItem}" IsPeriodicTableVisible="{x:Static common:Settings.IsPeriodicTableVisible}" 
+                            ></controls:BottomBar>
+        </StackLayout>
+
+        <!--Popup-->
+        <layoutControls:ShareButtonsPoup x:Name="Popup" HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" HeightRequest="60" 
+                                         IsVisible="False" Margin="10,70" Link="{Binding Source={x:Static appResources:Links.ShareLink}}" 
+                                         Text="{appResources:Translate TextToShare}"/>
+    </Grid>
+</views:BaseView>

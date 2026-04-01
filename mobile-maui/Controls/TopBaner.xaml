@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BioBrain.Controls.TopBaner">
+    <ContentView.Content>
+        <StackLayout Style="{StaticResource HeaderStyle}" >
+            <Image x:Name="BiobrainImage" Style="{StaticResource HeaderImageStyle}" Source="logo.png" IsVisible="False" HorizontalOptions="Start">
+            </Image>
+            <Grid Style="{StaticResource BackButtonStyle}" x:Name="BackButton">
+              <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BackButton_OnTapped"/>
+                </Grid.GestureRecognizers>
+                    <Image Style="{StaticResource BackImageStyle}" Source="backicon.png">
+                </Image>
+            </Grid>
+            <!--Font size change in back code in Text property setter-->
+            <Label x:Name="HeaderLabel" Style="{StaticResource HeaderLabelStyle}"/>
+
+            <Image x:Name="ShareNutton" Style="{StaticResource HeaderImageStyle}" Source="sharebutton.png" HorizontalOptions="End">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ShareButton_OnTapped"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="SendButton" Style="{StaticResource HeaderImageStyle}" Source="sendicon.png" HorizontalOptions="End" IsVisible="False">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="SendButton_OnTapped"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="RightPlaceholder" Style="{StaticResource HeaderImageStyle}" Opacity="0" IsVisible="False"></Image>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
