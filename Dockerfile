@@ -35,6 +35,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
     libxext6 \
     libx11-6 \
+    libssl3 \
+    libxcb1 \
+    libx11-xcb1 \
+    libfreetype6 \
+    libjpeg62-turbo \
+    libpng16-16 \
+    zlib1g \
+    libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/publish .
@@ -48,5 +56,8 @@ ENV ASPNETCORE_URLS=http://+:10000
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV DOTNET_gcServer=0
 ENV DOTNET_GCHeapHardLimit=0x10000000
+ENV DOTNET_EnableDiagnostics=0
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+ENV LD_LIBRARY_PATH=/app
 
 ENTRYPOINT ["dotnet", "BiobrainWebAPI.dll"]
