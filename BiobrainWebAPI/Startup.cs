@@ -26,6 +26,8 @@ namespace BiobrainWebAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			Console.WriteLine("[Startup] ConfigureServices starting...");
+			Console.Out.Flush();
 			//services.AddControllers();
 			services.AddCors(options =>
 			{
@@ -48,42 +50,57 @@ namespace BiobrainWebAPI
                 options.EnableEndpointRouting = false;
             });
 
+			Console.WriteLine("[Startup] ConfigureAppSettings..."); Console.Out.Flush();
 			services.ConfigureAppSettings(Configuration);
 
+			Console.WriteLine("[Startup] ConfigureDatabase..."); Console.Out.Flush();
 			services.ConfigureDatabase(Configuration);
 
+			Console.WriteLine("[Startup] ConfigureJwtIdentity..."); Console.Out.Flush();
 			services.ConfigureJwtIdentity(Configuration);
 
+			Console.WriteLine("[Startup] ConfigureSingletonServiceLayer..."); Console.Out.Flush();
 			services.ConfigureSingletonServiceLayer();
 
+			Console.WriteLine("[Startup] ConfigureServiceLayer..."); Console.Out.Flush();
 			services.ConfigureServiceLayer();
 
+			Console.WriteLine("[Startup] AddApplication..."); Console.Out.Flush();
             services.AddApplication(Configuration);
+			Console.WriteLine("[Startup] AddNotifications..."); Console.Out.Flush();
             services.AddNotifications(Configuration);
+			Console.WriteLine("[Startup] AddPayments..."); Console.Out.Flush();
             services.AddPayments(Configuration);
 
-
+			Console.WriteLine("[Startup] AddSwaggerGen..."); Console.Out.Flush();
             services.AddSwaggerGen(options =>
             {
                 var defaultSchemaIdSelector = options.SchemaGeneratorOptions.SchemaIdSelector;
                 options.CustomSchemaIds(t => t.DeclaringType != null ? $"{defaultSchemaIdSelector(t.DeclaringType)}_{defaultSchemaIdSelector(t)}" : defaultSchemaIdSelector(t));
             });
+			Console.WriteLine("[Startup] ConfigureServices DONE"); Console.Out.Flush();
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BiobrainWebContext db)
 		{
+			Console.WriteLine("[Startup] Configure starting..."); Console.Out.Flush();
 			// Ensure uuid-ossp extension exists before running migrations
+			Console.WriteLine("[Startup] Creating uuid-ossp extension..."); Console.Out.Flush();
 			db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
+			Console.WriteLine("[Startup] Running migrations..."); Console.Out.Flush();
 			try
 			{
 				db.Database.Migrate();
+				Console.WriteLine("[Startup] Migrations completed successfully"); Console.Out.Flush();
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine($"[Startup] Migration error: {ex.Message}");
 				Console.WriteLine("[Startup] Attempting EnsureCreated as fallback...");
+				Console.Out.Flush();
 				db.Database.EnsureCreated();
+				Console.WriteLine("[Startup] EnsureCreated completed"); Console.Out.Flush();
 			}
 
 			if (env.IsDevelopment())
@@ -91,20 +108,27 @@ namespace BiobrainWebAPI
 				app.UseDeveloperExceptionPage();
 			}
 
+			Console.WriteLine("[Startup] Seeding database..."); Console.Out.Flush();
 			SeedDatabase(app);
+			Console.WriteLine("[Startup] Seed completed"); Console.Out.Flush();
 			//app.UseHttpsRedirection();
 
 			app.UseCors("AllowFrontend");
 
+			Console.WriteLine("[Startup] Configuring auth..."); Console.Out.Flush();
 			app.UseAuthentication();
 			app.UseAuthorization();
 
+			Console.WriteLine("[Startup] Configuring routing..."); Console.Out.Flush();
 			app.ConfigureRouting();
 
+			Console.WriteLine("[Startup] Registering static files..."); Console.Out.Flush();
 			app.RegisterStaticFiles(Configuration.GetSection(ConfigurationSections.StaticFolder).Value, Configuration.GetSection(ConfigurationSections.CacheFolder).Value);
 
+			Console.WriteLine("[Startup] Configuring Swagger..."); Console.Out.Flush();
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1"); });
+			Console.WriteLine("[Startup] Configure DONE - app ready"); Console.Out.Flush();
 
             //app.UseEndpoints(endpoints =>
             //{
