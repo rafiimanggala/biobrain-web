@@ -72,6 +72,8 @@ namespace BiobrainWebAPI
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BiobrainWebContext db)
 		{
+			// Ensure uuid-ossp extension exists before running migrations
+			db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
 			db.Database.Migrate();
 
 			if (env.IsDevelopment())
