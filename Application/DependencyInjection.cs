@@ -92,7 +92,7 @@ namespace Biobrain.Application
             // Set DISABLE_PDF=true to skip loading the native library entirely.
             if (Environment.GetEnvironmentVariable("DISABLE_PDF") != "true")
             {
-                services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+                RegisterPdfConverter(services);
             }
             else
             {
@@ -111,6 +111,16 @@ namespace Biobrain.Application
         {
             foreach (var (@interface, implementation) in GetImplementationsOfGenericInterface(typeof(IPermissionCheck<>)))
                 services.AddTransient(@interface, implementation);
+        }
+
+        /// <summary>
+        /// Isolated in a separate method so the JIT compiler only loads the DinkToPdf
+        /// assembly (and its libwkhtmltox native dependency) when this method is actually called.
+        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static void RegisterPdfConverter(IServiceCollection services)
+        {
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
 
         private static IEnumerable<(Type @interface, Type implementation)> GetImplementationsOfGenericInterface(Type baseInterface) => from type in typeof(DependencyInjection).Assembly.GetTypes()
