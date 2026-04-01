@@ -65,8 +65,16 @@ namespace Biobrain.Application
             services.AddTransient<IRefreshClaimsService, RefreshClaimsService>();
             services.AddTransient<IAvailableCoursesService, AvailableCoursesService>();
             services.AddTransient<ITrackSessionService, TrackSessionService>();
-            services.AddTransient<IUsageReportChartService, UsageReportChartService>();
-            services.AddTransient<IUsageReportPdfService, UsageReportPdfService>();
+            // Chart & PDF report services use native libs (SkiaSharp, DinkToPdf)
+            // Skip on platforms where native libs are unavailable
+            if (Environment.GetEnvironmentVariable("DISABLE_PDF") != "true")
+            {
+                RegisterReportServices(services);
+            }
+            else
+            {
+                Console.WriteLine("[DI] Report chart/PDF services disabled (native libs unavailable)");
+            }
             services.AddTransient<IAccessCodeService, AccessCodeService>();
             services.AddTransient<IQuizAutoMapService, QuizAutoMapService>();
             services.AddTransient<IQuizStreakService, QuizStreakService>();
@@ -113,10 +121,13 @@ namespace Biobrain.Application
                 services.AddTransient(@interface, implementation);
         }
 
-        /// <summary>
-        /// Isolated in a separate method so the JIT compiler only loads the DinkToPdf
-        /// assembly (and its libwkhtmltox native dependency) when this method is actually called.
-        /// </summary>
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static void RegisterReportServices(IServiceCollection services)
+        {
+            services.AddTransient<IUsageReportChartService, UsageReportChartService>();
+            services.AddTransient<IUsageReportPdfService, UsageReportPdfService>();
+        }
+
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
         private static void RegisterPdfConverter(IServiceCollection services)
         {

@@ -8,6 +8,8 @@
 .idea
 BiobrainWebAngular/
 mobile-src/
+mobile-maui/
+original-src/
 **/*.user
 **/*.suo
 **/Thumbs.db

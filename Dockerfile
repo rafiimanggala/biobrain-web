@@ -22,27 +22,21 @@ COPY Biobrain.Infrastructure.Notifications/ Biobrain.Infrastructure.Notification
 COPY Biobrain.Infrastructure.Payments/ Biobrain.Infrastructure.Payments/
 COPY BiobrainWebAPI/ BiobrainWebAPI/
 
-RUN dotnet publish BiobrainWebAPI/BiobrainWebAPI.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish BiobrainWebAPI/BiobrainWebAPI.csproj -c Release -o /app/publish --no-restore \
+    && rm -f /app/publish/libwkhtmltox* /app/publish/libSkiaSharp*
 
 # ---- Runtime Stage ----
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
-# Install native dependencies for DinkToPdf (wkhtmltox) and SkiaSharp
+# Minimal native deps (PDF/chart native libs removed at build time)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdiplus \
     libfontconfig1 \
-    libxrender1 \
-    libxext6 \
-    libx11-6 \
     libssl3 \
-    libxcb1 \
-    libx11-xcb1 \
     libfreetype6 \
-    libjpeg62-turbo \
     libpng16-16 \
     zlib1g \
-    libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/publish .
