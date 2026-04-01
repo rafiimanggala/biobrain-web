@@ -23,7 +23,9 @@ COPY Biobrain.Infrastructure.Payments/ Biobrain.Infrastructure.Payments/
 COPY BiobrainWebAPI/ BiobrainWebAPI/
 
 RUN dotnet publish BiobrainWebAPI/BiobrainWebAPI.csproj -c Release -o /app/publish --no-restore \
-    && rm -f /app/publish/libwkhtmltox* /app/publish/libSkiaSharp*
+    && find /app/publish -name "libwkhtmltox*" -delete \
+    && find /app/publish -name "libSkiaSharp*" -delete \
+    && find /app/publish -name "*.so" -exec echo "[BUILD] Native lib: {}" \;
 
 # ---- Runtime Stage ----
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
@@ -52,6 +54,5 @@ ENV DOTNET_gcServer=0
 ENV DOTNET_GCHeapHardLimit=0x10000000
 ENV DOTNET_EnableDiagnostics=0
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-ENV LD_LIBRARY_PATH=/app
 
 ENTRYPOINT ["dotnet", "BiobrainWebAPI.dll"]
