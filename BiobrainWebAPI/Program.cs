@@ -11,12 +11,17 @@ namespace BiobrainWebAPI
 	{
 		public static void Main(string[] args)
 		{
+			Console.WriteLine("[Startup] BioBrain API starting...");
+			Console.Out.Flush();
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+			Console.WriteLine("[Startup] Configuring NLog...");
+			Console.Out.Flush();
 			var logger = LogManager.Setup().LoadConfigurationFromAppSettings(nlogConfigSection: "nlog.config").GetCurrentClassLogger();
 			try
 			{
 				logger.Debug("init main");
-
+				Console.WriteLine("[Startup] Building host...");
+				Console.Out.Flush();
                 CreateHostBuilder(args).Build().Run();
 			}
 			catch (Exception exception)
