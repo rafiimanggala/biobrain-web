@@ -74,7 +74,16 @@ namespace BiobrainWebAPI
 		{
 			// Ensure uuid-ossp extension exists before running migrations
 			db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
-			db.Database.Migrate();
+			try
+			{
+				db.Database.Migrate();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[Startup] Migration error: {ex.Message}");
+				Console.WriteLine("[Startup] Attempting EnsureCreated as fallback...");
+				db.Database.EnsureCreated();
+			}
 
 			if (env.IsDevelopment())
 			{
