@@ -88,6 +88,19 @@ namespace BiobrainWebAPI
 			// Ensure uuid-ossp extension exists before running migrations
 			Console.WriteLine("[Startup] Creating uuid-ossp extension..."); Console.Out.Flush();
 			db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
+
+			// Drop stale migration history if tables don't actually exist
+			try
+			{
+				var hasUsers = db.Database.ExecuteSqlRaw("SELECT 1 FROM \"AspNetUsers\" LIMIT 1");
+				Console.WriteLine("[Startup] Tables exist, running migrations..."); Console.Out.Flush();
+			}
+			catch
+			{
+				Console.WriteLine("[Startup] Tables missing — dropping stale migration history..."); Console.Out.Flush();
+				try { db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"__EFMigrationsHistory\" CASCADE;"); } catch { }
+			}
+
 			Console.WriteLine("[Startup] Running migrations..."); Console.Out.Flush();
 			try
 			{
@@ -97,8 +110,23 @@ namespace BiobrainWebAPI
 			catch (Exception ex)
 			{
 				Console.WriteLine($"[Startup] Migration error: {ex.Message}");
-				Console.WriteLine("[Startup] Attempting EnsureCreated as fallback...");
+				Console.WriteLine("[Startup] Dropping all tables and using EnsureCreated...");
 				Console.Out.Flush();
+				// Nuclear option: drop everything and create fresh
+				try
+				{
+					db.Database.ExecuteSqlRaw(@"
+						DO $$ DECLARE r RECORD;
+						BEGIN
+							FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+								EXECUTE 'DROP TABLE IF EXISTS ""' || r.tablename || '"" CASCADE';
+							END LOOP;
+						END $$;");
+				}
+				catch (Exception dropEx)
+				{
+					Console.WriteLine($"[Startup] Drop tables error: {dropEx.Message}");
+				}
 				db.Database.EnsureCreated();
 				Console.WriteLine("[Startup] EnsureCreated completed"); Console.Out.Flush();
 			}
