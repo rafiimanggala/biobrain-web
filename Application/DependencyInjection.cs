@@ -87,15 +87,16 @@ namespace Biobrain.Application
             services.AddHostedService<WelcomeEmailService>();
             services.AddHostedService<WeeklyInsightsHostedService>();
 
-            // PDF converter — DinkToPdf requires libwkhtmltox native lib.
-            // On environments where it's unavailable (e.g. Render), skip gracefully.
-            try
+            // PDF converter — DinkToPdf requires libwkhtmltox native lib which
+            // causes SIGSEGV on some cloud platforms (e.g. Render).
+            // Set DISABLE_PDF=true to skip loading the native library entirely.
+            if (Environment.GetEnvironmentVariable("DISABLE_PDF") != "true")
             {
                 services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"[DI] DinkToPdf unavailable, PDF export disabled: {ex.Message}");
+                Console.WriteLine("[DI] PDF export disabled via DISABLE_PDF env var");
                 services.AddSingleton<IConverter>(sp => throw new InvalidOperationException("PDF export is not available on this platform."));
             }
         }
