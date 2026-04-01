@@ -1,51 +1,54 @@
 using System.Collections.Generic;
 using BioBrain.Interfaces;
-using Firebase.Analytics;
-using Foundation;
+using Plugin.Firebase.Analytics;
 
-// TODO: Register via DI in MauiProgram.cs instead of DependencyService
-// builder.Services.AddSingleton<IAnalyticTracker, AnalyticTrackerIos>();
 namespace BioBrain.Platforms.iOS.PlatformImplementation
 {
+    /// <summary>
+    /// iOS analytics tracker using Plugin.Firebase.Analytics.
+    /// Kept for backward compatibility with platform-specific DI registration.
+    /// Delegates to the cross-platform Plugin.Firebase.Analytics API.
+    /// </summary>
     public class AnalyticTrackerIos : IAnalyticTracker
     {
         public void SendEvent(string eventId)
         {
-            SendEvent(eventId, (IDictionary<string, string>)null);
+            CrossFirebaseAnalytics.Current.LogEvent(eventId);
         }
 
         public void SendEvent(string eventId, string paramName, string value)
         {
-            SendEvent(eventId, new Dictionary<string, string>
+            var parameters = new Dictionary<string, object>
             {
                 { paramName, value }
-            });
+            };
+            CrossFirebaseAnalytics.Current.LogEvent(eventId, parameters);
         }
 
         public void SendEvent(string eventId, IDictionary<string, string> parameters)
         {
             if (parameters == null)
             {
-                Analytics.LogEvent(eventId, (NSDictionary<NSString, NSObject>?)null);
+                CrossFirebaseAnalytics.Current.LogEvent(eventId);
                 return;
             }
 
-            var keys = new List<NSString>();
-            var values = new List<NSString>();
-            foreach (var item in parameters)
+            var firebaseParams = new Dictionary<string, object>();
+            foreach (var kvp in parameters)
             {
-                keys.Add(new NSString(item.Key));
-                values.Add(new NSString(item.Value));
+                firebaseParams[kvp.Key] = kvp.Value;
             }
 
-            var parametersDictionary =
-                NSDictionary<NSString, NSObject>.FromObjectsAndKeys(values.ToArray(), keys.ToArray(), keys.Count);
-            Analytics.LogEvent(eventId, parametersDictionary);
+            CrossFirebaseAnalytics.Current.LogEvent(eventId, firebaseParams);
         }
 
         public void SetView(string screenName, string className)
         {
-            Analytics.SetScreenNameAndClass(screenName, className);
+            CrossFirebaseAnalytics.Current.LogEvent("screen_view", new Dictionary<string, object>
+            {
+                { "screen_name", screenName },
+                { "screen_class", className }
+            });
         }
     }
 }

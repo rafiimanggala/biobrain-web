@@ -108,10 +108,10 @@
     <!-- Firebase Storage -->
     <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
 
-    <!-- App Center -->
-    <!-- AppCenter deprecated - TODO: migrate to Firebase Crashlytics -->
-    <!-- <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.5" /> -->
-    <!-- <PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.5" /> -->
+    <!-- Firebase Core / Analytics / Crashlytics -->
+    <PackageReference Include="Plugin.Firebase.Core" Version="4.2.0" />
+    <PackageReference Include="Plugin.Firebase.Analytics" Version="4.0.0" />
+    <PackageReference Include="Plugin.Firebase.Crashlytics" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

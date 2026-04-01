@@ -1,3 +1,4 @@
+using System.Linq;
 using Foundation;
 using UIKit;
 
@@ -10,14 +11,7 @@ public class AppDelegate : MauiUIApplicationDelegate
 
     public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
     {
-        // TODO: Initialize Firebase when Firebase iOS SDK NuGet is added
-        // Firebase.Core.App.Configure();
-
-        // Initialize AppCenter
-        // TODO: Add Microsoft.AppCenter.Maui NuGet package
-        // Microsoft.AppCenter.AppCenter.Start("694255f5-7565-476e-950e-754303353802",
-        //     typeof(Microsoft.AppCenter.Analytics.Analytics),
-        //     typeof(Microsoft.AppCenter.Crashes.Crashes));
+        Firebase.Core.App.Configure();
 
         return base.FinishedLaunching(application, launchOptions);
     }
@@ -44,8 +38,7 @@ public class AppDelegate : MauiUIApplicationDelegate
         // Handle ClassKit deep links
         if (userActivity.IsClassKitDeepLink)
         {
-            // TODO: Wire up ClassKit deep link navigation for MAUI
-            // App.InitialNavigationPath = userActivity.ContextIdentifierPath.Skip(1).ToList();
+            App.InitialNavigationPath = userActivity.ContextIdentifierPath?.Skip(1).ToList();
             return true;
         }
 

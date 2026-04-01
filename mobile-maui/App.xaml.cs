@@ -115,14 +115,12 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Starts the background update checker service.
-    /// TODO: Implement using IBackgroundWorkerService via DI.
+    /// Starts the background update checker service for periodic update and subscription checks.
     /// </summary>
     public void StartUpdateChecker()
     {
-        // TODO: Wire up BackgroundWorkerService to start periodic update checks
         var service = _serviceProvider.GetService<IBackgroundWorkerService>();
-        // service?.Start();
+        service?.StartPeriodically();
     }
 
     protected override void OnResume()

@@ -31,7 +31,6 @@ namespace CustomControls.Buttons
 
         private void ControlOnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
 		{
-			// TODO: Device.RuntimePlatform replaced - use DeviceInfo.Platform in MAUI
 			realRect = DeviceInfo.Platform == DevicePlatform.Android ? e.Surface.Canvas.LocalClipBounds.ToFormsRect() : e.Surface.Canvas.LocalClipBounds.ToFormsRect().FixForBorder(RealBorderThickness);
 
             e.Surface.Canvas.DrawHexagon(realRect, FillColor, BorderColor, RealBorderThickness);

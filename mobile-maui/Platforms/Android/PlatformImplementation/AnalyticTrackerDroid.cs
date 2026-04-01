@@ -1,51 +1,54 @@
 using System.Collections.Generic;
-using Android.OS;
 using BioBrain.Interfaces;
-using Firebase.Analytics;
+using Plugin.Firebase.Analytics;
 
-// TODO: Register via DI in MauiProgram.cs instead of DependencyService
-// builder.Services.AddSingleton<IAnalyticTracker, AnalyticTrackerDroid>();
 namespace BioBrain.Platforms.Android.PlatformImplementation
 {
+    /// <summary>
+    /// Android analytics tracker using Plugin.Firebase.Analytics.
+    /// Kept for backward compatibility with platform-specific DI registration.
+    /// Delegates to the cross-platform Plugin.Firebase.Analytics API.
+    /// </summary>
     public class AnalyticTrackerDroid : IAnalyticTracker
     {
         public void SendEvent(string eventId)
         {
-            SendEvent(eventId, null);
+            CrossFirebaseAnalytics.Current.LogEvent(eventId);
         }
 
         public void SendEvent(string eventId, string paramName, string value)
         {
-            SendEvent(eventId, new Dictionary<string, string>
+            var parameters = new Dictionary<string, object>
             {
                 { paramName, value }
-            });
+            };
+            CrossFirebaseAnalytics.Current.LogEvent(eventId, parameters);
         }
 
         public void SendEvent(string eventId, IDictionary<string, string> parameters)
         {
-            // TODO: Replace MainActivity.PrimaryActivity with Platform.CurrentActivity or DI
-            var firebaseAnalytics = FirebaseAnalytics.GetInstance(Platform.CurrentActivity);
-
             if (parameters == null)
             {
-                firebaseAnalytics.LogEvent(eventId, null);
+                CrossFirebaseAnalytics.Current.LogEvent(eventId);
                 return;
             }
 
-            var bundle = new Bundle();
-            foreach (var param in parameters)
+            var firebaseParams = new Dictionary<string, object>();
+            foreach (var kvp in parameters)
             {
-                bundle.PutString(param.Key, param.Value);
+                firebaseParams[kvp.Key] = kvp.Value;
             }
 
-            firebaseAnalytics.LogEvent(eventId, bundle);
+            CrossFirebaseAnalytics.Current.LogEvent(eventId, firebaseParams);
         }
 
         public void SetView(string screenName, string className)
         {
-            var firebaseAnalytics = FirebaseAnalytics.GetInstance(Platform.CurrentActivity);
-            firebaseAnalytics.SetCurrentScreen(Platform.CurrentActivity, screenName, className);
+            CrossFirebaseAnalytics.Current.LogEvent("screen_view", new Dictionary<string, object>
+            {
+                { "screen_name", screenName },
+                { "screen_class", className }
+            });
         }
     }
 }

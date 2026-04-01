@@ -4,6 +4,7 @@ using BioBrain.Factories.Interfaces;
 using BioBrain.Interfaces;
 using BioBrain.Services.Implementations;
 using BioBrain.Services.Interfaces;
+using BioBrain.Analytics;
 using BioBrain.Stubs;
 using BioBrain.ViewModels.Implementation;
 using BioBrain.ViewModels.Interfaces;
@@ -132,7 +133,7 @@ public static class MauiProgram
 
         // --- DependencyService registrations (legacy code compatibility) ---
         DependencyService.Register<IErrorLog, ConsoleErrorLog>();
-        DependencyService.Register<IAnalyticTracker, NoOpAnalyticTracker>();
+        DependencyService.Register<IAnalyticTracker, FirebaseAnalyticsTracker>();
         DependencyService.Register<IFilesPath, StubFilesPath>();
         DependencyService.Register<IProjectDataWorker, StubProjectDataWorker>();
         DependencyService.Register<ISQLite, StubSQLite>();

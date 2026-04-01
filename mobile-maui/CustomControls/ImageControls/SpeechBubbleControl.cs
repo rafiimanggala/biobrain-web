@@ -31,7 +31,6 @@ namespace CustomControls.ImageControls
         private void ControlOnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             var path = new SKPath();
-            // TODO: Device.RuntimePlatform replaced - use DeviceInfo.Platform in MAUI
             var initHeight = DeviceInfo.Platform == DevicePlatform.Android
                 ? RealBorderThickness / 2
                 : 0;
