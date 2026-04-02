@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <!-- Create Button -->
+    <!-- Create / Redo Buttons -->
     <div class="actions">
       <button mat-raised-button color="primary"
               [disabled]="!canCreate"
@@ -64,6 +64,13 @@
         <mat-progress-spinner *ngIf="isCreating" mode="indeterminate" diameter="20" class="button-spinner">
         </mat-progress-spinner>
         {{strings.createQuiz}}
+      </button>
+      <button mat-raised-button color="accent"
+              *ngIf="lastCreatedQuizName"
+              [disabled]="!canCreate"
+              (click)="onRedo()">
+        <mat-icon>replay</mat-icon>
+        Redo Quiz
       </button>
     </div>
   </div>

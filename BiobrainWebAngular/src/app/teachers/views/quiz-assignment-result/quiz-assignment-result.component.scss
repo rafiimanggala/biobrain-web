@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.header-row {
+  padding: 10px;
+  flex: 0 0 auto;
+}
+
 .grid-item {
   flex: 1 1;
 }

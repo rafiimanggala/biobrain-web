@@ -18,7 +18,8 @@ namespace Biobrain.Application.Services.AI
             Guid contentTreeNodeId,
             int questionCount,
             string questionType,
-            Guid teacherId);
+            Guid teacherId,
+            string difficultyLevel = "Medium");
     }
 
     public class PracticeSetGeneratorService : IPracticeSetGeneratorService
@@ -42,8 +43,15 @@ namespace Biobrain.Application.Services.AI
             Guid contentTreeNodeId,
             int questionCount,
             string questionType,
-            Guid teacherId)
+            Guid teacherId,
+            string difficultyLevel = "Medium")
         {
+            var validLevels = new[] { "Easy", "Medium", "Hard" };
+            if (!validLevels.Contains(difficultyLevel, StringComparer.OrdinalIgnoreCase))
+            {
+                difficultyLevel = "Medium";
+            }
+
             if (questionCount < 1 || questionCount > 50)
             {
                 throw new ArgumentException("Question count must be between 1 and 50.", nameof(questionCount));
@@ -75,8 +83,8 @@ namespace Biobrain.Application.Services.AI
             }
 
             var questionTypeEntity = await ResolveQuestionTypeAsync(questionType);
-            var systemPrompt = BuildSystemPrompt(courseInfo.SubjectName, topicName, questionType);
-            var userPrompt = BuildUserPrompt(questionCount, questionType, topicName, courseInfo.SubjectName);
+            var systemPrompt = BuildSystemPrompt(courseInfo.SubjectName, topicName, questionType, difficultyLevel);
+            var userPrompt = BuildUserPrompt(questionCount, questionType, topicName, courseInfo.SubjectName, difficultyLevel);
 
             string aiResponse;
             try
@@ -122,27 +130,35 @@ namespace Biobrain.Application.Services.AI
             return fallback;
         }
 
-        private static string BuildSystemPrompt(string subjectName, string topicName, string questionType)
+        private static string BuildSystemPrompt(string subjectName, string topicName, string questionType, string difficultyLevel)
         {
+            var difficultyGuidance = difficultyLevel.ToLower() switch
+            {
+                "easy" => "- Target beginner-level understanding: recall, basic definitions, and straightforward concepts\n- Use simple language and avoid complex terminology\n- Distractors should be clearly distinguishable from the correct answer",
+                "hard" => "- Target advanced-level understanding: analysis, evaluation, and application of concepts\n- Include multi-step reasoning and scenarios requiring deeper knowledge\n- Distractors should be very plausible and require careful thought to eliminate",
+                _ => "- Target intermediate-level understanding: comprehension, application, and some analysis\n- Use standard academic language appropriate for the subject level\n- Distractors should be plausible but distinguishable with solid understanding"
+            };
+
             return $@"You are an expert {subjectName} educator and question writer for BioBrain,
 an educational platform. Generate high-quality {questionType} questions about ""{topicName}"".
+All questions must be at the {difficultyLevel} difficulty level.
 
 Rules:
 - Questions must be factually accurate and curriculum-appropriate
 - Each question must have clear, unambiguous wording
 - Provide exactly one correct answer per question
-- Distractors (wrong answers) should be plausible but clearly incorrect
+{difficultyGuidance}
 - Include a helpful hint that guides without giving away the answer
 - Include feedback that explains why the correct answer is right
-- Vary difficulty levels across the set
 
 IMPORTANT: Respond ONLY with a valid JSON array, no additional text or markdown.";
         }
 
         private static string BuildUserPrompt(
-            int questionCount, string questionType, string topicName, string subjectName)
+            int questionCount, string questionType, string topicName, string subjectName, string difficultyLevel)
         {
             return $@"Generate exactly {questionCount} {questionType} questions about ""{topicName}"" in {subjectName}.
+All questions must be at the {difficultyLevel} difficulty level.
 
 Return a JSON array with this exact structure:
 [

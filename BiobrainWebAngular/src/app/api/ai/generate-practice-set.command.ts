@@ -7,7 +7,8 @@ export class GeneratePracticeSetCommand extends Command<GeneratePracticeSetComma
     public readonly contentTreeNodeId: string,
     public readonly questionCount: number,
     public readonly questionType: string,
-    public readonly teacherId: string
+    public readonly teacherId: string,
+    public readonly difficultyLevel: string = 'Medium'
   ) {
     super();
   }

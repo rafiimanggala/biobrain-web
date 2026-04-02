@@ -4,6 +4,7 @@ import { Command } from '../common/command';
 export class GenerateSubsectionQuizCommand extends Command<GenerateSubsectionQuizCommand_Result> {
   constructor(
     public readonly contentTreeNodeId: string,
+    public readonly questionCount: number,
     public readonly userId: string
   ) {
     super();

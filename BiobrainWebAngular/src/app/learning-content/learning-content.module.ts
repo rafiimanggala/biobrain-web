@@ -21,6 +21,7 @@ import { AssignLearningMaterialsAndQuizzesDialog } from './dialogs/assign-learni
 import { GlossaryTermDialogComponent } from './dialogs/glossary-term-dialog/glossary-term-dialog.component';
 import { HintDialogComponent } from './dialogs/hint-dialog/hint-dialog.component';
 import { QuestionResultDialogComponent } from './dialogs/question-result-dialog/question-result-dialog.component';
+import { SubsectionQuizDialogComponent } from './dialogs/subsection-quiz-dialog/subsection-quiz-dialog.component';
 import { TopicQuizDialogComponent } from './dialogs/topic-quiz-dialog/topic-quiz-dialog.component';
 import { GlossaryMasterPage } from './layouts/glossary-master-page/glossary-master-page.component';
 import { QuizResultHistoryMasterPage } from './layouts/quiz-result-history-master-page/quiz-result-history-master-page.component';
@@ -54,6 +55,7 @@ const dialogs: any[] = [
   AssignLearningMaterialsAndQuizzesDialog,
   ContentDownloadDialog,
   TopicQuizDialogComponent,
+  SubsectionQuizDialogComponent,
 ];
 
 @NgModule({

@@ -42,11 +42,11 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
   selectedCourseId = '';
   selectedClassId = '';
   quizName = '';
-  questionCount = 10;
+  questionCount = 20;
   saveAsTemplate = false;
   isSubmitting = false;
 
-  questionCountOptions: number[] = [10, 15, 20, 25, 30, 40, 50, 60];
+  questionCountOptions: number[] = [20, 30, 40, 60];
 
   private _userId = '';
 
@@ -172,7 +172,7 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
       && this.selectedCourseId.length > 0
       && this.selectedClassId.length > 0
       && this.selectedNodeIds.length > 0
-      && this.questionCount >= 10
+      && this.questionCount >= 20
       && this.questionCount <= 60;
   }
 

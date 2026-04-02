@@ -10,6 +10,7 @@ using Biobrain.Application.Security;
 using Biobrain.Domain.Constants;
 using Biobrain.Domain.Entities.Question;
 using Biobrain.Domain.Entities.Quiz;
+using FluentValidation;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ namespace Biobrain.Application.Quizzes.GenerateSubsectionQuiz
     public class GenerateSubsectionQuizCommand : ICommand<GenerateSubsectionQuizCommand.Result>
     {
         public Guid ContentTreeNodeId { get; set; }
+        public int QuestionCount { get; set; }
         public Guid UserId { get; set; }
 
 
@@ -35,6 +37,9 @@ namespace Biobrain.Application.Quizzes.GenerateSubsectionQuiz
             public Validator(IDb db) : base(db)
             {
                 RuleFor(_ => _.ContentTreeNodeId).ExistsInTable(Db.ContentTree);
+                RuleFor(_ => _.QuestionCount)
+                    .Must(c => c == 20 || c == 30 || c == 40 || c == 60)
+                    .WithMessage("Question count must be 20, 30, 40, or 60.");
                 RuleFor(_ => _.UserId).ExistsInTable(Db.Users);
             }
         }
@@ -63,19 +68,16 @@ namespace Biobrain.Application.Quizzes.GenerateSubsectionQuiz
                     .Where(ct => ct.NodeId == request.ContentTreeNodeId)
                     .FirstAsync(cancellationToken);
 
-                // For subsection quiz, get ALL available questions (use int.MaxValue as requestedCount)
                 var pooledQuestions = await _questionPoolService.GetPooledQuestionsAsync(
                     contentNode.CourseId,
                     new[] { request.ContentTreeNodeId },
-                    int.MaxValue);
-
-                var totalQuestions = pooledQuestions.Count;
+                    request.QuestionCount);
 
                 var quizEntity = new QuizEntity
                 {
                     ContentTreeId = request.ContentTreeNodeId,
                     Type = QuizType.EndOfSubsection,
-                    QuestionCount = totalQuestions,
+                    QuestionCount = request.QuestionCount,
                     Name = $"Subsection Quiz: {contentNode.Name}",
                     CreatedByUserId = request.UserId,
                 };
@@ -114,7 +116,7 @@ namespace Biobrain.Application.Quizzes.GenerateSubsectionQuiz
                 return new Result
                 {
                     QuizStudentAssignmentId = studentAssignment.QuizStudentAssignmentId,
-                    QuestionCount = totalQuestions,
+                    QuestionCount = pooledQuestions.Count,
                 };
             }
         }

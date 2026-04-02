@@ -109,26 +109,9 @@ namespace BiobrainWebAPI
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"[Startup] Migration error: {ex.Message}");
-				Console.WriteLine("[Startup] Dropping all tables and using EnsureCreated...");
+				Console.WriteLine($"[Startup] Migration error (non-fatal): {ex.Message}");
+				Console.WriteLine("[Startup] Skipping migration — existing database will be used as-is");
 				Console.Out.Flush();
-				// Nuclear option: drop everything and create fresh
-				try
-				{
-					db.Database.ExecuteSqlRaw(@"
-						DO $$ DECLARE r RECORD;
-						BEGIN
-							FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
-								EXECUTE 'DROP TABLE IF EXISTS ""' || r.tablename || '"" CASCADE';
-							END LOOP;
-						END $$;");
-				}
-				catch (Exception dropEx)
-				{
-					Console.WriteLine($"[Startup] Drop tables error: {dropEx.Message}");
-				}
-				db.Database.EnsureCreated();
-				Console.WriteLine("[Startup] EnsureCreated completed"); Console.Out.Flush();
 			}
 
 			if (env.IsDevelopment())

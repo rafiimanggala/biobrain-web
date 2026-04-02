@@ -40,6 +40,9 @@ const BUFFER_SIZE = 1;
 export class QuizAssignmentResultComponent extends DisposableSubscriberComponent implements OnInit {
   @Output() reassignQuiz = new EventEmitter<{ quizId: string; studentIds: string[] }>();
   private _selectedStudentIds: string[] = [];
+  anonymiseResults = false;
+  private _anonymisedNameMap = new Map<string, string>();
+  private _lastResults: QuizAssignmentResultStoreItem | null = null;
 
   private readonly _selectionChangedSubject = new ReplaySubject<undefined>(BUFFER_SIZE);
   private readonly _selectionChanged$ = this._selectionChangedSubject.asObservable();
@@ -113,6 +116,10 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
 
       combineLatest([data, this._gridApi$])
       .subscribe(([results, gridApi]) => {
+        this._lastResults = results;
+        if (this.anonymiseResults && results) {
+          this._buildAnonymisedNameMap();
+        }
         gridApi.setColumnDefs(this._buildColumns(results));
         gridApi.setRowData(this._buildRows(results));
         this._sizeGridToFit$.next();
@@ -137,6 +144,29 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
       }) ?? '';
     }
     return result;
+  }
+
+  onAnonymiseToggle(): void {
+    if (this.anonymiseResults) {
+      this._buildAnonymisedNameMap();
+    } else {
+      this._anonymisedNameMap.clear();
+    }
+    this._gridApiSubject.subscribe(gridApi => {
+      gridApi.setColumnDefs(this._buildColumns(this._lastResults));
+      gridApi.setRowData(this._buildRows(this._lastResults));
+      gridApi.sizeColumnsToFit();
+    });
+  }
+
+  private _buildAnonymisedNameMap(): void {
+    this._anonymisedNameMap.clear();
+    if (!this._lastResults) return;
+
+    const shuffled = [...this._lastResults.students].sort(() => Math.random() - 0.5);
+    shuffled.forEach((student, index) => {
+      this._anonymisedNameMap.set(student.studentId, `Student ${index + 1}`);
+    });
   }
 
   async onEmailStudentClick(): Promise<void> {
@@ -183,7 +213,9 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
         headerName: quizName,
         headerClass: [...simpleHeaderClasses, 'ag-grid-custom-first-column-cell'],
         cellClass: [aggregateCellClass, 'ag-grid-custom-first-column-cell'],
-        valueGetter: getStudentNameGetter(students),
+        valueGetter: this.anonymiseResults
+          ? getAnonymisedStudentNameGetter(this._anonymisedNameMap)
+          : getStudentNameGetter(students),
         autoHeight: true,
         minWidth: 250,
         suppressMovable: true,
@@ -259,4 +291,13 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
       return questionData.isCorrect;
     };
   }
+}
+
+function getAnonymisedStudentNameGetter(
+  nameMap: Map<string, string>,
+): (params: ValueGetterParams) => string {
+  return params => {
+    const studentId = parseStudentIdFromGetterParams(params);
+    return nameMap.get(studentId) ?? 'Student';
+  };
 }

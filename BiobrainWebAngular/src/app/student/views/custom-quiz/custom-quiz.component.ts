@@ -36,11 +36,12 @@ export class CustomQuizComponent extends BaseComponent {
   public readonly courses$: Observable<StudentCourse[]>;
 
   public selectedCourseId: string | null = null;
-  public quizName = '';
-  public questionCount = 10;
-  public readonly questionCountOptions = [10, 20, 30, 40, 50, 60];
+  public quizName = 'self-created';
+  public questionCount = 20;
+  public readonly questionCountOptions = [20, 30, 40, 60];
   public treeItems: TreeNodeItem[] = [];
   public isCreating = false;
+  public lastCreatedQuizName: string | null = null;
 
   constructor(
     public readonly strings: StringsService,
@@ -108,9 +109,10 @@ export class CustomQuizComponent extends BaseComponent {
 
     this.isCreating = true;
     try {
+      const nameWithCount = `${this.quizName.trim()} (${this.questionCount})`;
       const createResult = await firstValueFrom(
         this._api.send(new CreateStudentCustomQuizCommand(
-          this.quizName.trim(),
+          nameWithCount,
           this.selectedCourseId!,
           this.selectedNodeIds,
           this.questionCount,
@@ -125,11 +127,17 @@ export class CustomQuizComponent extends BaseComponent {
         ))
       );
 
+      this.lastCreatedQuizName = nameWithCount;
+      this.isCreating = false;
       await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
     } catch (err) {
       this.handleError(err);
       this.isCreating = false;
     }
+  }
+
+  public async onRedo(): Promise<void> {
+    await this.onCreate();
   }
 
   private _loadContentTree(courseId: string): void {

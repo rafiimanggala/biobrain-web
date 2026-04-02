@@ -1,10 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { Api } from '../../../api/api.service';
+import { SubmitFeedbackCommand } from '../../../api/feedback/submit-feedback.command';
 import { DialogAction } from '../../../core/dialogs/dialog-action';
 import { DialogComponent } from '../../../core/dialogs/dialog-component';
 
 import { StarRatingDialogData, StarRatingDialogResult } from './star-rating-dialog-data';
+
+const GOOGLE_REVIEW_URL = 'https://g.page/biobrain/review';
 
 @Component({
   selector: 'star-rating-dialog',
@@ -15,11 +19,13 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
   rating = 0;
   hoveredRating = 0;
   feedback = '';
+  submitting = false;
 
   readonly stars = [1, 2, 3, 4, 5];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: StarRatingDialogData,
+    private readonly _api: Api,
   ) {
     super(dialogData);
   }
@@ -41,11 +47,27 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
     return star <= active ? 'star' : 'star_border';
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.rating === 0) {
       return;
     }
-    const result = new StarRatingDialogResult(this.rating, this.feedback.trim());
+
+    this.submitting = true;
+    const trimmedFeedback = this.feedback.trim();
+
+    try {
+      if (this.rating >= 4) {
+        window.open(GOOGLE_REVIEW_URL, '_blank');
+      } else {
+        await this._api.send(new SubmitFeedbackCommand(this.rating, trimmedFeedback)).toPromise();
+      }
+    } catch {
+      // Don't block the dialog close on error
+    } finally {
+      this.submitting = false;
+    }
+
+    const result = new StarRatingDialogResult(this.rating, trimmedFeedback);
     this.close(DialogAction.save, result);
   }
 

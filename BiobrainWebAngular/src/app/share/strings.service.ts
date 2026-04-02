@@ -98,6 +98,8 @@ export class StringsService {
   downloadResults = "Download class results";
   enableHints = 'Enable Hints';
   enableSound = 'Enable Sound Effects';
+  soundOn = 'Sound On';
+  soundOff = 'Sound Off';
   anonymiseResults = 'Anonymise Results';
   includeLearningMaterial = 'Include in assignment';
   dropDown = "Dropdown";

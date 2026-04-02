@@ -17,7 +17,11 @@
     {{ rating }} / 5
   </div>
 
-  <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0">
+  <div class="rating-hint" *ngIf="rating >= 4">
+    Glad you love BioBrain! You'll be taken to leave a Google Review.
+  </div>
+
+  <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0 && rating < 4">
     <mat-label>Feedback (optional)</mat-label>
     <textarea
       matInput
@@ -35,6 +39,7 @@
     type="button"
     class="auto-bordered-form-button"
     color="accent"
+    [disabled]="submitting"
     (click)="onMaybeLater()">
     MAYBE LATER
   </button>
@@ -44,8 +49,8 @@
     type="button"
     class="auto-form-button"
     color="primary"
-    [disabled]="rating === 0"
+    [disabled]="rating === 0 || submitting"
     (click)="onSubmit()">
-    SUBMIT
+    {{ submitting ? 'SUBMITTING...' : 'SUBMIT' }}
   </button>
 </mat-dialog-actions>

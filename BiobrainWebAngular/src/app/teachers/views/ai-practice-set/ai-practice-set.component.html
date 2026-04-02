@@ -30,6 +30,16 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- Difficulty Level -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Difficulty Level</mat-label>
+        <mat-select [(value)]="difficultyLevel">
+          <mat-option *ngFor="let dl of difficultyLevels" [value]="dl.value">
+            {{dl.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <!-- Question Count -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Number of Questions</mat-label>

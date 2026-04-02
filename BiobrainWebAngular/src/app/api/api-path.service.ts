@@ -103,4 +103,8 @@ export class ApiPath {
   public whatsNew(): string {
     return `${this.base}/WhatsNew`;
   }
+
+  public feedback(): string {
+    return `${this.base}/Feedback`;
+  }
 }

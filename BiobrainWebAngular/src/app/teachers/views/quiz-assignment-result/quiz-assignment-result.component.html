@@ -1,4 +1,14 @@
 <div class="container full-size-no-overflow">
+  <div class="header-row" fxLayout="row" fxLayoutAlign="end center">
+    <div class="anonymise-toggle" fxLayoutAlign="center center" style="margin-right: 16px;">
+      <mat-slide-toggle [(ngModel)]="anonymiseResults"
+                        (change)="onAnonymiseToggle()"
+                        color="accent">
+        {{strings.anonymiseResults}}
+      </mat-slide-toggle>
+    </div>
+  </div>
+
   <ag-grid-angular
     #schoolsGrid
     class="ag-theme-alpine grid-item"

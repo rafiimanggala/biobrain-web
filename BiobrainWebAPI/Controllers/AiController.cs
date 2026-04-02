@@ -97,7 +97,8 @@ namespace BiobrainWebAPI.Controllers
                 request.ContentTreeNodeId,
                 request.QuestionCount,
                 request.QuestionType,
-                request.TeacherId);
+                request.TeacherId,
+                request.DifficultyLevel);
 
             return Ok(new GeneratePracticeSetResponse
             {
@@ -129,6 +130,7 @@ namespace BiobrainWebAPI.Controllers
         public int QuestionCount { get; set; } = 5;
         public string QuestionType { get; set; } = "multiple_choice";
         public Guid TeacherId { get; set; }
+        public string DifficultyLevel { get; set; } = "Medium";
     }
 
     public class GeneratePracticeSetResponse

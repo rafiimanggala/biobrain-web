@@ -35,6 +35,7 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
   public readonly data$: Observable<{ quizResult: QuizResult; question: Question; questionIndex: number; totalQuestions: number; nodeHeader: string; path: string; hintsEnabled: boolean; soundEnabled: boolean }>;
   public readonly questionHasAnswer$: Observable<boolean>;
   public readonly attemptCounts$ = new BehaviorSubject<number>(0);
+  public studentSoundOverride: boolean | null = null;
 
   private readonly _subscriptions: Subscription[] = [];
 
@@ -177,10 +178,26 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
     this._subscriptions.forEach(_ => _.unsubscribe());
   }
 
+  public toggleSound(currentSoundEnabled: boolean): void {
+    const current = this.studentSoundOverride !== null
+      ? this.studentSoundOverride
+      : currentSoundEnabled;
+    this.studentSoundOverride = !current;
+  }
+
+  public getEffectiveSoundEnabled(serverSoundEnabled: boolean): boolean {
+    return this.studentSoundOverride !== null
+      ? this.studentSoundOverride
+      : serverSoundEnabled;
+  }
+
   public async onAnswerValueChange(quizResult: QuizResult, question: Question, answerValue: string): Promise<void> {
     const correctness = this._correctnessService.checkIsCorrect(question, answerValue);
 
-    this._quizSoundService.setSoundEnabled(quizResult.soundEnabled);
+    const effectiveSoundEnabled = this.studentSoundOverride !== null
+      ? this.studentSoundOverride
+      : quizResult.soundEnabled;
+    this._quizSoundService.setSoundEnabled(effectiveSoundEnabled);
     if (correctness.isCorrect) {
       this._quizSoundService.playCorrect();
     } else {

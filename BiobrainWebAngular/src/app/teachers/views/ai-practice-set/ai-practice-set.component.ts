@@ -44,6 +44,7 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
   selectedNodeId = '';
   questionType = 'MultipleChoice';
   questionCount = 5;
+  difficultyLevel = 'Medium';
   isSubmitting = false;
   generatedCount: number | null = null;
 
@@ -51,6 +52,12 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
     { value: 'MultipleChoice', label: 'Multiple Choice' },
     { value: 'TrueFalse', label: 'True / False' },
     { value: 'FreeText', label: 'Free Text' },
+  ];
+
+  difficultyLevels: { value: string; label: string }[] = [
+    { value: 'Easy', label: 'Easy' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'Hard', label: 'Hard' },
   ];
 
   questionCountOptions: number[] = [1, 2, 3, 5, 10, 15, 20];
@@ -151,6 +158,7 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
         this.questionCount,
         this.questionType,
         this._userId,
+        this.difficultyLevel,
       );
 
       const result: GeneratePracticeSetCommand_Result = await firstValueFrom(
