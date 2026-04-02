@@ -279,11 +279,11 @@ namespace Firebase.Xamarin.Database.Query
     {
         private static readonly HttpClient _http = new HttpClient();
 
-        private readonly Firebase.Xamarin.Database.FirebaseClient _client;
+        private readonly global::Firebase.Xamarin.Database.FirebaseClient _client;
         private readonly string _path;
         private readonly string _authToken;
 
-        public ChildQuery(Firebase.Xamarin.Database.FirebaseClient client, string path, string authToken)
+        public ChildQuery(global::Firebase.Xamarin.Database.FirebaseClient client, string path, string authToken)
         {
             _client = client;
             _path = path;

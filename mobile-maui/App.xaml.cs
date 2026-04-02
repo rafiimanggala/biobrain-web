@@ -75,10 +75,6 @@ public partial class App : Application
         Page startPage;
         try
         {
-#if DEBUG
-            // In DEBUG, skip login and go straight to AreasView for testing
-            startPage = _serviceProvider.GetRequiredService<AreasView>();
-#else
             // Check if user is already authenticated
             if (Authorize?.IsAuthorized == true)
             {
@@ -88,7 +84,6 @@ public partial class App : Application
             {
                 startPage = _serviceProvider.GetRequiredService<AuthorizationView>();
             }
-#endif
         }
         catch (Exception ex)
         {

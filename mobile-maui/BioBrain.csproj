@@ -114,4 +114,14 @@
     <PackageReference Include="Plugin.Firebase.Crashlytics" Version="4.0.0" />
   </ItemGroup>
 
+  <!-- iOS: Firebase config -->
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+    <BundleResource Include="Platforms\iOS\GoogleService-Info.plist" Link="GoogleService-Info.plist" />
+  </ItemGroup>
+
+  <!-- Android: Firebase config -->
+  <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+    <GoogleServicesJson Include="Platforms\Android\google-services.json" />
+  </ItemGroup>
+
 </Project>

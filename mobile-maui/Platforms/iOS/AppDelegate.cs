@@ -11,7 +11,14 @@ public class AppDelegate : MauiUIApplicationDelegate
 
     public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
     {
-        Firebase.Core.App.Configure();
+        try
+        {
+            Firebase.Core.App.Configure();
+        }
+        catch (System.Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[Firebase] Init failed: {ex.Message}");
+        }
 
         return base.FinishedLaunching(application, launchOptions);
     }
