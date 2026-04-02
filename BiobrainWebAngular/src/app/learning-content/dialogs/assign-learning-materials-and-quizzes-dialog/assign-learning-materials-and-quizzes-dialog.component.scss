@@ -5,7 +5,7 @@ mat-expansion-panel {
 .material-excluded {
   opacity: 0.5;
 
-  .mat-checkbox-label {
+  ::ng-deep .mat-checkbox-label {
     text-decoration: line-through;
   }
 }
