@@ -25,6 +25,7 @@ import { ThemeService } from '../../../../core/app/theme.service';
 import { QuestionResult } from '../../../../share/components/hexagone-results/models/question-result.model';
 import { firstValueFrom } from '../../../../share/helpers/first-value-from';
 import { hasValue } from '../../../../share/helpers/has-value';
+import { rewriteImageUrls } from '../../../../share/helpers/rewrite-image-urls';
 
 @Injectable()
 export class QuizResultPageService extends DisposableSubscriptionService {
@@ -219,11 +220,11 @@ export class QuizResultPageService extends DisposableSubscriptionService {
 
   private async _getText(questionText: string): Promise<string> {
     const colors = await firstValueFrom(this._themeService.colors$);
-    return `<html>${ContentStyles.getQuestionStyles(colors)}<section><article class="questionText">${questionText}</article></section></html>`;
+    return rewriteImageUrls(`<html>${ContentStyles.getQuestionStyles(colors)}<section><article class="questionText">${questionText}</article></section></html>`);
   }
 
   private async _getFeedback(feedback: string): Promise<string> {
     const colors = await firstValueFrom(this._themeService.colors$);
-    return `<html>${ContentStyles.getAnswerStyles(colors)}<section><article  class="questionText">${feedback}</article></section></html>`;
+    return rewriteImageUrls(`<html>${ContentStyles.getAnswerStyles(colors)}<section><article  class="questionText">${feedback}</article></section></html>`);
   }
 }

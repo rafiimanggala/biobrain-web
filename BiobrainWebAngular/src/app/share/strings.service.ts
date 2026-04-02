@@ -100,7 +100,7 @@ export class StringsService {
   enableSound = 'Enable Sound Effects';
   soundOn = 'Sound On';
   soundOff = 'Sound Off';
-  anonymiseResults = 'Anonymise Results';
+  anonymizeResults = 'Anonymize Results';
   includeLearningMaterial = 'Include in assignment';
   dropDown = "Dropdown";
   dropFilesMessage = "Drop files or click to select.";

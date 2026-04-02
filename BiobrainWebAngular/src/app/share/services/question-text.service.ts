@@ -4,6 +4,7 @@ import { Question } from "src/app/api/content/content-data-models";
 import { QuestionType } from "src/app/api/enums/question-type.enum";
 import { ContentStyles } from "../values/content-styles";
 import { firstValueFrom } from "../helpers/first-value-from";
+import { rewriteImageUrls } from "../helpers/rewrite-image-urls";
 import { ThemeService } from "src/app/core/app/theme.service";
 
 @Injectable({
@@ -68,6 +69,6 @@ export class QuestionTextService{
   
     private async _getText(questionText: string): Promise<string> {
       const colors = await firstValueFrom(this._themeService.colors$);
-      return `<html>${ContentStyles.getQuestionStyles(colors)}<section><article class="questionText">${questionText}</article></section></html>`;
+      return rewriteImageUrls(`<html>${ContentStyles.getQuestionStyles(colors)}<section><article class="questionText">${questionText}</article></section></html>`);
     }
 }

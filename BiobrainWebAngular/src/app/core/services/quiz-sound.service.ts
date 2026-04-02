@@ -15,38 +15,70 @@ export class QuizSoundService {
     if (!this._soundEnabled) {
       return;
     }
-    this._playTone([523.25, 659.25], 0.2);
+    this._playArpeggio();
   }
 
   playIncorrect(): void {
     if (!this._soundEnabled) {
       return;
     }
-    this._playTone([659.25, 523.25], 0.2);
+    this._playDescendingBuzz();
   }
 
-  private _playTone(frequencies: [number, number], duration: number): void {
+  private _playArpeggio(): void {
     try {
       const ctx = this._getAudioContext();
       if (!ctx) {
         return;
       }
 
-      const oscillator = ctx.createOscillator();
-      const gainNode = ctx.createGain();
+      const notes = [523, 659, 784]; // C5, E5, G5
+      const totalDuration = 0.35;
+      const noteDuration = totalDuration / notes.length;
 
-      oscillator.connect(gainNode);
-      gainNode.connect(ctx.destination);
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
 
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(frequencies[0], ctx.currentTime);
-      oscillator.frequency.linearRampToValueAtTime(frequencies[1], ctx.currentTime + duration);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
-      gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
+        const start = ctx.currentTime + i * noteDuration;
+        gain.gain.setValueAtTime(0, start);
+        gain.gain.linearRampToValueAtTime(0.3, start + 0.02);
+        gain.gain.linearRampToValueAtTime(0, start + noteDuration);
 
-      oscillator.start(ctx.currentTime);
-      oscillator.stop(ctx.currentTime + duration);
+        osc.start(start);
+        osc.stop(start + noteDuration);
+      });
+    } catch {
+      // Audio not supported — silently ignore
+    }
+  }
+
+  private _playDescendingBuzz(): void {
+    try {
+      const ctx = this._getAudioContext();
+      if (!ctx) {
+        return;
+      }
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(330, ctx.currentTime); // E4
+      osc.frequency.linearRampToValueAtTime(262, ctx.currentTime + 0.3); // C4
+
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
     } catch {
       // Audio not supported — silently ignore
     }

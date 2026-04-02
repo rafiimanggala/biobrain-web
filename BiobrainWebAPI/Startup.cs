@@ -5,6 +5,7 @@ using Biobrain.Infrastructure.Payments;
 using BiobrainWebAPI.Authorization;
 using BiobrainWebAPI.Core.Configurations;
 using BiobrainWebAPI.Core.ErrorHandling;
+using BiobrainWebAPI.Core.Middleware;
 using BiobrainWebAPI.Values;
 using DataAccessLayer;
 using Microsoft.AspNetCore.Builder;
@@ -129,6 +130,9 @@ namespace BiobrainWebAPI
 			Console.WriteLine("[Startup] Configuring auth..."); Console.Out.Flush();
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			Console.WriteLine("[Startup] Configuring image proxy..."); Console.Out.Flush();
+			app.UseImageProxy();
 
 			Console.WriteLine("[Startup] Configuring routing..."); Console.Out.Flush();
 			app.ConfigureRouting();

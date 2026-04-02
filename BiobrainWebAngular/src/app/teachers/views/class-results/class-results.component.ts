@@ -54,8 +54,8 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
   private readonly _gridApi$: Observable<GridApi> = this._gridApi.asObservable();
   private readonly _sizeGridToFit$: ReplaySubject<undefined> = new ReplaySubject<undefined>(BUFFER_SIZE);
   filters: ContentTreeMetaFilterViewModel[] = [];
-  anonymiseResults = false;
-  private _anonymisedNameMap = new Map<string, string>();
+  anonymizeResults = false;
+  private _anonymizedNameMap = new Map<string, string>();
   private _lastResults: ClassResultsStoreItem | null = null;
 
   constructor(
@@ -147,8 +147,8 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
 
       combineLatest([this.store.item$, this._gridApi$]).subscribe(([results, gridApi]) => {
         this._lastResults = results;
-        if (this.anonymiseResults && results) {
-          this._buildAnonymisedNameMap();
+        if (this.anonymizeResults && results) {
+          this._buildAnonymizedNameMap();
         }
         gridApi.setColumnDefs(this._buildColumns(results));
         gridApi.setRowData(this._buildRows(results));
@@ -194,11 +194,11 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
     selectElement.click();
   }
 
-  onAnonymiseToggle(): void {
-    if (this.anonymiseResults) {
-      this._buildAnonymisedNameMap();
+  onAnonymizeToggle(): void {
+    if (this.anonymizeResults) {
+      this._buildAnonymizedNameMap();
     } else {
-      this._anonymisedNameMap.clear();
+      this._anonymizedNameMap.clear();
     }
     this._gridApi.subscribe(gridApi => {
       gridApi.setColumnDefs(this._buildColumns(this._lastResults));
@@ -207,13 +207,13 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
     });
   }
 
-  private _buildAnonymisedNameMap(): void {
-    this._anonymisedNameMap.clear();
+  private _buildAnonymizedNameMap(): void {
+    this._anonymizedNameMap.clear();
     if (!this._lastResults) return;
 
     const shuffled = [...this._lastResults.students].sort(() => Math.random() - 0.5);
     shuffled.forEach((student, index) => {
-      this._anonymisedNameMap.set(student.studentId, `Student ${index + 1}`);
+      this._anonymizedNameMap.set(student.studentId, `Student ${index + 1}`);
     });
   }
 
@@ -275,8 +275,8 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
         // + `${capitalizeFirstLetter(this.strings.class)}  ${classData.schoolClassName ?? ''} ${this._titleCasePipe.transform(this.strings.classResults)}`,
         headerClass: [...simpleHeaderClasses, 'ag-grid-custom-first-column-header'],
         cellClass: [aggregateCellClass, 'ag-grid-custom-first-column-cell'],
-        valueGetter: this.anonymiseResults
-          ? getAnonymisedStudentNameGetter(this._anonymisedNameMap)
+        valueGetter: this.anonymizeResults
+          ? getAnonymizedStudentNameGetter(this._anonymizedNameMap)
           : getStudentNameGetter(students),
         minWidth: 240,
         suppressMovable: true,
@@ -388,7 +388,7 @@ function getStudentQuizScore(
   };
 }
 
-function getAnonymisedStudentNameGetter(
+function getAnonymizedStudentNameGetter(
   nameMap: Map<string, string>,
 ): (params: ValueGetterParams) => string {
   return params => {

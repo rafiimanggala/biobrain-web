@@ -97,6 +97,11 @@ export class CustomQuizComponent extends BaseComponent {
   }
 
   public async onCreate(): Promise<void> {
+    if (this.selectedNodeIds.length === 0) {
+      this.error('Please select at least one topic');
+      return;
+    }
+
     if (!this.canCreate) {
       return;
     }
@@ -211,9 +216,21 @@ export class CustomQuizComponent extends BaseComponent {
         return item.checked ? [...acc, item.node.nodeId] : acc;
       }
       if (item.checked) {
-        return [...acc, item.node.nodeId];
+        // Parent is fully checked — collect ALL leaf nodes underneath
+        return [...acc, ...this._getAllLeafIds(item)];
       }
+      // Parent partially checked — recurse into children
       return [...acc, ...this._collectSelectedLeafIds(item.children)];
     }, []);
+  }
+
+  private _getAllLeafIds(item: TreeNodeItem): string[] {
+    if (item.children.length === 0) {
+      return [item.node.nodeId];
+    }
+    return item.children.reduce(
+      (acc: string[], child) => [...acc, ...this._getAllLeafIds(child)],
+      []
+    );
   }
 }

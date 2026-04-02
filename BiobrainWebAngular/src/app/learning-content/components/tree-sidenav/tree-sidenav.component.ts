@@ -19,6 +19,8 @@ export class TreeSidenavComponent implements OnChanges {
 
   public searchString = '';
   public allExpanded = false;
+  public l1Expanded = false;
+  public l2Expanded = false;
 
   constructor(
     public readonly treeService: TreeService,
@@ -54,9 +56,34 @@ export class TreeSidenavComponent implements OnChanges {
       this.treeService.flatTreeControl.expandAll();
     }
     this.allExpanded = !this.allExpanded;
+    this.l1Expanded = false;
+    this.l2Expanded = false;
   }
 
-  expandToLevel(maxLevel: number): void {
+  toggleLevel(maxLevel: number): void {
+    const isExpanded = maxLevel === 1 ? this.l1Expanded : this.l2Expanded;
+
+    if (isExpanded) {
+      this._collapseLevel(maxLevel);
+    } else {
+      this._expandToLevel(maxLevel);
+    }
+
+    if (maxLevel === 1) {
+      this.l1Expanded = !this.l1Expanded;
+      if (!this.l1Expanded) {
+        this.l2Expanded = false;
+      }
+    } else if (maxLevel === 2) {
+      this.l2Expanded = !this.l2Expanded;
+      if (this.l2Expanded) {
+        this.l1Expanded = true;
+      }
+    }
+    this.allExpanded = false;
+  }
+
+  private _expandToLevel(maxLevel: number): void {
     const treeControl = this.treeService.flatTreeControl;
     treeControl.collapseAll();
     treeControl.dataNodes?.forEach((node: NodeModel) => {
@@ -64,7 +91,15 @@ export class TreeSidenavComponent implements OnChanges {
         treeControl.expand(node);
       }
     });
-    this.allExpanded = false;
+  }
+
+  private _collapseLevel(maxLevel: number): void {
+    const treeControl = this.treeService.flatTreeControl;
+    treeControl.dataNodes?.forEach((node: NodeModel) => {
+      if (node.level >= maxLevel - 1) {
+        treeControl.collapse(node);
+      }
+    });
   }
 
   private _setSelectedTopic(topicId: string | undefined): void {

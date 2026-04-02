@@ -40,8 +40,8 @@ const BUFFER_SIZE = 1;
 export class QuizAssignmentResultComponent extends DisposableSubscriberComponent implements OnInit {
   @Output() reassignQuiz = new EventEmitter<{ quizId: string; studentIds: string[] }>();
   private _selectedStudentIds: string[] = [];
-  anonymiseResults = false;
-  private _anonymisedNameMap = new Map<string, string>();
+  anonymizeResults = false;
+  private _anonymizedNameMap = new Map<string, string>();
   private _lastResults: QuizAssignmentResultStoreItem | null = null;
 
   private readonly _selectionChangedSubject = new ReplaySubject<undefined>(BUFFER_SIZE);
@@ -117,8 +117,8 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
       combineLatest([data, this._gridApi$])
       .subscribe(([results, gridApi]) => {
         this._lastResults = results;
-        if (this.anonymiseResults && results) {
-          this._buildAnonymisedNameMap();
+        if (this.anonymizeResults && results) {
+          this._buildAnonymizedNameMap();
         }
         gridApi.setColumnDefs(this._buildColumns(results));
         gridApi.setRowData(this._buildRows(results));
@@ -146,11 +146,11 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
     return result;
   }
 
-  onAnonymiseToggle(): void {
-    if (this.anonymiseResults) {
-      this._buildAnonymisedNameMap();
+  onAnonymizeToggle(): void {
+    if (this.anonymizeResults) {
+      this._buildAnonymizedNameMap();
     } else {
-      this._anonymisedNameMap.clear();
+      this._anonymizedNameMap.clear();
     }
     this._gridApiSubject.subscribe(gridApi => {
       gridApi.setColumnDefs(this._buildColumns(this._lastResults));
@@ -159,13 +159,13 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
     });
   }
 
-  private _buildAnonymisedNameMap(): void {
-    this._anonymisedNameMap.clear();
+  private _buildAnonymizedNameMap(): void {
+    this._anonymizedNameMap.clear();
     if (!this._lastResults) return;
 
     const shuffled = [...this._lastResults.students].sort(() => Math.random() - 0.5);
     shuffled.forEach((student, index) => {
-      this._anonymisedNameMap.set(student.studentId, `Student ${index + 1}`);
+      this._anonymizedNameMap.set(student.studentId, `Student ${index + 1}`);
     });
   }
 
@@ -213,8 +213,8 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
         headerName: quizName,
         headerClass: [...simpleHeaderClasses, 'ag-grid-custom-first-column-cell'],
         cellClass: [aggregateCellClass, 'ag-grid-custom-first-column-cell'],
-        valueGetter: this.anonymiseResults
-          ? getAnonymisedStudentNameGetter(this._anonymisedNameMap)
+        valueGetter: this.anonymizeResults
+          ? getAnonymizedStudentNameGetter(this._anonymizedNameMap)
           : getStudentNameGetter(students),
         autoHeight: true,
         minWidth: 250,
@@ -293,7 +293,7 @@ export class QuizAssignmentResultComponent extends DisposableSubscriberComponent
   }
 }
 
-function getAnonymisedStudentNameGetter(
+function getAnonymizedStudentNameGetter(
   nameMap: Map<string, string>,
 ): (params: ValueGetterParams) => string {
   return params => {

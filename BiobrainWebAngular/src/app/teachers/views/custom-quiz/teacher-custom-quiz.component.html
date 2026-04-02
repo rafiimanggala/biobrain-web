@@ -48,6 +48,43 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- Student Selection -->
+      <div class="student-selection-panel" *ngIf="selectedClassId">
+        <div class="student-header" fxLayout="row" fxLayoutAlign="space-between center">
+          <h4>Assign to Students</h4>
+          <div fxLayoutGap="8px" *ngIf="students.length > 0">
+            <button mat-stroked-button color="accent" (click)="selectAllStudents()" type="button">
+              Select All
+            </button>
+            <button mat-stroked-button color="accent" (click)="unselectAllStudents()" type="button">
+              Unselect All
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="isLoadingStudents" fxLayoutAlign="center center" style="padding: 16px;">
+          <mat-spinner diameter="24"></mat-spinner>
+        </div>
+
+        <div *ngIf="!isLoadingStudents && students.length === 0" class="no-students-hint">
+          No students found in this class.
+        </div>
+
+        <div *ngIf="!isLoadingStudents && students.length > 0" class="student-list">
+          <div *ngFor="let student of students" class="student-checkbox-row">
+            <mat-checkbox
+              [checked]="student.checked"
+              (change)="toggleStudent(student)"
+              color="primary">
+              {{student.fullName}}
+            </mat-checkbox>
+          </div>
+          <div class="student-count-summary">
+            {{selectedStudentIds.length}} of {{students.length}} student(s) selected
+          </div>
+        </div>
+      </div>
+
       <!-- Save as Template -->
       <mat-checkbox [(ngModel)]="saveAsTemplate" color="primary">
         Save as template for future use

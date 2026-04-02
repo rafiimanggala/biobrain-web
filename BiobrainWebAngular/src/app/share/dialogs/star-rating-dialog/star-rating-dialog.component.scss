@@ -15,15 +15,15 @@ mat-dialog-content {
 }
 
 .star-icon {
-  font-size: 40px;
-  width: 40px;
-  height: 40px;
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
-  color: #ccc;
+  color: #FFC107;
   transition: color 0.15s ease, transform 0.15s ease;
 
   &.active {
-    color: #ffc107;
+    color: #FFC107;
   }
 
   &:hover {

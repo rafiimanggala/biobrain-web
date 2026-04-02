@@ -17,8 +17,10 @@ import { AppEventProvider } from '../../../core/app/app-event-provider.service';
 import { BaseComponent } from '../../../core/app/base.component';
 import { ActiveCourseService } from '../../../core/services/active-course.service';
 import { ActiveSchoolClassService } from '../../../core/services/active-school-class.service';
+import { ActiveSchoolService } from '../../../core/services/active-school.service';
 import { TeacherCourseGroup } from '../../../core/services/courses/teacher-course-group';
 import { TeacherCoursesService } from '../../../core/services/courses/teacher-courses.service';
+import { StudentsService } from '../../../core/services/students/students.service';
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { SnackBarService } from '../../../share/services/snack-bar.service';
@@ -29,6 +31,12 @@ interface ContentTreeFlatNode {
   header: string;
   level: number;
   entityId: string;
+}
+
+interface StudentModel {
+  studentId: string;
+  fullName: string;
+  checked: boolean;
 }
 
 @Component({
@@ -48,7 +56,11 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
 
   questionCountOptions: number[] = [20, 30, 40, 60];
 
+  students: StudentModel[] = [];
+  isLoadingStudents = false;
+
   private _userId = '';
+  private _schoolId = '';
 
   // Tree
   treeControl: FlatTreeControl<ContentTreeFlatNode>;
@@ -65,7 +77,9 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
     private readonly _currentUserService: CurrentUserService,
     private readonly _activeCourseService: ActiveCourseService,
     private readonly _activeClassService: ActiveSchoolClassService,
+    private readonly _activeSchoolService: ActiveSchoolService,
     private readonly _teacherCoursesService: TeacherCoursesService,
+    private readonly _studentsService: StudentsService,
     private readonly _snackBarService: SnackBarService,
     appEvents: AppEventProvider,
   ) {
@@ -98,6 +112,12 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
         tap(user => this._userId = user.userId),
       ).subscribe(),
 
+      this._activeSchoolService.schoolIdChanges$.pipe(
+        filter(hasValue),
+        distinctUntilChanged(),
+        tap(schoolId => this._schoolId = schoolId),
+      ).subscribe(),
+
       this._activeCourseService.courseIdChanges$.pipe(
         filter(hasValue),
         distinctUntilChanged(),
@@ -112,7 +132,10 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
       this._activeClassService.schoolClassIdChanges$.pipe(
         filter(hasValue),
         distinctUntilChanged(),
-        tap(classId => this.selectedClassId = classId),
+        tap(classId => {
+          this.selectedClassId = classId;
+          this._loadStudentsForClass(classId);
+        }),
       ).subscribe(),
     );
   }
@@ -127,6 +150,10 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
 
   onClassChange(classId: string): void {
     this.selectedClassId = classId;
+    this.students = [];
+    if (classId) {
+      this._loadStudentsForClass(classId);
+    }
   }
 
   /** Toggle a leaf node */
@@ -167,17 +194,56 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
     return this.checklistSelection.selected.map(n => n.entityId);
   }
 
+  get selectedStudentIds(): string[] {
+    return this.students.filter(s => s.checked).map(s => s.studentId);
+  }
+
   get isFormValid(): boolean {
     return this.quizName.trim().length > 0
       && this.selectedCourseId.length > 0
       && this.selectedClassId.length > 0
       && this.selectedNodeIds.length > 0
       && this.questionCount >= 20
-      && this.questionCount <= 60;
+      && this.questionCount <= 60
+      && this.selectedStudentIds.length > 0;
+  }
+
+  selectAllStudents(): void {
+    this.students = this.students.map(s => ({ ...s, checked: true }));
+  }
+
+  unselectAllStudents(): void {
+    this.students = this.students.map(s => ({ ...s, checked: false }));
+  }
+
+  toggleStudent(student: StudentModel): void {
+    student.checked = !student.checked;
   }
 
   async onSubmit(): Promise<void> {
-    if (!this.isFormValid || this.isSubmitting) {
+    if (this.isSubmitting) {
+      return;
+    }
+
+    // Validate with specific snackbar messages
+    if (!this.quizName.trim()) {
+      this._snackBarService.showMessage('Please enter a quiz name.');
+      return;
+    }
+    if (!this.selectedCourseId) {
+      this._snackBarService.showMessage('Please select a course.');
+      return;
+    }
+    if (!this.selectedClassId) {
+      this._snackBarService.showMessage('Please select a class to assign the quiz to.');
+      return;
+    }
+    if (this.selectedNodeIds.length === 0) {
+      this._snackBarService.showMessage('Please select at least one topic.');
+      return;
+    }
+    if (this.selectedStudentIds.length === 0) {
+      this._snackBarService.showMessage('Please select at least one student.');
       return;
     }
 
@@ -192,6 +258,7 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
         this.selectedClassId,
         this.saveAsTemplate,
         this._userId,
+        this.selectedStudentIds,
       );
 
       const result = await firstValueFrom(this._api.send(command));
@@ -201,10 +268,36 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
       this.quizName = '';
       this.checklistSelection.clear();
       this.saveAsTemplate = false;
+      this.students = this.students.map(s => ({ ...s, checked: true }));
     } catch (err) {
       this.handleError(err);
+      this._snackBarService.showMessage('Failed to create quiz. Please try again.');
     } finally {
       this.isSubmitting = false;
+    }
+  }
+
+  private async _loadStudentsForClass(classId: string): Promise<void> {
+    try {
+      this.isLoadingStudents = true;
+      const schoolId = this._schoolId || (await this._activeSchoolService.schoolId) || '';
+      if (!schoolId) {
+        this.students = [];
+        return;
+      }
+      const students = await firstValueFrom(
+        this._studentsService.getForClassFromCache(schoolId, classId),
+      );
+      this.students = students.map(s => ({
+        studentId: s.studentId,
+        fullName: s.fullName,
+        checked: true,
+      }));
+    } catch (err) {
+      this.handleError(err);
+      this.students = [];
+    } finally {
+      this.isLoadingStudents = false;
     }
   }
 

@@ -10,6 +10,7 @@ export class CreateTeacherCustomQuizCommand extends Command<CreateTeacherCustomQ
     public readonly schoolClassId: string,
     public readonly saveAsTemplate: boolean,
     public readonly teacherId: string,
+    public readonly studentIds: string[] = [],
   ) {
     super();
   }

@@ -46,6 +46,11 @@
   min-width: unset;
   padding: 0 8px;
   border-radius: 4px;
+
+  &.active-level {
+    background-color: rgba(0, 0, 0, 0.12);
+    font-weight: 600;
+  }
 }
 
 .control-icon {

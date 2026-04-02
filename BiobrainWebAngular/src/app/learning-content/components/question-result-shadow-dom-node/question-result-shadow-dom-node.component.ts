@@ -9,6 +9,7 @@ import { Question } from '../../../api/content/content-data-models';
 import { ThemeService } from '../../../core/app/theme.service';
 import { assertHasValue } from '../../../share/helpers/assert-has-value';
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
+import { rewriteImageUrls } from '../../../share/helpers/rewrite-image-urls';
 import { RequestHandlingService } from '../../../share/services/request-parse.service';
 import { StringsService } from '../../../share/strings.service';
 import { ContentStyles } from '../../../share/values/content-styles';
@@ -53,7 +54,7 @@ export class QuestionResultShadowDomNodeComponent extends PluggableScriptCompone
 
   private async _toStyledContent(feedback: string): Promise<string> {
     const colors = await firstValueFrom(this._themeService.colors$);
-    return `${ContentStyles.getAnswerStyles(colors)}${feedback}`;
+    return rewriteImageUrls(`${ContentStyles.getAnswerStyles(colors)}${feedback}`);
   }
 
   private _toFeedbackText(datum: QuestionResultData): string {

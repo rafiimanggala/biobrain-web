@@ -9,6 +9,7 @@ import { assertUnreachableStatement } from '../../../share/helpers/assert-unreac
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { isNullOrWhitespace } from '../../../share/helpers/is-null-or-white-space';
 import { removeHtmlTag } from '../../../share/helpers/remove-html-tag';
+import { rewriteImageUrls } from '../../../share/helpers/rewrite-image-urls';
 import { RequestHandlingService } from '../../../share/services/request-parse.service';
 import { ContentStyles } from '../../../share/values/content-styles';
 
@@ -102,12 +103,12 @@ export class LearningMaterialShadowDomNodeComponent extends PluggableScriptCompo
 
       case ContentTypes.pages: {
         const materialText = this._bindLinksToRequestSender(contentText);
-        return `<html>${ContentStyles.getMaterialStyles(colors)}<section><article>${materialText}</article></section></html>`;
+        return rewriteImageUrls(`<html>${ContentStyles.getMaterialStyles(colors)}<section><article>${materialText}</article></section></html>`);
       }
 
       case ContentTypes.glossaryDefinition: {
         const definitionWithTunedLinks = this._bindLinksToRequestSender(removeHtmlTag(contentText));
-        return `${ContentStyles.getMaterialStyles(colors)}${definitionWithTunedLinks}`;
+        return rewriteImageUrls(`${ContentStyles.getMaterialStyles(colors)}${definitionWithTunedLinks}`);
       }
 
       default:

@@ -95,3 +95,43 @@
     min-height: 36px;
   }
 }
+
+.student-selection-panel {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafafa;
+
+  .student-header {
+    margin-bottom: 12px;
+
+    h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+
+  .no-students-hint {
+    color: #999;
+    font-size: 13px;
+    padding: 8px 0;
+  }
+
+  .student-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .student-checkbox-row {
+    padding: 4px 0;
+  }
+
+  .student-count-summary {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #666;
+  }
+}

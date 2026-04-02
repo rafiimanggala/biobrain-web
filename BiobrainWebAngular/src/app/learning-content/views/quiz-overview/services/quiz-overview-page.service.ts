@@ -28,6 +28,7 @@ import { ContentStyles } from 'src/app/share/values/content-styles';
 import { ThemeService } from '../../../../core/app/theme.service';
 import { firstValueFrom } from '../../../../share/helpers/first-value-from';
 import { hasValue } from '../../../../share/helpers/has-value';
+import { rewriteImageUrls } from '../../../../share/helpers/rewrite-image-urls';
 import { GetQuizFullnessStatusQuery, GetQuizFullnessStatusQuery_Result } from 'src/app/api/quiz-assignments/get-quiz-fullness-status.query';
 import { QuestionTextService } from 'src/app/share/services/question-text.service';
 
@@ -261,11 +262,11 @@ export class QuizOverviewPageService extends DisposableSubscriptionService {
 
   private async _getFeedback(feedback: string): Promise<string> {
     const colors = await firstValueFrom(this._themeService.colors$);
-    return `<html>${ContentStyles.getAnswerStyles(colors)}<section><article class="questionText">${feedback}</article></section></html>`;
+    return rewriteImageUrls(`<html>${ContentStyles.getAnswerStyles(colors)}<section><article class="questionText">${feedback}</article></section></html>`);
   }
 
   private async _getAnswer(answer: string): Promise<string> {
     const colors = await firstValueFrom(this._themeService.colors$);
-    return `<html>${ContentStyles.getAnswerStyles(colors)}<section><article>${answer}</article></section></html>`;
+    return rewriteImageUrls(`<html>${ContentStyles.getAnswerStyles(colors)}<section><article>${answer}</article></section></html>`);
   }
 }

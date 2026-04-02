@@ -11,6 +11,7 @@ import { assertHasValue } from '../../../share/helpers/assert-has-value';
 import { assertUnreachableStatement } from '../../../share/helpers/assert-unreachable-statement';
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { isNullOrWhitespace } from '../../../share/helpers/is-null-or-white-space';
+import { rewriteImageUrls } from '../../../share/helpers/rewrite-image-urls';
 import { RequestHandlingService } from '../../../share/services/request-parse.service';
 import { ContentStyles } from '../../../share/values/content-styles';
 import { PluggableScriptComponent } from '../learning-material-shadow-dom-node/pluggable-script.component';
@@ -114,7 +115,7 @@ export class QuestionContentShadowDomNodeComponent extends PluggableScriptCompon
     const colors = await firstValueFrom(this._themeService.colors$);
     questionText = `<html>${ContentStyles.getQuestionStyles(colors)}<section><article class="questionText">${questionText}</article></section></html>`;
 
-    return questionText;
+    return rewriteImageUrls(questionText);
   }
 
   private async _replaceLinks(text: string, questionType: QuestionType): Promise<string> {

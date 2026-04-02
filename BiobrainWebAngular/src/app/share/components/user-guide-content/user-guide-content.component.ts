@@ -8,6 +8,7 @@ import { UserGuideContentViewModel } from 'src/app/admin/user-guides/view-models
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { EmbedVideoService } from 'ngx-embed-video';
 import { SendQuestionOperation } from 'src/app/admin/operations/user-guides/send-question.operation';
+import { rewriteImageUrls } from '../../helpers/rewrite-image-urls';
 
 @Component({
   selector: 'app-user-guide-content',
@@ -62,7 +63,7 @@ export class UserGuideContentComponent extends BaseComponent implements OnChange
     if(!result.isSuccess()) return;
 
     this.content = result.data;
-    this.html = this.sanitizer.bypassSecurityTrustHtml(this.style + this.content.htmlText);
+    this.html = this.sanitizer.bypassSecurityTrustHtml(rewriteImageUrls(this.style + this.content.htmlText));
     this.initPlayer();
   }
 

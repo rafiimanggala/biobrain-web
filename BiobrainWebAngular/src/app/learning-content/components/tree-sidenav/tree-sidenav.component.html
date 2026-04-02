@@ -10,9 +10,8 @@
       {{allExpanded ? 'Collapse All' : 'Expand All'}}
     </button>
     <span class='control-separator'>|</span>
-    <button mat-stroked-button class='control-btn' (click)='expandToLevel(1)'>L1</button>
-    <button mat-stroked-button class='control-btn' (click)='expandToLevel(2)'>L2</button>
-    <button mat-stroked-button class='control-btn' (click)='expandToLevel(3)'>All</button>
+    <button mat-stroked-button class='control-btn' [class.active-level]='l1Expanded' (click)='toggleLevel(1)'>L1</button>
+    <button mat-stroked-button class='control-btn' [class.active-level]='l2Expanded' (click)='toggleLevel(2)'>L2</button>
   </div>
 
   <!--tree-->

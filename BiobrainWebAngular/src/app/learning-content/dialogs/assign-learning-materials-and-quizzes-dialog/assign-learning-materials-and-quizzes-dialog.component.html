@@ -23,7 +23,8 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <p *ngFor='let material of learningMaterialSelections'>
+        <p *ngFor='let material of learningMaterialSelections'
+           [class.material-excluded]="!material.included">
           <mat-checkbox [(ngModel)]='material.included'
                         [ngModelOptions]="{ standalone: true }">
             {{material.fullName}}
