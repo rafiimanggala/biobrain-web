@@ -19,6 +19,7 @@ import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { toNonNullable } from '../../../share/helpers/to-non-nullable';
 import { LearningContentProviderService } from '../../services/learning-content-provider.service';
+import { TreeService } from '../../services/tree.service';
 import { ActiveSchoolClassService } from 'src/app/core/services/active-school-class.service';
 import { TeacherCourseGroup } from 'src/app/core/services/courses/teacher-course-group';
 import { TeacherCourse } from 'src/app/core/services/courses/teacher-course';
@@ -56,6 +57,7 @@ export class MaterialPageComponent extends BaseComponent implements OnDestroy {
     private readonly _activeSchoolService: ActiveSchoolService,
     private readonly _activeSchoolClassService: ActiveSchoolClassService,
     private readonly _getQuizResultForLevelOperation: GetQuizResultForLevelOperation,
+    private readonly _treeService: TreeService,
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
@@ -87,6 +89,10 @@ export class MaterialPageComponent extends BaseComponent implements OnDestroy {
 
   public onSelectedLevelIdChange(){
     this._analyticsService.handleNavigation(new NavigationEnd(0, "", location.href));
+  }
+
+  public onExpandAll(): void {
+    this._treeService.flatTreeControl.expandAll();
   }
 
   private get _routeLevelId(): string | undefined {
