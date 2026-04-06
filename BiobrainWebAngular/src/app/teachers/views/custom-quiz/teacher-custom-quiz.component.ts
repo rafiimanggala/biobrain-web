@@ -137,6 +137,20 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
           this._loadStudentsForClass(classId);
         }),
       ).subscribe(),
+
+      // Auto-select course when teacher has only one course
+      this.courseGroups$.pipe(
+        filter(groups => groups.length > 0),
+        tap((groups: TeacherCourseGroup[]) => {
+          const courseIds: string[] = [];
+          groups.forEach(g => g.courses.forEach(c => {
+            if (!courseIds.includes(c.courseId)) courseIds.push(c.courseId);
+          }));
+          if (courseIds.length === 1 && !this.selectedCourseId) {
+            this.onCourseChange(courseIds[0]);
+          }
+        }),
+      ).subscribe(),
     );
   }
 
