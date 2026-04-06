@@ -188,7 +188,7 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
   public getEffectiveSoundEnabled(serverSoundEnabled: boolean): boolean {
     return this.studentSoundOverride !== null
       ? this.studentSoundOverride
-      : serverSoundEnabled;
+      : (serverSoundEnabled !== false);
   }
 
   public async onAnswerValueChange(quizResult: QuizResult, question: Question, answerValue: string): Promise<void> {
@@ -196,7 +196,7 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
 
     const effectiveSoundEnabled = this.studentSoundOverride !== null
       ? this.studentSoundOverride
-      : quizResult.soundEnabled;
+      : (quizResult.soundEnabled !== false);
     this._quizSoundService.setSoundEnabled(effectiveSoundEnabled);
     if (correctness.isCorrect) {
       this._quizSoundService.playCorrect();

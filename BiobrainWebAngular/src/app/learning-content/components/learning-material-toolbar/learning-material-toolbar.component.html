@@ -6,6 +6,9 @@
       {{level.levelName}}
     </mat-button-toggle>
   </mat-button-toggle-group>
+  <button mat-icon-button class='expand-all-btn' (click)='onExpandAll()' title='Expand All'>
+    <mat-icon>unfold_more</mat-icon>
+  </button>
 
   <div class="buttons-raw"  fxHide.lt-sm>
     <button mat-raised-button color=accent class='node-button' (click)='onAssignedWorkClicked(selectedLevelId)' *ngIf='!!courseId && selectedLevelId && assignedWorkButtonVisible'>
@@ -14,12 +17,15 @@
     <button mat-raised-button color=accent class='node-button' (click)='onQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && quizButtonVisible'>
       {{strings.quiz | titlecase}}
     </button>
+    <!-- Subsection Quiz and Topic Quiz buttons hidden per change request #1 -->
+    <!--
     <button mat-raised-button color=accent class='node-button' (click)='onSubsectionQuiz(selectedLevelId)' *ngIf='selectedLevelId && subsectionQuizButtonVisible'>
       {{strings.takeSubsectionQuiz | titlecase}}
     </button>
     <button mat-raised-button color=accent class='node-button' (click)='onTopicQuiz(courseId, topicId)' *ngIf='!!courseId && !!topicId && topicQuizButtonVisible'>
       {{strings.takeTopicQuiz | titlecase}}
     </button>
+    -->
     <button mat-raised-button color=accent class='node-button' (click)='onViewQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && viewQuizButtonVisible'>
       {{strings.viewQuiz | titlecase}}
     </button>
@@ -40,17 +46,20 @@
     <button mat-raised-button color=accent class='node-button' (click)='onQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && quizButtonVisible'>
       {{strings.quiz | titlecase}}
     </button>
-    <button mat-icon-button [matMenuTriggerFor]='verticalMenu' fxFlexAlign='end'  *ngIf='!!courseId && selectedLevelId && (viewQuizButtonVisible || assignQuizButtonVisible || assignMaterialButtonVisible || assignAllButtonVisible || topicQuizButtonVisible || subsectionQuizButtonVisible)'>
+    <button mat-icon-button [matMenuTriggerFor]='verticalMenu' fxFlexAlign='end'  *ngIf='!!courseId && selectedLevelId && (viewQuizButtonVisible || assignQuizButtonVisible || assignMaterialButtonVisible || assignAllButtonVisible)'>
       <mat-icon>more_vert</mat-icon>
     </button>
 
     <mat-menu #verticalMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+      <!-- Subsection Quiz and Topic Quiz buttons hidden per change request #1 -->
+      <!--
       <button mat-menu-item (click)='onSubsectionQuiz(selectedLevelId)' *ngIf='selectedLevelId && subsectionQuizButtonVisible'>
         {{strings.takeSubsectionQuiz | titlecase}}
       </button>
       <button mat-menu-item (click)='onTopicQuiz(courseId, topicId)' *ngIf='!!courseId && !!topicId && topicQuizButtonVisible'>
         {{strings.takeTopicQuiz | titlecase}}
       </button>
+      -->
       <button  mat-menu-item (click)='onViewQuiz(courseId, selectedLevelId)' *ngIf='!!courseId && selectedLevelId && viewQuizButtonVisible'>
         {{strings.viewQuiz | titlecase}}
       </button>

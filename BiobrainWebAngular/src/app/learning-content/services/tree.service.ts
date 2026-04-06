@@ -85,9 +85,23 @@ export class TreeService {
 
   private async _getMaterialsTree(courseId: string): Promise<NodeModel[]> {
     const tree = await this._learningContentProvider.getContentTreeForCourse(courseId);
-    return tree
+    const mapped = tree
       .map(x => this._mapContentTreeRowToNodeModel(x))
       .sort((a, b) => a.order - b.order);
+    return this._removeLevelNodes(mapped);
+  }
+
+  private _removeLevelNodes(nodes: NodeModel[]): NodeModel[] {
+    const result: NodeModel[] = [];
+    for (const node of nodes) {
+      if (/^Level \d+$/i.test(node.header)) {
+        result.push(...this._removeLevelNodes(node.children));
+      } else {
+        node.children = this._removeLevelNodes(node.children);
+        result.push(node);
+      }
+    }
+    return result;
   }
 
   private _mapContentTreeRowToNodeModel(node: ContentTreeRow): NodeModel {

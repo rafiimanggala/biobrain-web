@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class QuizSoundService {
   private _soundEnabled = true;
   private _audioContext: AudioContext | null = null;
+  private _correctAudio: HTMLAudioElement | null = null;
 
   setSoundEnabled(enabled: boolean): void {
     this._soundEnabled = enabled;
@@ -15,7 +16,7 @@ export class QuizSoundService {
     if (!this._soundEnabled) {
       return;
     }
-    this._playArpeggio();
+    this._playCorrectAudio();
   }
 
   playIncorrect(): void {
@@ -25,34 +26,13 @@ export class QuizSoundService {
     this._playDescendingBuzz();
   }
 
-  private _playArpeggio(): void {
+  private _playCorrectAudio(): void {
     try {
-      const ctx = this._getAudioContext();
-      if (!ctx) {
-        return;
+      if (!this._correctAudio) {
+        this._correctAudio = new Audio('assets/sounds/Biobrain-correct-answer.mp3');
       }
-
-      const notes = [523, 659, 784]; // C5, E5, G5
-      const totalDuration = 0.35;
-      const noteDuration = totalDuration / notes.length;
-
-      notes.forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-        const start = ctx.currentTime + i * noteDuration;
-        gain.gain.setValueAtTime(0, start);
-        gain.gain.linearRampToValueAtTime(0.3, start + 0.02);
-        gain.gain.linearRampToValueAtTime(0, start + noteDuration);
-
-        osc.start(start);
-        osc.stop(start + noteDuration);
-      });
+      this._correctAudio.currentTime = 0;
+      this._correctAudio.play();
     } catch {
       // Audio not supported — silently ignore
     }

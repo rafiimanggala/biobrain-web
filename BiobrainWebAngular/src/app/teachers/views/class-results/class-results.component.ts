@@ -207,13 +207,25 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
     });
   }
 
+  private static readonly _FAKE_NAMES = [
+    'Alex', 'Jordan', 'Riley', 'Casey', 'Morgan', 'Taylor', 'Quinn', 'Avery',
+    'Dakota', 'Skyler', 'Reese', 'Finley', 'Hayden', 'Emerson', 'Parker',
+    'Rowan', 'Sage', 'Blake', 'Charlie', 'Drew', 'Ellis', 'Frankie', 'Harper',
+    'Indigo', 'Jamie', 'Kerry', 'Logan', 'Marley', 'Nico', 'Oakley', 'Peyton',
+    'Robin', 'Sam', 'Tatum', 'Uri', 'Val', 'Winter', 'Xen', 'Yael', 'Zion',
+  ];
+
   private _buildAnonymizedNameMap(): void {
     this._anonymizedNameMap.clear();
     if (!this._lastResults) return;
 
-    const shuffled = [...this._lastResults.students].sort(() => Math.random() - 0.5);
-    shuffled.forEach((student, index) => {
-      this._anonymizedNameMap.set(student.studentId, `Student ${index + 1}`);
+    const shuffledNames = [...ClassResultsComponent._FAKE_NAMES].sort(() => Math.random() - 0.5);
+    const shuffledStudents = [...this._lastResults.students].sort(() => Math.random() - 0.5);
+    shuffledStudents.forEach((student, index) => {
+      const fakeName = index < shuffledNames.length
+        ? shuffledNames[index]
+        : `Student ${index + 1}`;
+      this._anonymizedNameMap.set(student.studentId, fakeName);
     });
   }
 
@@ -239,7 +251,11 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
       return [];
     }
 
-    return results.students.sort(studentByNameComparer).map(x => ({ studentId: x.studentId }));
+    const rows = results.students.sort(studentByNameComparer).map(x => ({ studentId: x.studentId }));
+    if (this.anonymizeResults) {
+      return [...rows].sort(() => Math.random() - 0.5);
+    }
+    return rows;
   }
 
   private _buildColumns(results: ClassResultsStoreItem | null): ColDef[] {

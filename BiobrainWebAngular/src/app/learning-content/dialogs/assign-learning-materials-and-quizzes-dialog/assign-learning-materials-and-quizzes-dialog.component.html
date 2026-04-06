@@ -30,6 +30,16 @@
             {{material.fullName}}
           </mat-checkbox>
         </p>
+        <mat-action-row fxLayout="row" fxLayoutAlign="start" fxLayoutGap="8px">
+          <button mat-stroked-button color="accent" type="button"
+                  (click)="includeAllMaterials()">
+            Include All
+          </button>
+          <button mat-stroked-button color="warn" type="button"
+                  (click)="excludeAllMaterials()">
+            Exclude All
+          </button>
+        </mat-action-row>
       </mat-expansion-panel>
       </ng-container>
 

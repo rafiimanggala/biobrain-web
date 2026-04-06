@@ -25,6 +25,7 @@ export class LearningMaterialToolbarComponent implements OnChanges {
   @Input() selectedLevelId: string | undefined | null;
 
   @Output() selectedLevelIdChange = new EventEmitter<string>();
+  @Output() expandAllClicked = new EventEmitter<void>();
 
   public quizButtonVisible = false;
   public viewQuizButtonVisible = false;
@@ -93,6 +94,10 @@ export class LearningMaterialToolbarComponent implements OnChanges {
 
   public onSelectedLevelIdChange(selectedLevelId: string): void {
     this.selectedLevelIdChange.next(selectedLevelId);
+  }
+
+  public onExpandAll(): void {
+    this.expandAllClicked.emit();
   }
 
   async onAssignedWorkClicked(unitId: string): Promise<void> {

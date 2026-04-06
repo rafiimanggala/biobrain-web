@@ -14,26 +14,16 @@
         <input matInput [(ngModel)]="quizName" placeholder="Enter quiz name" maxlength="100">
       </mat-form-field>
 
-      <!-- Course Selector -->
-      <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
-        <mat-label>Course</mat-label>
-        <mat-select [(value)]="selectedCourseId" (selectionChange)="onCourseChange($event.value)">
-          <ng-container *ngFor="let group of courseGroups">
-            <mat-option *ngFor="let course of group.courses" [value]="course.courseId">
-              {{course.course?.subject?.name}} - {{course.className}}
-            </mat-option>
-          </ng-container>
-        </mat-select>
-      </mat-form-field>
-
-      <!-- Class Selector -->
+      <!-- Class Selector (filtered by active course) -->
       <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
         <mat-label>Assign to Class</mat-label>
         <mat-select [(value)]="selectedClassId" (selectionChange)="onClassChange($event.value)">
           <ng-container *ngFor="let group of courseGroups">
-            <mat-option *ngFor="let course of group.courses" [value]="course.classId">
-              {{course.className}}
-            </mat-option>
+            <ng-container *ngFor="let course of group.courses">
+              <mat-option *ngIf="!selectedCourseId || course.courseId === selectedCourseId" [value]="course.classId">
+                {{course.className}}
+              </mat-option>
+            </ng-container>
           </ng-container>
         </mat-select>
       </mat-form-field>

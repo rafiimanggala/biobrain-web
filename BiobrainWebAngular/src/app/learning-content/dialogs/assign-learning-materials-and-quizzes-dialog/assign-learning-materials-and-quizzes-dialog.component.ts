@@ -145,6 +145,14 @@ export class AssignLearningMaterialsAndQuizzesDialog extends
     this._findStudents(schoolClassId).forEach(s => s.checked = true);
   }
 
+  includeAllMaterials(): void {
+    this.learningMaterialSelections.forEach(m => m.included = true);
+  }
+
+  excludeAllMaterials(): void {
+    this.learningMaterialSelections.forEach(m => m.included = false);
+  }
+
   checkboxName(cls: SchoolClassCacheModel|undefined, student: StudentModel): string {
     const classId = cls?.schoolClassId ?? 'unassigned';
     return `chk-${classId}-${student.studentId}`;
