@@ -9,6 +9,7 @@ import { CurrentUserService } from 'src/app/auth/services/current-user.service';
 import { RoutingService } from 'src/app/auth/services/routing.service';
 import { AppEventProvider } from 'src/app/core/app/app-event-provider.service';
 import { BaseComponent } from 'src/app/core/app/base.component';
+import { ActiveCourseService } from 'src/app/core/services/active-course.service';
 import { ContentTreeNode } from 'src/app/core/services/content/content-tree.node';
 import { ContentTreeService } from 'src/app/core/services/content/content-tree.service';
 import { StudentCourse } from 'src/app/core/services/courses/student-course';
@@ -52,6 +53,7 @@ export class CustomQuizComponent extends BaseComponent {
     private readonly _contentTreeService: ContentTreeService,
     private readonly _routingService: RoutingService,
     private readonly _quizzesService: QuizzesService,
+    private readonly _activeCourseService: ActiveCourseService,
     appEvents: AppEventProvider
   ) {
     super(appEvents);
@@ -135,6 +137,7 @@ export class CustomQuizComponent extends BaseComponent {
       );
 
       this.lastCreatedQuizName = nameWithCount;
+      this._activeCourseService.setActiveCourseId(this.selectedCourseId!);
       await this._quizzesService.reloadAndWait();
       this.isCreating = false;
       await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
