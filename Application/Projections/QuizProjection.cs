@@ -48,7 +48,8 @@ namespace Biobrain.Application.Projections
                     };
 
         public static IQueryable<QuizEntity> PrepareToMapToQuizContentData(this IQueryable<QuizEntity> query)
-            => query.Include(_ => _.QuizQuestions)
+            => query.Include(_ => _.ContentTreeNode)
+                    .Include(_ => _.QuizQuestions)
                     .ThenInclude(_ => _.Question)
                     .ThenInclude(_ => _.Answers)
                     .Include(_ => _.QuizQuestions)
