@@ -14,11 +14,13 @@ using Biobrain.Application.Content.GetActualContentVersion;
 using Biobrain.Application.Content.GetContentData;
 using Biobrain.Application.Content.GetContentTree;
 using Biobrain.Application.Content.GetContentTreeMeta;
+using Biobrain.Application.Content.ContentDataModels;
 using Biobrain.Application.Content.GetCourseContentData;
 using Biobrain.Application.Content.GetCourseReleases;
 using Biobrain.Application.Content.GetCourses;
 using Biobrain.Application.Content.GetPage;
 using Biobrain.Application.Content.GetQuiz;
+using Biobrain.Application.Content.GetQuizById;
 using Biobrain.Application.Content.ImportContent;
 using Biobrain.Application.Content.ImportContentFromJson;
 using Biobrain.Application.Content.IncrementContentVersion;
@@ -145,6 +147,11 @@ namespace BiobrainWebAPI.Controllers
         [HttpGet]
         [Authorize]
         public Task<ActionResult<List<GetQuizByNodeIdQuery.Result>>> GetNodeQuiz([FromQuery] GetQuizByNodeIdQuery command)
+	        => _mediator.Send(command).ToActionResult();
+
+        [HttpGet]
+        [Authorize]
+        public Task<ActionResult<ContentData.Quiz>> GetQuizById([FromQuery] GetQuizByIdQuery command)
 	        => _mediator.Send(command).ToActionResult();
 
         [HttpGet]

@@ -14,6 +14,7 @@ import { ContentTreeService } from 'src/app/core/services/content/content-tree.s
 import { StudentCourse } from 'src/app/core/services/courses/student-course';
 import { StudentCourseGroup } from 'src/app/core/services/courses/student-course-group';
 import { StudentCoursesService } from 'src/app/core/services/courses/student-courses.service';
+import { QuizzesService } from 'src/app/core/services/quizzes/quizzes.service';
 import { firstValueFrom } from 'src/app/share/helpers/first-value-from';
 import { hasValue } from 'src/app/share/helpers/has-value';
 import { StringsService } from 'src/app/share/strings.service';
@@ -50,6 +51,7 @@ export class CustomQuizComponent extends BaseComponent {
     private readonly _studentCoursesService: StudentCoursesService,
     private readonly _contentTreeService: ContentTreeService,
     private readonly _routingService: RoutingService,
+    private readonly _quizzesService: QuizzesService,
     appEvents: AppEventProvider
   ) {
     super(appEvents);
@@ -133,6 +135,7 @@ export class CustomQuizComponent extends BaseComponent {
       );
 
       this.lastCreatedQuizName = nameWithCount;
+      await this._quizzesService.reloadAndWait();
       this.isCreating = false;
       await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
     } catch (err) {

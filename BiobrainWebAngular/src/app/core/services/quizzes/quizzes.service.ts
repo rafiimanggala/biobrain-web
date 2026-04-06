@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, from, Observable, of, NEVER } from 'rxjs';
-import { catchError, filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { forkJoin, from, Observable, of } from 'rxjs';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
+import { Api } from '../../../api/api.service';
+import { GetQuizByIdQuery } from '../../../api/content/get-quiz-by-id.query';
 import { LearningContentProviderService } from '../../../learning-content/services/learning-content-provider.service';
+import { QuizRow, learningContentDb } from '../../../learning-content/services/learning-content-db';
 import { hasValue } from '../../../share/helpers/has-value';
+import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { toDictionary } from '../../../share/helpers/observable-operators';
-import { toNonNullableWithError } from '../../../share/helpers/to-non-nullable';
 import { ContentTreeService } from '../content/content-tree.service';
 
 import { Quiz } from './quiz';
@@ -14,20 +17,25 @@ import { Quiz } from './quiz';
   providedIn: 'root',
 })
 export class QuizzesService {
-  private readonly _items$: Observable<Quiz[]>;
-  private readonly _indexById$: Observable<Map<string, Quiz>>;
-  private readonly _indexByNodeId$: Observable<Map<string, Quiz>>;
+  private _items$!: Observable<Quiz[]>;
+  private _indexById$!: Observable<Map<string, Quiz>>;
+  private _indexByNodeId$!: Observable<Map<string, Quiz>>;
 
   constructor(
     private readonly _learningContentProviderService: LearningContentProviderService,
     private readonly _contentTreeService: ContentTreeService,
+    private readonly _api: Api,
   ) {
+    this._rebuildObservables();
+  }
+
+  private _rebuildObservables(): void {
     this._items$ = from(this._learningContentProviderService.getAllQuizRows()).pipe(
       switchMap(
         quizzes => forkJoin(quizzes.map(
           quizRow => this._contentTreeService.getNode(quizRow.contentTreeNodeId).pipe(
             map(contentTreeNode => new Quiz(quizRow, contentTreeNode)),
-            catchError(() => of(undefined)),      
+            catchError(() => of(undefined)),
           ),
         )),
       ),
@@ -37,12 +45,45 @@ export class QuizzesService {
 
     this._indexById$ = this._items$.pipe(toDictionary(_ => _.row.quizId));
     this._indexByNodeId$ = this._items$.pipe(toDictionary(_ => _.row.contentTreeNodeId));
-    
+  }
+
+  public async reloadAndWait(): Promise<void> {
+    this._rebuildObservables();
+    await firstValueFrom(this._items$);
   }
 
   public getById(quizId: string): Observable<Quiz> {
-    // console.log(this._indexById$);
-    return this._indexById$.pipe(map(index => index.get(quizId)), map(toNonNullableWithError('Quiz was not found')), shareReplay(1));
+    return this._indexById$.pipe(
+      switchMap(index => {
+        const cached = index.get(quizId);
+        if (cached) {
+          return of(cached);
+        }
+        return this._fetchAndCacheQuiz(quizId);
+      }),
+      shareReplay(1),
+    );
+  }
+
+  private _fetchAndCacheQuiz(quizId: string): Observable<Quiz> {
+    return this._api.send(new GetQuizByIdQuery(quizId)).pipe(
+      switchMap(result => {
+        if (!result) {
+          throw new Error('Quiz was not found');
+        }
+        const quizRow = new QuizRow(
+          result.quizId,
+          result.courseId,
+          result.contentTreeNodeId,
+          result.questions,
+        );
+        return from(learningContentDb.quizzes.put(quizRow)).pipe(
+          switchMap(() => this._contentTreeService.getNode(result.contentTreeNodeId).pipe(
+            map(contentTreeNode => new Quiz(quizRow, contentTreeNode)),
+          )),
+        );
+      }),
+    );
   }
 
   public getByIds(quizIds: string[]): Observable<Quiz[]> {
