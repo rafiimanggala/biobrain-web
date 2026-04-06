@@ -5,10 +5,11 @@ import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 import { Api } from '../../../api/api.service';
 import { GetQuizByIdQuery } from '../../../api/content/get-quiz-by-id.query';
 import { LearningContentProviderService } from '../../../learning-content/services/learning-content-provider.service';
-import { QuizRow, learningContentDb } from '../../../learning-content/services/learning-content-db';
+import { ContentTreeRow, QuizRow, learningContentDb } from '../../../learning-content/services/learning-content-db';
 import { hasValue } from '../../../share/helpers/has-value';
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { toDictionary } from '../../../share/helpers/observable-operators';
+import { ContentTreeNode } from '../content/content-tree.node';
 import { ContentTreeService } from '../content/content-tree.service';
 
 import { Quiz } from './quiz';
@@ -78,8 +79,24 @@ export class QuizzesService {
           result.questions,
         );
         return from(learningContentDb.quizzes.put(quizRow)).pipe(
-          switchMap(() => this._contentTreeService.getNode(result.contentTreeNodeId).pipe(
-            map(contentTreeNode => new Quiz(quizRow, contentTreeNode)),
+          switchMap(() => this._contentTreeService.findNode(result.contentTreeNodeId).pipe(
+            map(contentTreeNode => {
+              if (contentTreeNode) {
+                return new Quiz(quizRow, contentTreeNode);
+              }
+              const placeholderRow = new ContentTreeRow(
+                result.contentTreeNodeId,
+                result.courseId,
+                null,
+                'Custom Quiz',
+                0,
+                null,
+                { contentTreeMetaId: '', name: '', depth: 0, couldAddEntry: false, couldAddContent: false, autoExpand: false },
+                null,
+                false,
+              );
+              return new Quiz(quizRow, new ContentTreeNode(placeholderRow, []));
+            }),
           )),
         );
       }),
