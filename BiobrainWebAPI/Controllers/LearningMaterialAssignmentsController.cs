@@ -5,6 +5,7 @@ using Biobrain.Application.LearningMaterialAssignments.ReassignLearningMaterials
 using Biobrain.Application.LearningMaterialAssignments.SetAssignedLearningMaterialAsDone;
 using Biobrain.Application.LearningMaterialAssignments.UnassignLearningMaterialToClass;
 using Biobrain.Application.LearningMaterialAssignments.UpdateDueDateForLearningMaterialAssignment;
+using Biobrain.Application.Materials.ExcludedMaterials;
 using BiobrainWebAPI.Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -49,5 +50,13 @@ namespace BiobrainWebAPI.Controllers
         public Task<ActionResult<GetLearningMaterialUserAssignmentQuery.Result>> GetLearningMaterialUserAssignment(
             [FromQuery] GetLearningMaterialUserAssignmentQuery query)
             => _mediator.Send(query).ToActionResult();
+
+        [HttpPost]
+        public Task<ActionResult<AddExcludedMaterialCommand.Result>> AddExcludedMaterial([FromBody] AddExcludedMaterialCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpGet]
+        public Task<ActionResult<GetExcludedMaterialsCommand.Result>> GetExcludedMaterials([FromQuery] GetExcludedMaterialsCommand command)
+            => _mediator.Send(command).ToActionResult();
     }
 }

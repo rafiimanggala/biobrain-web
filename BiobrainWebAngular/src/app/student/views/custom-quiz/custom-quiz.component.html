@@ -4,22 +4,7 @@
     <p>{{strings.customQuizDescription}}</p>
   </div>
 
-  <div class="form-section" *ngIf="courses$ | async as courses">
-    <!-- Course Selector -->
-    <mat-form-field appearance="outline" class="full-width" *ngIf="courses.length > 1">
-      <mat-label>{{strings.course}}</mat-label>
-      <mat-select (selectionChange)="onCourseSelected($event.value)">
-        <mat-option *ngFor="let course of courses" [value]="course.courseId">
-          {{course.displayName}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Auto-select if single course -->
-    <div class="single-course-label" *ngIf="courses.length === 1">
-      <strong>{{strings.course}}:</strong> {{courses[0].displayName}}
-    </div>
-
+  <div class="form-section">
     <!-- Quiz Name -->
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{strings.quizName}}</mat-label>
@@ -72,6 +57,28 @@
         <mat-icon>replay</mat-icon>
         Redo Quiz
       </button>
+    </div>
+
+    <!-- My Saved Quizzes -->
+    <div class="my-quizzes" *ngIf="myQuizzes.length > 0">
+      <h3>My Quizzes</h3>
+      <div class="my-quizzes-list">
+        <div class="my-quiz-item" *ngFor="let quiz of myQuizzes">
+          <div class="my-quiz-info">
+            <div class="my-quiz-name">{{quiz.name}}</div>
+            <div class="my-quiz-meta">{{quiz.questionCount}} questions</div>
+          </div>
+          <button mat-stroked-button color="primary"
+                  [disabled]="retakingQuizId === quiz.quizId"
+                  (click)="onRetakeQuiz(quiz)">
+            <mat-progress-spinner *ngIf="retakingQuizId === quiz.quizId"
+                                  mode="indeterminate" diameter="18" class="button-spinner">
+            </mat-progress-spinner>
+            <mat-icon *ngIf="retakingQuizId !== quiz.quizId">replay</mat-icon>
+            Redo
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

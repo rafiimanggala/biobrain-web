@@ -25,7 +25,7 @@ export class LearningMaterialToolbarComponent implements OnChanges {
   @Input() selectedLevelId: string | undefined | null;
 
   @Output() selectedLevelIdChange = new EventEmitter<string>();
-  @Output() expandAllClicked = new EventEmitter<void>();
+  @Output() expandAllClicked = new EventEmitter<number>();
 
   public quizButtonVisible = false;
   public viewQuizButtonVisible = false;
@@ -97,7 +97,11 @@ export class LearningMaterialToolbarComponent implements OnChanges {
   }
 
   public onExpandAll(): void {
-    this.expandAllClicked.emit();
+    // Pass the 1-based index of the currently selected level (Level 1, 2, 3...).
+    // Material page uses this to expand the side tree to that depth.
+    const levelIndex = this.levels.findIndex(_ => _.levelTypeId === this.selectedLevelId);
+    const oneBased = levelIndex >= 0 ? levelIndex + 1 : 0;
+    this.expandAllClicked.emit(oneBased);
   }
 
   async onAssignedWorkClicked(unitId: string): Promise<void> {

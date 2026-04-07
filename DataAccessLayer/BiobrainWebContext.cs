@@ -69,6 +69,7 @@ namespace DataAccessLayer
         public virtual DbSet<PageEntity> Pages { get; set; }
         public virtual DbSet<MaterialEntity> Materials { get; set; }
         public virtual DbSet<PageMaterialEntity> PageMaterials { get; set; }
+        public virtual DbSet<ExcludedMaterialEntity> ExcludedMaterials { get; set; }
         public virtual DbSet<BookmarkEntity> Bookmarks { get; set; }
 
         public virtual DbSet<QuizEntity> Quizzes { get; set; }

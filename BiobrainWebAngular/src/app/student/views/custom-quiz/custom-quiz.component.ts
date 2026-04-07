@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { filter, take, switchMap } from 'rxjs/operators';
 
 import { Api } from 'src/app/api/api.service';
 import { CreateStudentCustomQuizCommand } from 'src/app/api/quiz-assignments/create-student-custom-quiz.command';
+import {
+  GetStudentCustomQuizzesQuery,
+  GetStudentCustomQuizzesQuery_Item,
+} from 'src/app/api/quiz-assignments/get-student-custom-quizzes.query';
+import { RetakeStudentCustomQuizCommand } from 'src/app/api/quiz-assignments/retake-student-custom-quiz.command';
 import { EnsureQuizResultForAssignmentCommand } from 'src/app/api/quiz-results/ensure-quiz-result-for-assignment.command';
 import { CurrentUserService } from 'src/app/auth/services/current-user.service';
 import { RoutingService } from 'src/app/auth/services/routing.service';
@@ -12,9 +17,6 @@ import { BaseComponent } from 'src/app/core/app/base.component';
 import { ActiveCourseService } from 'src/app/core/services/active-course.service';
 import { ContentTreeNode } from 'src/app/core/services/content/content-tree.node';
 import { ContentTreeService } from 'src/app/core/services/content/content-tree.service';
-import { StudentCourse } from 'src/app/core/services/courses/student-course';
-import { StudentCourseGroup } from 'src/app/core/services/courses/student-course-group';
-import { StudentCoursesService } from 'src/app/core/services/courses/student-courses.service';
 import { QuizzesService } from 'src/app/core/services/quizzes/quizzes.service';
 import { firstValueFrom } from 'src/app/share/helpers/first-value-from';
 import { hasValue } from 'src/app/share/helpers/has-value';
@@ -35,8 +37,6 @@ interface TreeNodeItem {
   styleUrls: ['./custom-quiz.component.scss'],
 })
 export class CustomQuizComponent extends BaseComponent {
-  public readonly courses$: Observable<StudentCourse[]>;
-
   public selectedCourseId: string | null = null;
   public quizName = 'self-created';
   public questionCount = 20;
@@ -44,12 +44,13 @@ export class CustomQuizComponent extends BaseComponent {
   public treeItems: TreeNodeItem[] = [];
   public isCreating = false;
   public lastCreatedQuizName: string | null = null;
+  public myQuizzes: GetStudentCustomQuizzesQuery_Item[] = [];
+  public retakingQuizId: string | null = null;
 
   constructor(
     public readonly strings: StringsService,
     private readonly _api: Api,
     private readonly _currentUserService: CurrentUserService,
-    private readonly _studentCoursesService: StudentCoursesService,
     private readonly _contentTreeService: ContentTreeService,
     private readonly _routingService: RoutingService,
     private readonly _quizzesService: QuizzesService,
@@ -58,21 +59,12 @@ export class CustomQuizComponent extends BaseComponent {
   ) {
     super(appEvents);
 
-    this.courses$ = this._currentUserService.userChanges$.pipe(
-      switchMap(user => hasValue(user)
-        ? this._studentCoursesService.getStudentCourses(user.userId)
-        : of([])),
-      map(groups => groups.reduce(
-        (acc: StudentCourse[], g: StudentCourseGroup) => [...acc, ...g.courses],
-        []
-      ))
-    );
-
     this.pushSubscribtions(
-      this.courses$.subscribe(courses => {
-        if (courses.length === 1 && !this.selectedCourseId) {
-          this.onCourseSelected(courses[0].courseId);
-        }
+      this._activeCourseService.courseChanges$.pipe(
+        filter(hasValue),
+        take(1)
+      ).subscribe(course => {
+        this.onCourseSelected(course.courseId);
       })
     );
   }
@@ -81,6 +73,7 @@ export class CustomQuizComponent extends BaseComponent {
     this.selectedCourseId = courseId;
     this.treeItems = [];
     this._loadContentTree(courseId);
+    void this._loadMyQuizzes(courseId);
   }
 
   public onNodeChecked(item: TreeNodeItem, checked: boolean): void {
@@ -118,10 +111,10 @@ export class CustomQuizComponent extends BaseComponent {
 
     this.isCreating = true;
     try {
-      const nameWithCount = `${this.quizName.trim()} (${this.questionCount})`;
+      const trimmedName = this.quizName.trim();
       const createResult = await firstValueFrom(
         this._api.send(new CreateStudentCustomQuizCommand(
-          nameWithCount,
+          trimmedName,
           this.selectedCourseId!,
           this.selectedNodeIds,
           this.questionCount,
@@ -136,9 +129,10 @@ export class CustomQuizComponent extends BaseComponent {
         ))
       );
 
-      this.lastCreatedQuizName = nameWithCount;
+      this.lastCreatedQuizName = trimmedName;
       this._activeCourseService.setActiveCourseId(this.selectedCourseId!);
       await this._quizzesService.reloadAndWait();
+      void this._loadMyQuizzes(this.selectedCourseId!);
       this.isCreating = false;
       await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
     } catch (err) {
@@ -149,6 +143,53 @@ export class CustomQuizComponent extends BaseComponent {
 
   public async onRedo(): Promise<void> {
     await this.onCreate();
+  }
+
+  public async onRetakeQuiz(quiz: GetStudentCustomQuizzesQuery_Item): Promise<void> {
+    if (this.retakingQuizId) return;
+    const user = await this._currentUserService.user;
+    if (!hasValue(user)) {
+      this.error('User not found');
+      return;
+    }
+
+    this.retakingQuizId = quiz.quizId;
+    try {
+      const retakeResult = await firstValueFrom(
+        this._api.send(new RetakeStudentCustomQuizCommand(quiz.quizId, user.userId))
+      );
+
+      const ensureResult = await firstValueFrom(
+        this._api.send(new EnsureQuizResultForAssignmentCommand(
+          user.userId,
+          retakeResult.quizStudentAssignmentId
+        ))
+      );
+
+      this._activeCourseService.setActiveCourseId(this.selectedCourseId!);
+      await this._quizzesService.reloadAndWait();
+      this.retakingQuizId = null;
+      await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
+    } catch (err) {
+      this.handleError(err);
+      this.retakingQuizId = null;
+    }
+  }
+
+  private async _loadMyQuizzes(courseId: string): Promise<void> {
+    const user = await this._currentUserService.user;
+    if (!hasValue(user)) {
+      this.myQuizzes = [];
+      return;
+    }
+    try {
+      const result = await firstValueFrom(
+        this._api.send(new GetStudentCustomQuizzesQuery(user.userId, courseId))
+      );
+      this.myQuizzes = result.quizzes ?? [];
+    } catch {
+      this.myQuizzes = [];
+    }
   }
 
   private _loadContentTree(courseId: string): void {

@@ -326,6 +326,39 @@ img{
 .heading-icon{
     pointer-events: auto;
 }
+
+details.excluded > summary{
+    background-color: #9e9e9e !important;
+    opacity: 0.6;
+}
+
+details.excluded > summary > span{
+    text-decoration: line-through;
+}
+
+details.excluded > *:not(summary){
+    opacity: 0.55;
+}
+
+.exclude-button{
+    background-color: white !important;
+    color: ${primary} !important;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 10px;
+    margin-left: 8px;
+    pointer-events: auto;
+    text-transform: uppercase;
+}
+
+details.excluded > summary .exclude-button{
+    background-color: #ffeb3b !important;
+    color: #212121 !important;
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css" integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">

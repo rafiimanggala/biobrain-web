@@ -37,6 +37,7 @@ import { LearningMaterialPageComponent } from './views/learning-material-page/le
 import { MaterialsSearchPageComponent } from './views/materials-search-page/materials-search-page.component';
 import { LearningMaterialSearchResultComponent } from './components/learning-material-search-result/learning-material-search-result.component';
 import { BookmarksHandlerComponent } from './components/bookmarks-handler/bookmarks-handler.component';
+import { ExcludedMaterialsHandlerComponent } from './components/excluded-materials-handler/excluded-materials-handler.component';
 import { AskBiobrainComponent } from './components/ask-biobrain/ask-biobrain.component';
 import { BookmarksPageComponent } from './components/bookmarks/bookmarks-page.component';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -78,6 +79,7 @@ const dialogs: any[] = [
     QuizResultMasterPage,
     TermDetailsHandlerComponent,
     BookmarksHandlerComponent,
+    ExcludedMaterialsHandlerComponent,
     TermExpansionPanelComponent,
     TermHeaderComponent,
     TreeSidenavComponent,

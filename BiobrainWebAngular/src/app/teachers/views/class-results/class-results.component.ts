@@ -207,24 +207,47 @@ export class ClassResultsComponent extends DisposableSubscriberComponent impleme
     });
   }
 
-  private static readonly _FAKE_NAMES = [
+  private static readonly _FAKE_FIRST_NAMES = [
     'Alex', 'Jordan', 'Riley', 'Casey', 'Morgan', 'Taylor', 'Quinn', 'Avery',
     'Dakota', 'Skyler', 'Reese', 'Finley', 'Hayden', 'Emerson', 'Parker',
     'Rowan', 'Sage', 'Blake', 'Charlie', 'Drew', 'Ellis', 'Frankie', 'Harper',
     'Indigo', 'Jamie', 'Kerry', 'Logan', 'Marley', 'Nico', 'Oakley', 'Peyton',
     'Robin', 'Sam', 'Tatum', 'Uri', 'Val', 'Winter', 'Xen', 'Yael', 'Zion',
+    'Ash', 'Bailey', 'Cameron', 'Devon', 'Eden', 'Gray', 'Hollis', 'Justice',
+    'Kai', 'Lane', 'Micah', 'Noa', 'Ollie', 'Pax', 'Remy', 'Sasha', 'Terry',
+  ];
+
+  private static readonly _FAKE_LAST_NAMES = [
+    'Adler', 'Baker', 'Cole', 'Dale', 'Evans', 'Ford', 'Gray', 'Hale',
+    'Ives', 'Jones', 'King', 'Lane', 'Moore', 'Nash', 'Owen', 'Page',
+    'Quinn', 'Reed', 'Stone', 'Todd', 'Vale', 'Ward', 'Young', 'Zane',
+    'Bloom', 'Clark', 'Drake', 'Ellis', 'Flynn', 'Gold', 'Holt', 'Ivey',
+    'Jude', 'Kent', 'Lowe', 'Marsh', 'North', 'Oakes', 'Pike', 'Quill',
+    'Rhys', 'Sloan', 'Tate', 'Vance', 'Wells', 'Yates',
   ];
 
   private _buildAnonymizedNameMap(): void {
     this._anonymizedNameMap.clear();
     if (!this._lastResults) return;
 
-    const shuffledNames = [...ClassResultsComponent._FAKE_NAMES].sort(() => Math.random() - 0.5);
-    const shuffledStudents = [...this._lastResults.students].sort(() => Math.random() - 0.5);
+    const shuffle = <T>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
+
+    const shuffledStudents = shuffle(this._lastResults.students);
+    const shuffledFirst = shuffle(ClassResultsComponent._FAKE_FIRST_NAMES);
+    const shuffledLast = shuffle(ClassResultsComponent._FAKE_LAST_NAMES);
+    const usedFullNames = new Set<string>();
+
     shuffledStudents.forEach((student, index) => {
-      const fakeName = index < shuffledNames.length
-        ? shuffledNames[index]
-        : `Student ${index + 1}`;
+      // Generate unique first+last combo by stepping through both arrays with coprime steps
+      // so names don't cluster around the same first or last name.
+      let fakeName = '';
+      for (let attempt = 0; attempt < 100; attempt++) {
+        const firstIdx = (index + attempt * 13) % shuffledFirst.length;
+        const lastIdx = (index * 7 + attempt * 11) % shuffledLast.length;
+        fakeName = `${shuffledFirst[firstIdx]} ${shuffledLast[lastIdx]}`;
+        if (!usedFullNames.has(fakeName)) break;
+      }
+      usedFullNames.add(fakeName);
       this._anonymizedNameMap.set(student.studentId, fakeName);
     });
   }

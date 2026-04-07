@@ -32,6 +32,15 @@
     padding-left: 4px !important;
     padding-right: 8px !important;
   }
+
+  // Override accent (#00A1DF) to primary (#004876) for student name,
+  // Average Quiz Score, and Student Progress columns within class results
+  // (CR Item 4 — match the rest of the page).
+  app-class-results {
+    .ag-grid-custom-aggregate-cell {
+      color: mat-color($primary-palette, 500);
+    }
+  }
 }
 
 @mixin class-results-theme($theme) {

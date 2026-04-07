@@ -91,8 +91,20 @@ export class MaterialPageComponent extends BaseComponent implements OnDestroy {
     this._analyticsService.handleNavigation(new NavigationEnd(0, "", location.href));
   }
 
-  public onExpandAll(): void {
-    this._treeService.flatTreeControl.expandAll();
+  public onExpandAll(maxLevel: number = 0): void {
+    const treeControl = this._treeService.flatTreeControl;
+    if (!treeControl) return;
+    if (!maxLevel || maxLevel < 1) {
+      treeControl.expandAll();
+      return;
+    }
+    // Expand only nodes up to the depth that matches the selected toolbar level.
+    treeControl.collapseAll();
+    treeControl.dataNodes?.forEach(node => {
+      if (node.level < maxLevel) {
+        treeControl.expand(node);
+      }
+    });
   }
 
   private get _routeLevelId(): string | undefined {

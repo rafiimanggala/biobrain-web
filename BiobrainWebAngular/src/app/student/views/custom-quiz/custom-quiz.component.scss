@@ -18,11 +18,14 @@
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 8px;
+    color: $primary;
+    font-family: $nunito;
   }
 
   p {
     font-size: 16px;
     color: $gray;
+    font-family: $nunito;
   }
 }
 
@@ -104,4 +107,62 @@
   ::ng-deep circle {
     stroke: white;
   }
+}
+
+.actions {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.my-quizzes {
+  margin-top: 32px;
+  width: 100%;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: $primary;
+    font-family: $nunito;
+    margin-bottom: 12px;
+  }
+}
+
+.my-quizzes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my-quiz-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid $pale-gray;
+  border-radius: 6px;
+  background-color: white;
+  font-family: $nunito;
+}
+
+.my-quiz-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  margin-right: 12px;
+  overflow: hidden;
+}
+
+.my-quiz-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: $primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-quiz-meta {
+  font-size: 12px;
+  color: $gray;
+  margin-top: 2px;
 }

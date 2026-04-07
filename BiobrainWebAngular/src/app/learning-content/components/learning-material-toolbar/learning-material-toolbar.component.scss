@@ -1,5 +1,13 @@
 @import '../../../styles/variables';
 
+.level-group-spacer {
+  flex: 1 1 auto;
+}
+
+.expand-all-btn {
+  margin-right: 8px;
+}
+
 .level-group {
   border: none;
   min-height: 36px;

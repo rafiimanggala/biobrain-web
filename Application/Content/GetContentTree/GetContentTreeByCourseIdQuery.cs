@@ -55,7 +55,8 @@ namespace Biobrain.Application.Content.GetContentTree
         {
             public PermissionCheck(ISecurityService securityService) : base(securityService) { }
 
-            protected override bool CanExecute(GetContentTreeByCourseIdQuery request, IUserSecurityInfo user) => user.IsApplicationAdmin();
+            protected override bool CanExecute(GetContentTreeByCourseIdQuery request, IUserSecurityInfo user)
+                => user.IsApplicationAdmin() || user.IsTeacher() || user.IsStudent();
         }
 
 

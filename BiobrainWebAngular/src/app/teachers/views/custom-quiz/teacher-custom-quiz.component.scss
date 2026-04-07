@@ -1,3 +1,5 @@
+@import '../../../styles/variables.scss';
+
 .custom-quiz-container {
   padding: 24px;
   max-width: 1200px;
@@ -5,16 +7,22 @@
 }
 
 .page-header {
+  color: $primary;
+  font-family: $nunito;
+
   h2 {
     margin: 0 0 4px 0;
     font-size: 24px;
     font-weight: 500;
+    color: $primary;
+    font-family: $nunito;
   }
 
   .subtitle {
     margin: 0;
-    color: #666;
+    color: $gray;
     font-size: 14px;
+    font-family: $nunito;
   }
 }
 
@@ -33,6 +41,7 @@
   margin-top: 8px;
   height: 44px;
   font-size: 15px;
+  font-family: $nunito;
 
   mat-icon,
   .inline-spinner {
@@ -76,13 +85,16 @@
   h3 {
     margin: 0 0 4px 0;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
+    color: $primary;
+    font-family: $nunito;
   }
 
   .hint {
     margin: 0;
-    color: #999;
+    color: $gray;
     font-size: 13px;
+    font-family: $nunito;
   }
 }
 

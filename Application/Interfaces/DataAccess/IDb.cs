@@ -75,6 +75,7 @@ namespace Biobrain.Application.Interfaces.DataAccess
         DbSet<PageEntity> Pages { get; set; }
         DbSet<MaterialEntity> Materials { get; set; }
         DbSet<PageMaterialEntity> PageMaterials { get; set; }
+        DbSet<ExcludedMaterialEntity> ExcludedMaterials { get; set; }
         DbSet<BookmarkEntity> Bookmarks { get; set; }
 
         DbSet<QuestionEntity> Questions { get; set; }

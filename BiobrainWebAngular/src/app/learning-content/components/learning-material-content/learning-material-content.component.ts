@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { LearningContentProviderService } from '../../services/learning-content-provider.service';
@@ -14,19 +14,21 @@ import { CurrentUserService } from 'src/app/auth/services/current-user.service';
 import { firstValueFrom } from 'src/app/share/helpers/first-value-from';
 import { ContentTreeService } from 'src/app/core/services/content/content-tree.service';
 import { AssertNotAvailableInDemoOperation } from '../../operations/assert-not-available-in-demo.operation';
+import { ExcludedMaterialsService } from 'src/app/core/services/excluded-materials/excluded-materials.service';
 
 @Component({
   selector: 'app-learning-material-content',
   templateUrl: './learning-material-content.component.html',
   styleUrls: ['./learning-material-content.component.scss'],
 })
-export class LearningMaterialContentComponent implements OnChanges {
+export class LearningMaterialContentComponent implements OnChanges, OnDestroy {
   @Input() courseId: string | null | undefined;
   @Input() nodeId: string | null | undefined;
 
   public learningContent$: Observable<LearningMaterialContent>;
 
   private readonly _text$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private readonly _subscriptions: Subscription[] = [];
 
   constructor(
     private readonly _learningContentProvider: LearningContentProviderService,
@@ -35,6 +37,7 @@ export class LearningMaterialContentComponent implements OnChanges {
     private readonly embedService: EmbedVideoService,
     private readonly _currentUserService: CurrentUserService,
     private readonly _assertNotAvailableInDemoOperation: AssertNotAvailableInDemoOperation,
+    private readonly _excludedMaterialsService: ExcludedMaterialsService,
   ) {
     this.learningContent$ = this._text$.pipe(
       map(x => ({
@@ -42,11 +45,22 @@ export class LearningMaterialContentComponent implements OnChanges {
         contentType: ContentTypes.pages,
       })),
     );
+
+    this._subscriptions.push(
+      this._excludedMaterialsService.excludedMaterialIds$.subscribe(async () => {
+        const text = await this._getPageText(this.courseId, this.nodeId);
+        this._text$.next(text);
+      }),
+    );
   }
 
   public async ngOnChanges(_: SimpleChanges): Promise<void> {
     const text = await this._getPageText(this.courseId, this.nodeId);
     this._text$.next(text);
+  }
+
+  public ngOnDestroy(): void {
+    this._subscriptions.forEach(x => x.unsubscribe());
   }
 
   private async _getPageText(courseId: string | null | undefined, nodeId: string | null | undefined): Promise<string> {
@@ -68,12 +82,27 @@ export class LearningMaterialContentComponent implements OnChanges {
     }
 
     const bookmarks = await this._bookmarksService.getBookmarks() ?? [];
+    const excludedIds = user.isTeacher()
+      ? await this._excludedMaterialsService.getExcludedMaterialIds()
+      : this._excludedMaterialsService.excludedMaterialIds$.value;
 
     let materialText = '';
     page.materials.sort((x1, x2) => x1.order - x2.order).forEach(
       m => {
+        const isExcluded = excludedIds.includes(m.materialId);
+
+        // Students never see excluded materials
+        if (isExcluded && user.isStudent()) return;
+
         var bookmarkIcon = bookmarks.some(b => b.materialId == m.materialId) ? "assets/icons/bookmark-solid.svg" : 'assets/icons/bookmark-regular.svg';
         var bookmarkButton = user.isStudent() ? `<button><img class=\"heading-icon\" onclick="sendRequest(event, 'bookmark.${m.materialId}');" src="${bookmarkIcon}"></button>` : '';
+
+        var excludeButton = '';
+        if (user.isTeacher()) {
+          const label = isExcluded ? 'Add back' : 'Remove';
+          excludeButton = `<button class=\"exclude-button\" onclick=\"sendRequest(event, 'excludeMaterial.${m.materialId}');\">${label}</button>`;
+        }
+
         var conteainsVideo = hasValue(m.videoLink) && m.videoLink.length > 0;
         var videoIcon = conteainsVideo ? "<img class=\"right-margin heading-icon\" src=\"assets/icons/play-solid.svg\">" : '';
         var embedVideo = conteainsVideo ? "<div class=\"embed-video\">" + this.embedService.embed(m.videoLink, {
@@ -82,7 +111,9 @@ export class LearningMaterialContentComponent implements OnChanges {
         })['changingThisBreaksApplicationSecurity']
           + "</div>"
           : "";
-        materialText = materialText + `<details><summary><span>${m.header}</span><div class=\"header-actions\">${videoIcon}${bookmarkButton}</div></summary>${m.text}${embedVideo}</details>`;
+
+        const excludedClass = isExcluded ? ' class="excluded"' : '';
+        materialText = materialText + `<details${excludedClass}><summary><span>${m.header}</span><div class=\"header-actions\">${videoIcon}${bookmarkButton}${excludeButton}</div></summary>${m.text}${embedVideo}</details>`;
       }
     );
 

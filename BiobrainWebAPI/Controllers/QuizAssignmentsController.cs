@@ -4,6 +4,8 @@ using Biobrain.Application.Quizzes.CreateQuizFromTemplate;
 using Biobrain.Application.Quizzes.CreateStudentCustomQuiz;
 using Biobrain.Application.Quizzes.CreateTeacherCustomQuiz;
 using Biobrain.Application.Quizzes.GetQuizTemplates;
+using Biobrain.Application.Quizzes.GetStudentCustomQuizzes;
+using Biobrain.Application.Quizzes.RetakeStudentCustomQuiz;
 using Biobrain.Application.Quizzes.Perform.AssignQuizzesToClass;
 using Biobrain.Application.Quizzes.Perform.ExcludedQuestions;
 using Biobrain.Application.Quizzes.Perform.ReassignQuizzesToStudents;
@@ -59,6 +61,14 @@ namespace BiobrainWebAPI.Controllers
 
         [HttpPost]
         public Task<ActionResult<CreateStudentCustomQuizCommand.Result>> CreateStudentCustomQuiz([FromBody] CreateStudentCustomQuizCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpGet]
+        public Task<ActionResult<GetStudentCustomQuizzesQuery.Result>> GetStudentCustomQuizzes([FromQuery] GetStudentCustomQuizzesQuery query)
+            => _mediator.Send(query).ToActionResult();
+
+        [HttpPost]
+        public Task<ActionResult<RetakeStudentCustomQuizCommand.Result>> RetakeStudentCustomQuiz([FromBody] RetakeStudentCustomQuizCommand command)
             => _mediator.Send(command).ToActionResult();
 
         [HttpPost]
