@@ -11,6 +11,7 @@ using Biobrain.Application.SchoolClasses.GetSchoolClasses;
 using Biobrain.Application.SchoolClasses.GetSchoolClassListItems;
 using Biobrain.Application.SchoolClasses.InviteByEmailToSchoolClass;
 using Biobrain.Application.SchoolClasses.RenameSchoolClass;
+using Biobrain.Application.SchoolClasses.UpdateClassSettings;
 using Biobrain.Application.SchoolClasses.UpdateSchoolClass;
 using BiobrainWebAPI.Core.Extensions;
 using MediatR;
@@ -34,6 +35,10 @@ namespace BiobrainWebAPI.Controllers
 
         [HttpPost]
         public Task<ActionResult<UpdateSchoolClassCommand.Result>> UpdateSchoolClass(UpdateSchoolClassCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        public Task<ActionResult<UpdateClassSettingsCommand.Result>> UpdateClassSettings(UpdateClassSettingsCommand command)
             => _mediator.Send(command).ToActionResult();
 
         [HttpPost]

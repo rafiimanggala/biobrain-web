@@ -355,23 +355,48 @@ namespace Biobrain.Application.Content.ImportContent
 
             private static long ResolveQuestionTypeCode(string typeName, List<QuestionTypeEntity> questionTypes)
             {
-                if (string.IsNullOrWhiteSpace(typeName))
-                    return 0; // Default to MultipleChoice
+                // Normalize name by stripping spaces/underscores/hyphens/slashes and lowercasing.
+                // This lets "MultipleChoice", "multiple_choice", "Multiple Choice" all match.
+                static string Normalize(string s) =>
+                    new string((s ?? "").Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant();
 
-                var match = questionTypes.FirstOrDefault(qt =>
-                    qt.Name.Equals(typeName, StringComparison.OrdinalIgnoreCase));
+                string normalizedInput = Normalize(typeName);
 
+                // Alias map so common JSON names resolve to DB names
+                var aliasMap = new Dictionary<string, string[]>
+                {
+                    { "multiplechoice", new[] { "multiplechoice" } },
+                    { "freetext",       new[] { "freetext", "shortanswer", "short" } },
+                    { "dropdown",       new[] { "dropdown", "drop" } },
+                    { "completesentence", new[] { "completesentence", "complete" } },
+                    { "truefalse",      new[] { "truefalse", "tf" } },
+                    { "orderlist",      new[] { "orderlist", "order" } },
+                    { "swipe",          new[] { "swipe" } },
+                };
+
+                // First try: direct normalized match against DB names
+                var match = questionTypes.FirstOrDefault(qt => Normalize(qt.Name) == normalizedInput);
                 if (match != null)
                     return match.QuestionTypeCode;
 
-                // Fallback mapping
-                return typeName.ToLower() switch
+                // Second try: alias lookup — find DB entry whose normalized name equals any alias target
+                foreach (var (dbKey, aliases) in aliasMap)
                 {
-                    "multiplechoice" or "multiple_choice" => 0,
-                    "truefalse" or "true_false" => 4,
-                    "shortanswer" or "short_answer" or "freetext" => 1,
-                    _ => 0
-                };
+                    if (aliases.Contains(normalizedInput))
+                    {
+                        match = questionTypes.FirstOrDefault(qt => Normalize(qt.Name) == dbKey);
+                        if (match != null)
+                            return match.QuestionTypeCode;
+                    }
+                }
+
+                // Final fallback: use the first Multiple Choice-like entry actually present in DB
+                var defaultMatch = questionTypes.FirstOrDefault(qt => Normalize(qt.Name) == "multiplechoice")
+                                   ?? questionTypes.FirstOrDefault();
+                if (defaultMatch == null)
+                    throw new InvalidOperationException("No QuestionTypes found in database. Seed data is missing.");
+
+                return defaultMatch.QuestionTypeCode;
             }
         }
     }

@@ -29,6 +29,8 @@ namespace Biobrain.Application.SchoolClasses.GetSchoolClassById
             public int Year { get; init; }
             public string Name { get; init; }
             public string AutoJoinClassCode { get; init; }
+            public bool HintsDisabled { get; init; }
+            public bool SoundDisabled { get; init; }
             public ImmutableList<Guid> TeacherIds { get; init; }
             public ImmutableList<Student> Students { get; init; }
         }
@@ -86,6 +88,8 @@ namespace Biobrain.Application.SchoolClasses.GetSchoolClassById
                                           Year = _.Year,
                                           Name = _.Name,
                                           AutoJoinClassCode = _.AutoJoinClassCode,
+                                          HintsDisabled = _.HintsDisabled,
+                                          SoundDisabled = _.SoundDisabled,
                                           TeacherIds = _.Teachers.Select(x => x.TeacherId).ToList().ToImmutableList(),
                                           Students = _.Students.Select(x => new Student{Email = x.Student.User.Email, StudentId = x.StudentId}).ToList().ToImmutableList()
                          })

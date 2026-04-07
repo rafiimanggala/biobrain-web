@@ -18,6 +18,8 @@ export class GetSchoolClassByIdQuery extends Query<GetSchoolClassByIdQuery_Resul
       obj.year,
       obj.name,
       obj.autoJoinClassCode,
+      obj.hintsDisabled ?? false,
+      obj.soundDisabled ?? false,
       obj.teacherIds,
       obj.students.map(x => new GetSchoolClassByIdQuery_Student_Result(x.studentId, x.email))
     );
@@ -32,6 +34,8 @@ export class GetSchoolClassByIdQuery_Result {
     public readonly year: number,
     public readonly name: string,
     public readonly autoJoinClassCode: string,
+    public readonly hintsDisabled: boolean,
+    public readonly soundDisabled: boolean,
     public readonly teacherIds: string[],
     public readonly students: GetSchoolClassByIdQuery_Student_Result[]
   ) {
@@ -52,6 +56,8 @@ export interface GetSchoolClassByIdQuery_Result_Object {
   year: number;
   name: string;
   autoJoinClassCode: string,
+  hintsDisabled?: boolean,
+  soundDisabled?: boolean,
   teacherIds: string[],
   students: GetSchoolClassByIdQuery_Student_Result_Object[]
 }

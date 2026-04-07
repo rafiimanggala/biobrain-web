@@ -20,7 +20,10 @@ namespace Biobrain.Domain.Entities.SchoolClass
         public DateTime UpdatedAt { get; set; }
 
         public string AutoJoinClassCode { get; set; }
-        
+
+        public bool HintsDisabled { get; set; }
+        public bool SoundDisabled { get; set; }
+
         public SchoolEntity School { get; set; }
         public CourseEntity Course { get; set; }
         public ICollection<SchoolClassStudentEntity> Students { get; set; }

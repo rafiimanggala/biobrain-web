@@ -1,8 +1,20 @@
 <div class="full-size-no-overflow class-admin-page" fxLayout="column">
-  <div class="class-admin-header" >
+  <div class="class-admin-header" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
     <span class="class-admin-header-label" *ngIf="getStudentsCount() | async as total">
       {{strings.totalStudents + ": "}}{{total}}
     </span>
+    <div class="class-admin-settings" *ngIf="classSettingsLoaded" fxLayout="row" fxLayoutGap="24px" fxLayout.lt-md="column" fxLayoutGap.lt-md="8px">
+      <mat-slide-toggle [checked]="hintsDisabled"
+                        (change)="onToggleHintsDisabled($event.checked)"
+                        color="accent">
+        {{strings.disableHintsForClass}}
+      </mat-slide-toggle>
+      <mat-slide-toggle [checked]="soundDisabled"
+                        (change)="onToggleSoundDisabled($event.checked)"
+                        color="accent">
+        {{strings.disableSoundForClass}}
+      </mat-slide-toggle>
+    </div>
   </div>
   <div class="class-admin-body full-height-with-scroll">
     <ag-grid-angular class="ag-theme-alpine grid-item ag-grid-with-deviders" [pagination]="false" (gridReady)="onGridReady($event)"

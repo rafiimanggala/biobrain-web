@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, first, map, switchMap } from 'rxjs/operators';
+import { Api } from 'src/app/api/api.service';
 import { studentByNameComparer } from 'src/app/api/quizzes/quiz-analytic-output.models';
+import { GetSchoolClassByIdQuery } from 'src/app/api/school-classes/get-school-class-by-id.query';
+import { UpdateClassSettingsCommand } from 'src/app/api/school-classes/update-class-settings.command';
 import { CurrentUserService } from 'src/app/auth/services/current-user.service';
 import { ActiveSchoolClassService } from 'src/app/core/services/active-school-class.service';
 import { SchoolClassesCacheService } from 'src/app/core/services/school-classes/school-classes.service';
@@ -39,6 +42,10 @@ export class ClassAdminComponent extends DisposableSubscriberComponent {
   private readonly _sizeGridToFit$: ReplaySubject<undefined> = new ReplaySubject<undefined>(BUFFER_SIZE);
   private currentClassId: string = "";
 
+  public hintsDisabled: boolean = false;
+  public soundDisabled: boolean = false;
+  public classSettingsLoaded: boolean = false;
+
   constructor(
     public readonly strings: StringsService,
     _userService: CurrentUserService,
@@ -49,7 +56,8 @@ export class ClassAdminComponent extends DisposableSubscriberComponent {
     private readonly _resetPasswordOperation: ResetPasswordOperation,
     private readonly _removeStudentOperation: RemoveStudentClassOperation,
     private readonly _activeSchoolService: ActiveSchoolService,
-    private readonly _schoolClassChangesService: SchoolClassChangesService
+    private readonly _schoolClassChangesService: SchoolClassChangesService,
+    private readonly _api: Api
   ) {
     super();
 
@@ -77,7 +85,37 @@ export class ClassAdminComponent extends DisposableSubscriberComponent {
         gridApi.setRowData(this._buildRows(results));
         this._sizeGridToFit$.next();
       }),
+
+      _activeSchoolClassService.schoolClassIdChanges$.pipe(
+        filter(hasValue),
+        switchMap(classId => this._api.send(new GetSchoolClassByIdQuery(classId)))
+      ).subscribe(schoolClass => {
+        this.hintsDisabled = schoolClass.hintsDisabled;
+        this.soundDisabled = schoolClass.soundDisabled;
+        this.classSettingsLoaded = true;
+      }),
     );
+  }
+
+  onToggleHintsDisabled(value: boolean): void {
+    this.hintsDisabled = value;
+    this._saveClassSettings();
+  }
+
+  onToggleSoundDisabled(value: boolean): void {
+    this.soundDisabled = value;
+    this._saveClassSettings();
+  }
+
+  private _saveClassSettings(): void {
+    if (!this.currentClassId) {
+      return;
+    }
+    this._api.send(new UpdateClassSettingsCommand(this.currentClassId, this.hintsDisabled, this.soundDisabled))
+      .subscribe(result => {
+        this.hintsDisabled = result.hintsDisabled;
+        this.soundDisabled = result.soundDisabled;
+      });
   }
 
   onGridReady(params: GridOptions): void {

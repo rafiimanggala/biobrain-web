@@ -98,6 +98,9 @@ export class StringsService {
   downloadResults = "Download class results";
   enableHints = 'Enable Hints';
   enableSound = 'Enable Sound Effects';
+  disableHintsForClass = 'Disable hints for this class';
+  disableSoundForClass = 'Disable sound effects for this class';
+  classSettings = 'Class settings';
   soundOn = 'Sound On';
   soundOff = 'Sound Off';
   anonymizeResults = 'Anonymize Results';

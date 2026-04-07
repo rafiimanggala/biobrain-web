@@ -118,9 +118,22 @@ namespace Biobrain.Application.Quizzes.Perform.AssignQuizzesToClass
 
                 ImmutableHashSet<Guid> studentIdSet = studentIds.ToImmutableHashSet();
 
+                // Load class-level setting overrides so teachers can force hints/sound off for a whole class.
+                var classIdList = request.StudentIdsBySchoolClassIdMap.Keys.ToList();
+                var classHintsDisabledSet = (await Db.SchoolClasses
+                                                     .Where(c => classIdList.Contains(c.SchoolClassId) && c.HintsDisabled)
+                                                     .Select(c => c.SchoolClassId)
+                                                     .ToListAsync(cancellationToken)).ToHashSet();
+                var classSoundDisabledSet = (await Db.SchoolClasses
+                                                     .Where(c => classIdList.Contains(c.SchoolClassId) && c.SoundDisabled)
+                                                     .Select(c => c.SchoolClassId)
+                                                     .ToListAsync(cancellationToken)).ToHashSet();
+
                 var assignments = (from quizId in request.QuizIds
                                    from classId in request.StudentIdsBySchoolClassIdMap.Keys
                                    let quizAssignmentId = Guid.NewGuid()
+                                   let classHintsDisabled = classHintsDisabledSet.Contains(classId)
+                                   let classSoundDisabled = classSoundDisabledSet.Contains(classId)
                                    let studentAssignments = from studentId in request.StudentIdsBySchoolClassIdMap[classId]
                                                             where studentIdSet.Contains(studentId)
                                                             select new QuizStudentAssignmentEntity
@@ -145,8 +158,8 @@ namespace Biobrain.Application.Quizzes.Perform.AssignQuizzesToClass
                                               DueAtUtc = request.DueDateUtc,
                                               AssignedAtLocal = request.AssignedDateLocal,
                                               AssignedAtUtc = request.AssignedDateUtc,
-                                              HintsEnabled = request.HintsEnabled,
-                                              SoundEnabled = request.SoundEnabled,
+                                              HintsEnabled = request.HintsEnabled && !classHintsDisabled,
+                                              SoundEnabled = request.SoundEnabled && !classSoundDisabled,
                                               IncludeLearningMaterial = request.IncludeLearningMaterial
                                           }).ToList();
 
