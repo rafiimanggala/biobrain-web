@@ -1,4 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
+import { Router } from '@angular/router';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -25,6 +26,11 @@ import { CreateMaterialDialogComponent } from '../dialogs/create-material-dialog
 import { CreateMaterialDialogData } from '../dialogs/create-material-dialog/create-material-dialog-data';
 import { CreateQuestionDialogComponent } from '../dialogs/create-question-dialog/create-question-dialog.component';
 import { CreateQuestionDialogData } from '../dialogs/create-question-dialog/create-question-dialog-data';
+import { QuizSettingsDialogComponent } from '../dialogs/quiz-settings-dialog/quiz-settings-dialog.component';
+import { QuizSettingsDialogData } from '../dialogs/quiz-settings-dialog/quiz-settings-dialog-data';
+import { QuizManagerDialogComponent } from '../dialogs/quiz-manager-dialog/quiz-manager-dialog.component';
+import { QuizManagerDialogData } from '../dialogs/quiz-manager-dialog/quiz-manager-dialog-data';
+import { GetQuizByIdQuery } from 'src/app/api/content/get-quiz-by-id.query';
 import { QuestionType } from 'src/app/api/enums/question-type.enum';
 import { ContentTreeListStore } from './content-tree-list-store';
 import { ContentTreeMetaListStore } from './content-tree-meta-list-store';
@@ -66,8 +72,15 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     private readonly _subTitleProvider: SubTitleProviderService,
     private readonly _titlecasePipe: TitleCasePipe,
     private readonly _dialog: Dialog,
-    private readonly _api: Api
+    private readonly _api: Api,
+    private readonly _router: Router
   ) { }
+
+  goToImportJson(): void {
+    this._router.navigate(['/admin/content_import'], {
+      queryParams: this.course?.courseId ? { courseId: this.course.courseId } : undefined
+    });
+  }
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -221,6 +234,68 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     const result = await this._dialog.show(CreateQuestionDialogComponent, data, { width: '720px' });
     if (result.action === DialogAction.save) {
       this.contentTreeListStore.reload();
+    }
+  }
+
+  async onQuizSettings(node: GetContentTreeListQuery_Result) {
+    if (!this.course) return;
+
+    const quizId = node.entityId;
+    let quizName = '';
+    let questionCount: number | null = null;
+    let totalQuestions = node.children?.length ?? 0;
+
+    try {
+      const quiz = await firstValueFrom(this._api.send(new GetQuizByIdQuery(quizId)));
+      if (quiz) {
+        quizName = quiz.name ?? '';
+        questionCount = quiz.questionCount ?? null;
+        totalQuestions = quiz.questions?.length ?? totalQuestions;
+      }
+    } catch (e) {
+      console.warn('Failed to load quiz; falling back to defaults', e);
+    }
+
+    const randomizeOrder = this.readRandomize(quizId);
+    const data = new QuizSettingsDialogData(quizId, quizName, questionCount, totalQuestions, randomizeOrder);
+
+    const result = await this._dialog.show(QuizSettingsDialogComponent, data, { width: '560px' });
+    if (result.action === DialogAction.save) {
+      this.contentTreeListStore.reload();
+    }
+  }
+
+  async onManageQuiz(node: GetContentTreeListQuery_Result) {
+    if (!this.course) return;
+    if (!node.children || node.children.length === 0) return;
+
+    const quizId = node.entityId;
+    let quizName = '';
+    let questions: any[] = [];
+
+    try {
+      const quiz = await firstValueFrom(this._api.send(new GetQuizByIdQuery(quizId)));
+      if (quiz) {
+        quizName = quiz.name ?? '';
+        questions = (quiz.questions ?? []).slice().sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
+      }
+    } catch (e) {
+      console.warn('Failed to load quiz', e);
+      return;
+    }
+
+    const data = new QuizManagerDialogData(node.parentId, this.course.courseId, quizId, quizName, questions);
+    const result = await this._dialog.show(QuizManagerDialogComponent, data, { width: '900px' });
+    if (result.action === DialogAction.save) {
+      this.contentTreeListStore.reload();
+    }
+  }
+
+  private readRandomize(quizId: string): boolean {
+    try {
+      return localStorage.getItem('biobrain.quiz.randomize.' + quizId) === '1';
+    } catch {
+      return false;
     }
   }
 

@@ -33,6 +33,8 @@ export class ContentMapperTreeComponent implements OnInit, OnDestroy {
   @Output() excludeQuestion = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() includeQuestion = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() availableInDemo = new EventEmitter<GetContentTreeListQuery_Result>();
+  @Output() quizSettings = new EventEmitter<GetContentTreeListQuery_Result>();
+  @Output() manageQuiz = new EventEmitter<GetContentTreeListQuery_Result>();
 
   subscriptions: Subscription[] = [];
 
@@ -171,6 +173,14 @@ export class ContentMapperTreeComponent implements OnInit, OnDestroy {
 
   onAvailableInDemo(node: GetContentTreeListQuery_Result) {
     this.availableInDemo.emit(node);
+  }
+
+  onQuizSettings(node: GetContentTreeListQuery_Result) {
+    this.quizSettings.emit(node);
+  }
+
+  onManageQuiz(node: GetContentTreeListQuery_Result) {
+    this.manageQuiz.emit(node);
   }
 
   onContentMoveUp(node: GetContentTreeListQuery_Result) {

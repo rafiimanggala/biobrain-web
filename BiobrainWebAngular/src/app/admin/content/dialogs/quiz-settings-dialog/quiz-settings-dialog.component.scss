@@ -1,0 +1,50 @@
+.dialog-content {
+  min-width: 480px;
+  max-width: 640px;
+  padding-top: 8px;
+}
+
+.section {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.74);
+  margin-bottom: 4px;
+}
+
+.section-hint {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+.presets {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  button {
+    min-width: 56px;
+  }
+}
+
+.preset-active {
+  background-color: rgba(63, 81, 181, 0.12);
+}
+
+.custom-length {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.error-message {
+  color: #e30918;
+  font-size: 13px;
+  margin-top: 8px;
+}

@@ -1,0 +1,67 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>Quiz Settings</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content">
+      <mat-form-field appearance="outline">
+        <mat-label>Quiz name</mat-label>
+        <input matInput name="quizName" [(ngModel)]="data.name" #quizName="ngModel" required appAutofocus
+          maxlength="200" />
+        <mat-error *ngIf="quizName.hasError('required')">Quiz name is required.</mat-error>
+      </mat-form-field>
+
+      <div class="section">
+        <div class="section-title">Quiz length</div>
+        <div class="section-hint">
+          Pick how many questions a student receives per quiz. Leave "Use all"
+          to deliver every question.
+        </div>
+
+        <div class="presets">
+          <button type="button" mat-stroked-button color="accent"
+            *ngFor="let preset of presetLengths"
+            [class.preset-active]="!useAllQuestions && data.questionCount === preset"
+            [disabled]="useAllQuestions"
+            (click)="onPresetClick(preset)">
+            {{preset}}
+          </button>
+        </div>
+
+        <mat-form-field appearance="outline" class="custom-length">
+          <mat-label>Custom length</mat-label>
+          <input matInput type="number" name="questionCount" min="1"
+            [(ngModel)]="data.questionCount" [disabled]="useAllQuestions" />
+          <mat-hint *ngIf="data.totalQuestions > 0">
+            Available: {{data.totalQuestions}} questions
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-checkbox name="useAll" [(ngModel)]="useAllQuestions" (change)="onUseAllToggle()">
+          Use all questions in this quiz
+        </mat-checkbox>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Delivery options</div>
+        <mat-checkbox name="randomize" [(ngModel)]="data.randomizeOrder">
+          Randomize question order for students
+        </mat-checkbox>
+        <div class="section-hint">
+          Each student session will receive the questions in a different order.
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+    <button mat-stroked-button color="accent" (click)="onClose()" type="button" [disabled]="isSaving">
+      {{strings.cancel | uppercase}}
+    </button>
+    <button mat-raised-button color="accent" (click)="onSubmit(dialogForm)" type="submit"
+      [disabled]="!dialogForm.valid || isSaving">
+      {{(isSaving ? 'SAVING…' : 'SAVE') | uppercase}}
+    </button>
+  </div>
+</form>

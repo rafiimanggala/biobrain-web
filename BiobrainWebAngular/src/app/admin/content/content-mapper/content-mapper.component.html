@@ -19,6 +19,10 @@
             <mat-icon>more_vert</mat-icon>
         </button>
 
+        <button mat-icon-button color="primary" type="button" *ngIf="course" (click)="goToImportJson()" matTooltip="Import content from JSON">
+            <mat-icon>upload_file</mat-icon>
+        </button>
+
         <button mat-icon-button color="primary" type="button" *ngIf="course" (click)="publishCourse(course)" [matTooltip]="strings.publish">
             <mat-icon>file_upload</mat-icon>
         </button>
@@ -38,7 +42,8 @@
             (updateQuestions)="onUpdateQuestions($event)" (copy)="onCopyFromGeneric($event)"
             (manageAutoMap)="onManageAutoMap($event)" (excludeQuestion)="onExclude($event)" (includeQuestion)="onInclude($event)"
             (availableInDemo)="onAvailableInDemo($event)"
-            (createMaterial)="onCreateMaterial($event)" (createQuestion)="onCreateQuestion($event)">
+            (createMaterial)="onCreateMaterial($event)" (createQuestion)="onCreateQuestion($event)"
+            (quizSettings)="onQuizSettings($event)" (manageQuiz)="onManageQuiz($event)">
         </app-content-mapper-tree>
     </div>
 

@@ -1,0 +1,65 @@
+<h2 class="dialog-header" mat-dialog-title>
+  <span>Quiz Manager</span>
+  <span class="quiz-name">{{data.quizName}}</span>
+</h2>
+
+<mat-dialog-content>
+  <div class="dialog-content" fxLayout="column">
+
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+      <mat-form-field appearance="outline" class="search">
+        <mat-label>Search questions</mat-label>
+        <input matInput name="search" [(ngModel)]="searchText" placeholder="Filter by header or text" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-stroked-button color="accent" type="button" (click)="onAddNew()" [disabled]="isSaving">
+        <mat-icon>add</mat-icon> ADD QUESTION
+      </button>
+    </div>
+
+    <div class="info-bar">
+      <span>{{data.questions.length}} question{{data.questions.length === 1 ? '' : 's'}} in this quiz</span>
+      <span class="hint">Drag rows to reorder. Changes are saved when you click SAVE.</span>
+    </div>
+
+    <div class="empty-state" *ngIf="data.questions.length === 0">
+      <mat-icon>quiz</mat-icon>
+      <div>No questions yet.</div>
+      <button mat-raised-button color="accent" type="button" (click)="onAddNew()">
+        ADD FIRST QUESTION
+      </button>
+    </div>
+
+    <div class="question-list" cdkDropList (cdkDropListDropped)="onDrop($event)" *ngIf="data.questions.length > 0">
+      <div class="question-row" *ngFor="let question of filteredQuestions; let i = index" cdkDrag>
+        <div class="drag-handle" cdkDragHandle>
+          <mat-icon>drag_indicator</mat-icon>
+        </div>
+        <div class="row-num">{{ data.questions.indexOf(question) + 1 }}</div>
+        <div class="row-body">
+          <div class="row-header" *ngIf="question.header">{{question.header}}</div>
+          <div class="row-text" [innerHTML]="question.text"></div>
+          <div class="row-meta">
+            <span>{{(question.answers || []).length}} answers</span>
+          </div>
+        </div>
+        <button mat-icon-button color="warn" type="button" (click)="onDelete(question)" matTooltip="Remove from quiz">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
+  </div>
+</mat-dialog-content>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+  <button mat-stroked-button color="accent" (click)="onClose()" type="button" [disabled]="isSaving">
+    {{(dirty ? 'CANCEL CHANGES' : 'CLOSE') | uppercase}}
+  </button>
+  <button mat-raised-button color="accent" (click)="onSave()" type="button"
+    [disabled]="isSaving || !dirty">
+    {{(isSaving ? 'SAVING…' : 'SAVE') | uppercase}}
+  </button>
+</div>

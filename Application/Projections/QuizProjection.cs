@@ -17,6 +17,8 @@ namespace Biobrain.Application.Projections
                         QuizId = _.QuizId,
                         CourseId = _.ContentTreeNode.CourseId,
                         ContentTreeNodeId = _.ContentTreeNode.NodeId,
+                        Name = _.Name,
+                        QuestionCount = _.QuestionCount,
                         Questions = _.QuizQuestions
                                      .Select(x => new ContentData.Question
                                                   {

@@ -65,6 +65,8 @@ export interface Quiz {
   readonly courseId: string;
   readonly contentTreeNodeId: string;
   readonly questions: Question[];
+  readonly name?: string;
+  readonly questionCount?: number | null;
 }
 
 export interface Question {
@@ -76,6 +78,7 @@ export interface Question {
   readonly hint: string;
   readonly feedBack: string;
   readonly answers: Answer[];
+  readonly order?: number;
 }
 
 export interface Answer {

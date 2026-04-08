@@ -48,6 +48,8 @@ import { VoucherListComponent } from './vouchers/vouchers-list/voucher-list.comp
 import { VoucherDialog } from './dialogs/voucher-dialog/voucher-dialog.component';
 import { CreateMaterialDialogComponent } from './content/dialogs/create-material-dialog/create-material-dialog.component';
 import { CreateQuestionDialogComponent } from './content/dialogs/create-question-dialog/create-question-dialog.component';
+import { QuizSettingsDialogComponent } from './content/dialogs/quiz-settings-dialog/quiz-settings-dialog.component';
+import { QuizManagerDialogComponent } from './content/dialogs/quiz-manager-dialog/quiz-manager-dialog.component';
 
 const dialogs = [
   SchoolDialog,
@@ -68,7 +70,9 @@ const dialogs = [
   UserGuideIamgeDialog,
   VoucherDialog,
   CreateMaterialDialogComponent,
-  CreateQuestionDialogComponent
+  CreateQuestionDialogComponent,
+  QuizSettingsDialogComponent,
+  QuizManagerDialogComponent
 ];
 
 const components = [

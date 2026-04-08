@@ -110,6 +110,16 @@
                     (click)="onCreateQuestion(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped">
                     post_add
                 </mat-icon>
+                <!-- Manage quiz (reorder/delete) -->
+                <mat-icon class="clickable action-button" color="accent" matTooltip="Manage quiz (reorder, delete)"
+                    (click)="onManageQuiz(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped && node.children.length > 0">
+                    view_list
+                </mat-icon>
+                <!-- Quiz settings -->
+                <mat-icon class="clickable action-button" color="accent" matTooltip="Quiz settings (name, length)"
+                    (click)="onQuizSettings(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped">
+                    settings
+                </mat-icon>
 
                 <!-- for levels -->
                 <!-- availableindemo -->

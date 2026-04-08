@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Api } from 'src/app/api/api.service';
 import { GetCoursesListQuery, GetCoursesListQuery_Result } from 'src/app/api/content/get-courses-list.query';
@@ -31,7 +32,8 @@ export class ContentImportComponent implements OnInit, OnDestroy {
     private readonly _titlecasePipe: TitleCasePipe,
     private readonly _api: Api,
     private readonly _appEvents: AppEventProvider,
-    private readonly _loaderService: LoaderService
+    private readonly _loaderService: LoaderService,
+    private readonly _route: ActivatedRoute
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -41,6 +43,10 @@ export class ContentImportComponent implements OnInit, OnDestroy {
       );
     }, 0);
     await this.loadCourses();
+    const courseIdFromUrl = this._route.snapshot.queryParamMap.get('courseId');
+    if (courseIdFromUrl && this.courses.some(c => c.courseId === courseIdFromUrl)) {
+      this.selectedCourseId = courseIdFromUrl;
+    }
   }
 
   ngOnDestroy(): void {

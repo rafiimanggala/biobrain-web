@@ -14,6 +14,8 @@ namespace Biobrain.Application.Content.ContentDataModels
             public Guid CourseId { get; init; }
             public ImmutableList<Question> Questions { get; init; }
             public Guid ContentTreeNodeId { get; init; }
+            public string Name { get; init; }
+            public int? QuestionCount { get; init; }
         }
     }
 }

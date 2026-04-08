@@ -22,6 +22,11 @@
            required
            style="display: block;"></div>
 
+      <div class="success-banner" *ngIf="savedCount > 0 && !isEditMode">
+        <mat-icon>check_circle</mat-icon>
+        <span>Saved {{savedCount}} material{{savedCount === 1 ? '' : 's'}}<span *ngIf="lastSavedHeader"> · last: "{{lastSavedHeader}}"</span></span>
+      </div>
+
       <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
     </div>
   </mat-dialog-content>
@@ -29,7 +34,15 @@
   <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
     <button mat-stroked-button class="auto-bordered-form-button" color="accent"
             (click)="onClose()" type="button" [disabled]="isSaving">
-      {{strings.cancel | uppercase}}
+      {{(savedCount > 0 && !isEditMode) ? 'DONE' : (strings.cancel | uppercase)}}
+    </button>
+
+    <button mat-stroked-button color="accent" type="button"
+            *ngIf="!isEditMode"
+            (click)="onSaveAndAddAnother(dialogForm)"
+            [disabled]="!dialogForm.valid || !data.text || isSaving"
+            matTooltip="Save and clear form to add another">
+      SAVE &amp; ADD ANOTHER
     </button>
 
     <button mat-raised-button class="auto-form-button" color="accent"

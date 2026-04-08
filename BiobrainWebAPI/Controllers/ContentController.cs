@@ -30,6 +30,7 @@ using Biobrain.Application.Content.ImportContentFromJson;
 using Biobrain.Application.Content.IncrementContentVersion;
 using Biobrain.Application.Content.SwitchOrderForNodes;
 using Biobrain.Application.Content.UpdateContentTreeNode;
+using Biobrain.Application.Content.UpdateQuizSettings;
 using BiobrainWebAPI.Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -201,6 +202,11 @@ namespace BiobrainWebAPI.Controllers
         [HttpPost]
         [Authorize]
         public Task<ActionResult<UpdateQuestionCommand.Result>> UpdateQuestion([FromBody] UpdateQuestionCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        [Authorize]
+        public Task<ActionResult<UpdateQuizSettingsCommand.Result>> UpdateQuizSettings([FromBody] UpdateQuizSettingsCommand command)
             => _mediator.Send(command).ToActionResult();
 
         [HttpPost]

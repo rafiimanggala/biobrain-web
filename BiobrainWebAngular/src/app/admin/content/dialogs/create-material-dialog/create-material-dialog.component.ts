@@ -21,6 +21,8 @@ import { CreateMaterialDialogData, CreateMaterialDialogResult } from './create-m
 export class CreateMaterialDialogComponent extends DialogComponent<CreateMaterialDialogData, CreateMaterialDialogResult> {
   public isSaving: boolean = false;
   public errorMessage: string | null = null;
+  public savedCount: number = 0;
+  public lastSavedHeader: string | null = null;
 
   constructor(
     public readonly strings: StringsService,
@@ -40,10 +42,22 @@ export class CreateMaterialDialogComponent extends DialogComponent<CreateMateria
   }
 
   onClose(): void {
-    this.close();
+    if (this.savedCount > 0 && !this.isEditMode) {
+      this.close(DialogAction.save, new CreateMaterialDialogResult('', '', '', ''));
+    } else {
+      this.close();
+    }
   }
 
   async onSubmit(form: NgForm): Promise<void> {
+    await this.doSubmit(form, false);
+  }
+
+  async onSaveAndAddAnother(form: NgForm): Promise<void> {
+    await this.doSubmit(form, true);
+  }
+
+  private async doSubmit(form: NgForm, addAnother: boolean): Promise<void> {
     if (!form.valid || this.isSaving) {
       return;
     }
@@ -66,22 +80,39 @@ export class CreateMaterialDialogComponent extends DialogComponent<CreateMateria
           this.data.text,
           this.data.videoLink
         ));
-      } else {
-        const result = await this._api.send(new CreateMaterialCommand(
-          this.data.courseId,
-          this.data.header,
-          this.data.text,
-          this.data.videoLink || null,
-          this.data.nodeId
-        )).toPromise();
-
-        this.close(DialogAction.save, new CreateMaterialDialogResult(
-          result.materialId,
-          this.data.header,
-          this.data.text,
-          this.data.videoLink
-        ));
+        return;
       }
+
+      const result = await this._api.send(new CreateMaterialCommand(
+        this.data.courseId,
+        this.data.header,
+        this.data.text,
+        this.data.videoLink || null,
+        this.data.nodeId
+      )).toPromise();
+
+      this.savedCount += 1;
+      this.lastSavedHeader = this.data.header;
+
+      if (addAnother) {
+        this.data.header = '';
+        this.data.text = '';
+        this.data.videoLink = '';
+        form.resetForm({
+          header: '',
+          videoLink: '',
+          text: ''
+        });
+        this.isSaving = false;
+        return;
+      }
+
+      this.close(DialogAction.save, new CreateMaterialDialogResult(
+        result.materialId,
+        this.lastSavedHeader ?? '',
+        this.data.text,
+        this.data.videoLink
+      ));
     } catch (err: any) {
       this.errorMessage = err?.message ?? 'Failed to save material.';
       this.isSaving = false;
