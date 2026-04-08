@@ -21,6 +21,11 @@ import { SubTitleProviderService } from '../../services/sub-title-provider.servi
 import { ContentMapperTreeComponent } from '../content-mapper-tree/content-mapper-tree.component';
 import { ManageAutoMapOperation } from '../operations/manage-auto-map.operation';
 import { ContentTreeNodeService } from '../services/content-tree-nodes.service';
+import { CreateMaterialDialogComponent } from '../dialogs/create-material-dialog/create-material-dialog.component';
+import { CreateMaterialDialogData } from '../dialogs/create-material-dialog/create-material-dialog-data';
+import { CreateQuestionDialogComponent } from '../dialogs/create-question-dialog/create-question-dialog.component';
+import { CreateQuestionDialogData } from '../dialogs/create-question-dialog/create-question-dialog-data';
+import { QuestionType } from 'src/app/api/enums/question-type.enum';
 import { ContentTreeListStore } from './content-tree-list-store';
 import { ContentTreeMetaListStore } from './content-tree-meta-list-store';
 
@@ -182,6 +187,41 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     }
 
     this._contentTreeNodeService.attachQuestions(node.parentId, this.baseCourse?.courseId ?? '', node.children?.map(x => x.entityId) ?? [], stringToSearch);
+  }
+
+  async onCreateMaterial(node: GetContentTreeListQuery_Result) {
+    if (!this.course) return;
+    const data = new CreateMaterialDialogData(
+      this.course.courseId,
+      node.parentId,
+      null,
+      '',
+      '',
+      ''
+    );
+    const result = await this._dialog.show(CreateMaterialDialogComponent, data, { width: '720px' });
+    if (result.action === DialogAction.save) {
+      this.contentTreeListStore.reload();
+    }
+  }
+
+  async onCreateQuestion(node: GetContentTreeListQuery_Result) {
+    if (!this.course) return;
+    const data = new CreateQuestionDialogData(
+      this.course.courseId,
+      node.parentId,
+      null,
+      QuestionType.multipleChoice,
+      '',
+      '',
+      '',
+      '',
+      []
+    );
+    const result = await this._dialog.show(CreateQuestionDialogComponent, data, { width: '720px' });
+    if (result.action === DialogAction.save) {
+      this.contentTreeListStore.reload();
+    }
   }
 
   async onManageAutoMap(node: GetContentTreeListQuery_Result) {

@@ -1,14 +1,5 @@
 {
   "projects": {
-    "default": "hodie-labs-1560a"
-  },
-  "targets": {
-    "hodie-labs-1560a": {
-      "hosting": {
-        "biobrain": [
-          "biobrain-web"
-        ]
-      }
-    }
+    "default": "biobrain-1e719"
   }
 }

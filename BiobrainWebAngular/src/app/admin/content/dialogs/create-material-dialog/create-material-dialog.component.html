@@ -1,0 +1,41 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{dialogTitle}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content" fxLayoutGap="12px">
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="header" [(ngModel)]="data.header" #header="ngModel"
+               placeholder="Header" required appAutofocus maxlength="500">
+        <mat-error *ngIf="header.hasError('required')">Header is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput type="url" name="videoLink" [(ngModel)]="data.videoLink"
+               placeholder="Video link (optional)">
+      </mat-form-field>
+
+      <div class="editor-label">Content</div>
+      <div [ngxSummernote]="summernoteService.materialsConfig"
+           id="materialEditor"
+           name="text"
+           [(ngModel)]="data.text"
+           required
+           style="display: block;"></div>
+
+      <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent"
+            (click)="onClose()" type="button" [disabled]="isSaving">
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button class="auto-form-button" color="accent"
+            (click)="onSubmit(dialogForm)"
+            [disabled]="!dialogForm.valid || !data.text || isSaving" type="submit">
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+</form>

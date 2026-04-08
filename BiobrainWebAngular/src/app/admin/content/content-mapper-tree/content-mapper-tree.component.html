@@ -95,10 +95,20 @@
                     (click)="onAttachMaterials(node)" *ngIf="node.isMaterialsFolder">
                     add
                 </mat-icon>
+                <!-- Create new material -->
+                <mat-icon class="clickable action-button" color="accent" matTooltip="Create new material"
+                    (click)="onCreateMaterial(node)" *ngIf="node.isMaterialsFolder">
+                    post_add
+                </mat-icon>
                 <!-- Add question-->
                 <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.attachQuestion"
                     (click)="onAttachQuestions(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped">
                     add
+                </mat-icon>
+                <!-- Create new question -->
+                <mat-icon class="clickable action-button" color="accent" matTooltip="Create new question"
+                    (click)="onCreateQuestion(node)" *ngIf="node.isQuestionsFolder && !node.isAutoMapped">
+                    post_add
                 </mat-icon>
 
                 <!-- for levels -->

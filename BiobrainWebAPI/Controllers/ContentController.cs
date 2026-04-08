@@ -7,6 +7,10 @@ using Biobrain.Application.Content.AttachMaterialToNode;
 using Biobrain.Application.Content.AttachQuestionToNode;
 using Biobrain.Application.Content.CopyTopic;
 using Biobrain.Application.Content.CreateContentTreeNode;
+using Biobrain.Application.Content.CreateMaterial;
+using Biobrain.Application.Content.CreateQuestion;
+using Biobrain.Application.Content.UpdateMaterial;
+using Biobrain.Application.Content.UpdateQuestion;
 using Biobrain.Application.Content.DeleteContentTreeNode;
 using Biobrain.Application.Content.GetBaseMaterials;
 using Biobrain.Application.Content.GetBaseQuestions;
@@ -178,6 +182,26 @@ namespace BiobrainWebAPI.Controllers
         [Authorize]
         public Task<ActionResult<AttachQuestionToNode.Result>> AttachQuestionsToNode([FromBody] AttachQuestionToNode command)
 	        => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        [Authorize]
+        public Task<ActionResult<CreateMaterialCommand.Result>> CreateMaterial([FromBody] CreateMaterialCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        [Authorize]
+        public Task<ActionResult<CreateQuestionCommand.Result>> CreateQuestion([FromBody] CreateQuestionCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        [Authorize]
+        public Task<ActionResult<UpdateMaterialCommand.Result>> UpdateMaterial([FromBody] UpdateMaterialCommand command)
+            => _mediator.Send(command).ToActionResult();
+
+        [HttpPost]
+        [Authorize]
+        public Task<ActionResult<UpdateQuestionCommand.Result>> UpdateQuestion([FromBody] UpdateQuestionCommand command)
+            => _mediator.Send(command).ToActionResult();
 
         [HttpPost]
         [Authorize]

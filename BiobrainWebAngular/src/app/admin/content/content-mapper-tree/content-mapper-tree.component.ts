@@ -25,6 +25,8 @@ export class ContentMapperTreeComponent implements OnInit, OnDestroy {
   @Output() moveDown = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() attachMaterials = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() attachQuestions = new EventEmitter<GetContentTreeListQuery_Result>();
+  @Output() createMaterial = new EventEmitter<GetContentTreeListQuery_Result>();
+  @Output() createQuestion = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() updateMaterials = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() updateQuestions = new EventEmitter<GetContentTreeListQuery_Result>();
   @Output() manageAutoMap = new EventEmitter<GetContentTreeListQuery_Result>();
@@ -145,6 +147,14 @@ export class ContentMapperTreeComponent implements OnInit, OnDestroy {
 
   onAttachQuestions(node: GetContentTreeListQuery_Result) {
     this.attachQuestions.emit(node);
+  }
+
+  onCreateMaterial(node: GetContentTreeListQuery_Result) {
+    this.createMaterial.emit(node);
+  }
+
+  onCreateQuestion(node: GetContentTreeListQuery_Result) {
+    this.createQuestion.emit(node);
   }
 
   onInclude(node: GetContentTreeListQuery_Result) {

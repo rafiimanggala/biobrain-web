@@ -1,0 +1,95 @@
+<form role="form" #dialogForm="ngForm" name="dialogForm">
+  <h2 class="dialog-header" mat-dialog-title>{{dialogTitle}}</h2>
+
+  <mat-dialog-content>
+    <div fxLayout="column" class="dialog-content" fxLayoutGap="12px">
+
+      <mat-form-field fxFlex="1 1 100%">
+        <mat-label>Question Type</mat-label>
+        <mat-select name="questionType" [(ngModel)]="data.questionTypeCode" required>
+          <mat-option *ngFor="let type of questionTypes" [value]="type.code">
+            {{type.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <input matInput name="header" [(ngModel)]="data.header"
+               placeholder="Header (optional)" maxlength="500">
+      </mat-form-field>
+
+      <div class="editor-label">Question Text</div>
+      <div [ngxSummernote]="summernoteService.materialsConfig"
+           id="questionEditor"
+           name="text"
+           [(ngModel)]="data.text"
+           required
+           style="display: block;"></div>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <textarea matInput name="hint" [(ngModel)]="data.hint"
+                  placeholder="Hint (optional)" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="1 1 100%">
+        <textarea matInput name="feedBack" [(ngModel)]="data.feedBack"
+                  placeholder="Feedback (optional)" rows="2"></textarea>
+      </mat-form-field>
+
+      <div class="answers-section">
+        <div class="section-header">
+          <span class="section-title">Answers</span>
+          <button mat-icon-button color="accent" type="button" (click)="addAnswer()" title="Add answer">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+
+        <div *ngFor="let answer of data.answers; let i = index; trackBy: trackByIndex"
+             class="answer-row"
+             fxLayout="row"
+             fxLayoutAlign="start center"
+             fxLayoutGap="8px">
+          <mat-checkbox [name]="'answerCorrect' + i"
+                        [(ngModel)]="answer.isCorrect"
+                        title="Mark as correct">
+          </mat-checkbox>
+
+          <mat-form-field fxFlex="1 1 100%">
+            <input matInput
+                   [name]="'answerText' + i"
+                   [(ngModel)]="answer.text"
+                   placeholder="Answer text"
+                   required>
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" type="button"
+                  (click)="removeAnswer(i)"
+                  [disabled]="data.answers.length <= 1"
+                  title="Remove answer">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <div class="answers-hint" *ngIf="!isAnswersValid">
+          At least one answer must be marked correct, and all answer fields must be filled.
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">{{errorMessage}}</div>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="end">
+    <button mat-stroked-button class="auto-bordered-form-button" color="accent"
+            (click)="onClose()" type="button" [disabled]="isSaving">
+      {{strings.cancel | uppercase}}
+    </button>
+
+    <button mat-raised-button class="auto-form-button" color="accent"
+            (click)="onSubmit(dialogForm)"
+            [disabled]="!dialogForm.valid || !isAnswersValid || !data.text || isSaving"
+            type="submit">
+      {{strings.save | uppercase}}
+    </button>
+  </div>
+</form>

@@ -46,6 +46,8 @@ import { NgxSummernoteModule } from 'ngx-summernote';
 import { UserGuideIamgeDialog } from './user-guides/dialogs/user-guide-image/user-guide-image-dialog.component';
 import { VoucherListComponent } from './vouchers/vouchers-list/voucher-list.component';
 import { VoucherDialog } from './dialogs/voucher-dialog/voucher-dialog.component';
+import { CreateMaterialDialogComponent } from './content/dialogs/create-material-dialog/create-material-dialog.component';
+import { CreateQuestionDialogComponent } from './content/dialogs/create-question-dialog/create-question-dialog.component';
 
 const dialogs = [
   SchoolDialog,
@@ -64,7 +66,9 @@ const dialogs = [
   UsageReportDialogComponent,
   UserGuideNodeDialog,
   UserGuideIamgeDialog,
-  VoucherDialog
+  VoucherDialog,
+  CreateMaterialDialogComponent,
+  CreateQuestionDialogComponent
 ];
 
 const components = [

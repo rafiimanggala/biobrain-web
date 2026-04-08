@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "target": "biobrain",
     "public": "dist/BiobrainWebAngular",
     "ignore": [
       "firebase.json",
