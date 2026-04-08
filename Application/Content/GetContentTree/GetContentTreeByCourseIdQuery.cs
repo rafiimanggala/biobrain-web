@@ -76,6 +76,7 @@ namespace Biobrain.Application.Content.GetContentTree
 		            .ToListAsync(cancellationToken);
 
 	            var pages = await Db.Pages.AsNoTracking()
+		            .AsSplitQuery()
 		            .Include(x => x.ContentTreeNode)
 		            .Include(x => x.PageMaterials)
 		            .ThenInclude(x => x.Material)
@@ -83,6 +84,7 @@ namespace Biobrain.Application.Content.GetContentTree
 		            .ToListAsync(cancellationToken);
 
 	            var quizzes = await Db.Quizzes.AsNoTracking()
+                    .AsSplitQuery()
                     .Include(_ => _.AutoMapQuiz).ThenInclude(_ => _.QuizQuestions).ThenInclude(_ => _.Question)
                     .Include(_ => _.QuizExcludedQuestions).ThenInclude(_ => _.Question)
 		            .Include(x => x.ContentTreeNode)
