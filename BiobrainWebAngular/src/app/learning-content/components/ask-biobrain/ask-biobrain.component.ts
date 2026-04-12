@@ -136,6 +136,9 @@ export class AskBiobrainComponent implements OnDestroy {
     // Italic *text* (avoid bullets)
     html = html.replace(/(^|[^\*])\*([^\*\n]+)\*/g, '$1<em>$2</em>');
 
+    // "Memory Tip:" → bold heading
+    html = html.replace(/^(Memory Tip\s*:)/gm, '<strong>$1</strong>');
+
     // Strip any remaining standalone # or * at line starts
     html = html.replace(/^#{1,4}\s*/gm, '');
 

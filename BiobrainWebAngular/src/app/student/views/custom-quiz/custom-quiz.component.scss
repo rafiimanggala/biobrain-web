@@ -91,6 +91,8 @@
   display: flex;
   justify-content: center;
   margin-top: 24px;
+  gap: 12px;
+  flex-wrap: wrap;
 
   button {
     min-width: 180px;
@@ -107,11 +109,6 @@
   ::ng-deep circle {
     stroke: white;
   }
-}
-
-.actions {
-  gap: 12px;
-  flex-wrap: wrap;
 }
 
 .my-quizzes {

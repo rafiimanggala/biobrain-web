@@ -20,7 +20,7 @@
   </div>
 
   <!-- Parse Error -->
-  <div *ngIf="parseError" class="error-box">
+  <div *ngIf="parseError" class="error-box" role="alert">
     <mat-icon>error</mat-icon>
     <span>{{ parseError }}</span>
   </div>
@@ -106,7 +106,7 @@
   </div>
 
   <!-- Error -->
-  <div *ngIf="errorMessage" class="error-box">
+  <div *ngIf="errorMessage" class="error-box" role="alert">
     <mat-icon>error</mat-icon>
     <span>{{ errorMessage }}</span>
   </div>

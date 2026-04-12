@@ -5,6 +5,7 @@
   color="primary"
   (click)="togglePanel()"
   matTooltip="Ask BioBrain"
+  aria-label="Ask BioBrain"
   *ngIf="!isOpen">
   <mat-icon>psychology</mat-icon>
 </button>
@@ -26,7 +27,7 @@
     </span>
   </div>
 
-  <div class="chat-messages" #messageList>
+  <div class="chat-messages" #messageList role="log" aria-live="polite">
     <div class="empty-state" *ngIf="messages.length === 0 && !isLoading">
       <mat-icon class="empty-icon">question_answer</mat-icon>
       <p>Ask any question about this topic and BioBrain will help you understand it.</p>
@@ -48,7 +49,7 @@
       </div>
     </div>
 
-    <div class="error-message" *ngIf="errorMessage">
+    <div class="error-message" *ngIf="errorMessage" role="alert">
       <mat-icon>error_outline</mat-icon>
       <span>{{errorMessage}}</span>
     </div>
