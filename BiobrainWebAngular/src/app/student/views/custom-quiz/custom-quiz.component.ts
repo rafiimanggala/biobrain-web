@@ -271,6 +271,10 @@ export class CustomQuizComponent extends BaseComponent {
     }, []);
   }
 
+  public isLevelNode(item: TreeNodeItem): boolean {
+    return /^Level\s+\d+$/.test(item.node.row.name);
+  }
+
   private _getAllLeafIds(item: TreeNodeItem): string[] {
     if (item.children.length === 0) {
       return [item.node.nodeId];

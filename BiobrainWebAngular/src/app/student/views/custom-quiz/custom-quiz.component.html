@@ -94,6 +94,8 @@
     </mat-checkbox>
   </div>
   <ng-container *ngFor="let child of item.children">
-    <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child }"></ng-container>
+    <ng-container *ngIf="!isLevelNode(child)">
+      <ng-container *ngTemplateOutlet="treeNode; context: { $implicit: child }"></ng-container>
+    </ng-container>
   </ng-container>
 </ng-template>
