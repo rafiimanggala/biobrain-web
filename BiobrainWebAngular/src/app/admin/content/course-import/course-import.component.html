@@ -124,7 +124,7 @@
         <span class="result-value" [class.error]="importResult.errorCount > 0">{{ importResult.errorCount }}</span>
       </div>
     </div>
-    <div *ngIf="importResult.errors?.length > 0" class="error-list">
+    <div *ngIf="importResult.errors && importResult.errors.length > 0" class="error-list">
       <strong>Error Details:</strong>
       <ul>
         <li *ngFor="let err of importResult.errors">{{ err }}</li>

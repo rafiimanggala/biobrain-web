@@ -14,7 +14,7 @@ import { SubTitleProviderService } from '../../services/sub-title-provider.servi
 
 interface ParsedRow {
   row: number;
-  data: CourseImportItem;
+  data: CourseImportItem | null;
   valid: boolean;
   error: string;
 }
@@ -201,8 +201,8 @@ export class CourseImportComponent implements OnInit, OnDestroy {
     this.clearResults();
 
     const items = this.parsedRows
-      .filter(r => r.valid)
-      .map(r => r.data);
+      .filter(r => r.valid && r.data !== null)
+      .map(r => r.data) as CourseImportItem[];
 
     try {
       this._loaderService.show();

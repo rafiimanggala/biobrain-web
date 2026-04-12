@@ -99,7 +99,6 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
     this._drawRect = new Rect((this.canvas.width - width) / 2, (this.canvas.height - height) / 2, width, height);
 
     this._hexagones = [];
-    const cols = this._cols;
     for (let i = 0; i < this.results.length; i++) {
       const row = Math.floor(i / cols);
       const col = i % cols;
