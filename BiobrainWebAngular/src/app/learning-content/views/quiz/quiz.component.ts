@@ -123,8 +123,8 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
             : quizResult.questions.findIndex(_ => _.questionId === question.questionId) + 1,
         totalQuestions: quiz.row.questions.filter(q => !quizResult.excludedQuestions.some(_ => _ === q.questionId)).length,
         nodeHeader: quiz.node.row.name ?? '',
-        path: quiz.row.questions.length > AppSettings.quizQuestionsNumber
-          ? quiz.fullName.split(' › ').slice(0, 2).join(' › ') + (quiz.row.name ? ' › ' + quiz.row.name : '')
+        path: quiz.row.name
+          ? quiz.fullName.split(' › ').slice(0, -1).join(' › ') + ' › ' + quiz.row.name
           : quiz.fullName,
         hintsEnabled: quizResult.hintsEnabled,
         soundEnabled: quizResult.soundEnabled,
