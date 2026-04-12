@@ -50,6 +50,7 @@ import { CreateMaterialDialogComponent } from './content/dialogs/create-material
 import { CreateQuestionDialogComponent } from './content/dialogs/create-question-dialog/create-question-dialog.component';
 import { QuizSettingsDialogComponent } from './content/dialogs/quiz-settings-dialog/quiz-settings-dialog.component';
 import { QuizManagerDialogComponent } from './content/dialogs/quiz-manager-dialog/quiz-manager-dialog.component';
+import { ImageLibraryComponent } from './content/image-library/image-library.component';
 
 const dialogs = [
   SchoolDialog,
@@ -98,7 +99,8 @@ const components = [
   ContentReportComponent,
   UserGuidesListComponent,
   UserGuideEditorComponent,
-  VoucherListComponent
+  VoucherListComponent,
+  ImageLibraryComponent
 ];
 
 const operations = [UsageReportOperation, PermanentDeleteUserOperation]

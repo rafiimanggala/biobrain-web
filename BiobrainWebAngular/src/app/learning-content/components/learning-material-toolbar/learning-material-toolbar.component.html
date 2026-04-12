@@ -6,10 +6,9 @@
       {{level.levelName}}
     </mat-button-toggle>
   </mat-button-toggle-group>
-  <button mat-icon-button class='expand-all-btn' (click)='onExpandAll()' title='Expand All headings at current level'>
+  <button mat-icon-button class="expand-level-button" (click)="onExpandAll()" *ngIf="selectedLevelId" matTooltip="Expand All">
     <mat-icon>unfold_more</mat-icon>
   </button>
-
   <div class="buttons-raw"  fxHide.lt-sm>
     <button mat-raised-button color=accent class='node-button' (click)='onAssignedWorkClicked(selectedLevelId)' *ngIf='!!courseId && selectedLevelId && assignedWorkButtonVisible'>
       {{strings.tasks | titlecase}}

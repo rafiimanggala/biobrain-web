@@ -1,9 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import { HttpEventType } from '@angular/common/http';
 import Dexie from 'dexie';
-import { combineLatest } from 'rxjs';
-import { filter, last, map } from 'rxjs/operators';
 import {
   ContentTree,
   ContentTreeMeta,
@@ -15,7 +12,6 @@ import {
   Question,
   Quiz,
 } from 'src/app/api/content/content-data-models';
-import { firstValueFrom } from 'src/app/share/helpers/first-value-from';
 import { hasValue } from 'src/app/share/helpers/has-value';
 import { ContentDownloadData } from '../dialogs/content-download-dialog/content-download.dialog-data';
 
@@ -128,26 +124,33 @@ export class LearningContentDb extends Dexie {
   }
 
   async saveContent(content: ContentDownloadData[], actualVersion: ContentVersion[]): Promise<ContentVersion[]> {
-    await firstValueFrom(combineLatest(content.map(_ => _.observer.pipe(
-      last(),
-      map(_ => _.type == HttpEventType.Response ? _.body : null),
-      filter(hasValue)
-    ))));
+    // Save each course independently — one failure should not block successful downloads
+    const perCourseTasks = content.map(async c => {
+      try {
+        // Wait for the download (already subscribed in ContentDownloadData constructor)
+        await c.ready;
 
-    //If old data -> save new version
-    content.forEach(async c => {
-      if(!c.content) { c.isError = true; return;}
-      var version = actualVersion.find(x => x.courseId == c.courseId);
-      if(version == null) {
+        if (c.isError || !c.content) {
+          c.isError = true;
+          return;
+        }
+
+        const version = actualVersion.find(x => x.courseId == c.courseId);
+        if (version == null) {
+          c.isError = true;
+          console.log(`Can't find version for course ${c.courseId}`);
+          return;
+        }
+
+        await this.saveCourseContent(c.content, version);
+        c.complete();
+      } catch (e) {
         c.isError = true;
-        console.log(`Can't find version for course ${c.courseId}`);
-        return;
+        console.error(`Failed to save course ${c.courseName}`, e);
       }
-
-      let result = await this.saveCourseContent(c.content, version);
-      c.complete();
-      return result;
     });
+
+    await Promise.all(perCourseTasks);
     return actualVersion;
   }
 

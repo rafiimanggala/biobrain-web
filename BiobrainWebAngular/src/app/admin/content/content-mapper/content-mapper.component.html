@@ -35,16 +35,27 @@
         </div>
 
     </div>
-    <div class="content-tree" *ngIf="course">
-        <app-content-mapper-tree #tree name="tree" (add)="onAdd($event)" (edit)="onEdit($event)"
-            (moveUp)="onMoveUp($event)" (moveDown)="onMoveDown($event)" (attachMaterials)="onAttachMaterials($event)"
-            (attachQuestions)="onAttachQuestions($event)" (updateMaterials)="onUpdateMaterials($event)"
-            (updateQuestions)="onUpdateQuestions($event)" (copy)="onCopyFromGeneric($event)"
-            (manageAutoMap)="onManageAutoMap($event)" (excludeQuestion)="onExclude($event)" (includeQuestion)="onInclude($event)"
-            (availableInDemo)="onAvailableInDemo($event)"
-            (createMaterial)="onCreateMaterial($event)" (createQuestion)="onCreateQuestion($event)"
-            (quizSettings)="onQuizSettings($event)" (manageQuiz)="onManageQuiz($event)">
-        </app-content-mapper-tree>
+    <div class="tree-wrapper" *ngIf="course">
+        <div class="tree-loading-overlay" *ngIf="contentTreeListStore.isLoading$ | async">
+            <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+            <div class="tree-skeleton">
+                <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5,6,7,8]">
+                    <div class="skeleton-chevron"></div>
+                    <div class="skeleton-label" [style.width.%]="55 + (i % 4) * 10"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-tree" [class.tree-hidden]="contentTreeListStore.isLoading$ | async">
+            <app-content-mapper-tree #tree name="tree" (add)="onAdd($event)" (edit)="onEdit($event)"
+                (moveUp)="onMoveUp($event)" (moveDown)="onMoveDown($event)" (attachMaterials)="onAttachMaterials($event)"
+                (attachQuestions)="onAttachQuestions($event)" (updateMaterials)="onUpdateMaterials($event)"
+                (updateQuestions)="onUpdateQuestions($event)" (copy)="onCopyFromGeneric($event)"
+                (manageAutoMap)="onManageAutoMap($event)" (excludeQuestion)="onExclude($event)" (includeQuestion)="onInclude($event)"
+                (availableInDemo)="onAvailableInDemo($event)"
+                (createMaterial)="onCreateMaterial($event)" (createQuestion)="onCreateQuestion($event)"
+                (quizSettings)="onQuizSettings($event)" (manageQuiz)="onManageQuiz($event)">
+            </app-content-mapper-tree>
+        </div>
     </div>
 
     <mat-menu #actionMenu='matMenu' yPosition='below' [overlapTrigger]='false'>

@@ -21,27 +21,44 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
 
   @Output() questionSelected: EventEmitter<string> = new EventEmitter();
 
+  private get _cols() {
+    const count = this.results.length;
+    if (count <= 10) return 4;
+    if (count <= 20) return 5;
+    if (count <= 30) return 6;
+    return 8;
+  }
+
+  private get _hexScale() {
+    const count = this.results.length;
+    if (count <= 10) return 1.0;
+    if (count <= 20) return 0.8;
+    if (count <= 30) return 0.65;
+    return 0.5;
+  }
+
   private get _baseWidth() {
-    return 295 * this.dpr;
+    return (this._cols * 75 * this._hexScale + 30) * this.dpr;
   }
   private get _baseHeight() {
-    return 210 * this.dpr;
+    const rows = Math.ceil(this.results.length / this._cols);
+    return (rows * 70 * this._hexScale + 50) * this.dpr;
   }
   private readonly _maxCoefficient = 0.9;
   private _koef = 0.6;
   private _drawRect = new Rect(0, 0, 0, 0);
 
   private get _hexWidth() {
-    return 70.0 * this._koef * this.dpr;
+    return 70.0 * this._hexScale * this._koef * this.dpr;
   }
   private get _hexHeight() {
-    return 80.0 * this._koef * this.dpr;
+    return 80.0 * this._hexScale * this._koef * this.dpr;
   }
   private get _d() {
-    return 5.0 * this._koef * this.dpr;
+    return 5.0 * this._hexScale * this._koef * this.dpr;
   }
   private get _fontSize() {
-    return 18 * this._koef * this.dpr;
+    return 18 * this._hexScale * this._koef * this.dpr;
   }
 
   get dpr() {
@@ -80,20 +97,13 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
     this._drawRect = new Rect((this.canvas.width - width) / 2, (this.canvas.height - height) / 2, width, height);
 
     this._hexagones = [];
-    for (let i = 0; i < this.results.length && i < 10; i++) {
-      let dx: number;
-      let dy: number;
-
-      if (i > 2 && i < 7) {
-        dx = (i - 3) * (this._hexWidth + this._d);
-        dy = 0.75 * this._hexHeight + this._d;
-      } else if (i < 3) {
-        dx = (0.5 + i) * (this._hexWidth + this._d);
-        dy = 0;
-      } else {
-        dx = (0.5 + i - 7) * (this._hexWidth + this._d);
-        dy = 1.5 * this._hexHeight + 2 * this._d;
-      }
+    const cols = this._cols;
+    for (let i = 0; i < this.results.length; i++) {
+      const row = Math.floor(i / cols);
+      const col = i % cols;
+      const isOffsetRow = row % 2 === 1;
+      const dx = (col + (isOffsetRow ? 0.5 : 0)) * (this._hexWidth + this._d);
+      const dy = row * (0.75 * this._hexHeight + this._d);
 
       const result = this.results[i];
       const hexagonRect = new Rect(dx + this._drawRect.x, dy + this._drawRect.y, this._hexWidth, this._hexHeight);

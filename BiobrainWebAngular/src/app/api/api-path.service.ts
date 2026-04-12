@@ -107,4 +107,8 @@ export class ApiPath {
   public feedback(): string {
     return `${this.base}/Feedback`;
   }
+
+  public contentImages(): string {
+    return `${this.base}/ContentImages`;
+  }
 }

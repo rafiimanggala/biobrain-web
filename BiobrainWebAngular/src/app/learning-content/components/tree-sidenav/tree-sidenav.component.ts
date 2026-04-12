@@ -64,9 +64,9 @@ export class TreeSidenavComponent implements OnChanges {
     const isExpanded = maxLevel === 1 ? this.l1Expanded : this.l2Expanded;
 
     if (isExpanded) {
-      this._collapseLevel(maxLevel);
+      this._collapseLevelScoped(maxLevel);
     } else {
-      this._expandToLevel(maxLevel);
+      this._expandToLevelScoped(maxLevel);
     }
 
     if (maxLevel === 1) {
@@ -83,23 +83,92 @@ export class TreeSidenavComponent implements OnChanges {
     this.allExpanded = false;
   }
 
-  private _expandToLevel(maxLevel: number): void {
+  private _findContextParent(): NodeModel | null {
     const treeControl = this.treeService.flatTreeControl;
-    treeControl.collapseAll();
-    treeControl.dataNodes?.forEach((node: NodeModel) => {
-      if (node.level < maxLevel) {
-        treeControl.expand(node);
+    const nodes = treeControl.dataNodes;
+    if (!nodes) return null;
+
+    const expandedParents = nodes.filter(
+      (n: NodeModel) => n.expandable && treeControl.isExpanded(n)
+    );
+    if (expandedParents.length > 0) {
+      return expandedParents[expandedParents.length - 1];
+    }
+
+    if (hasValue(this.topicId)) {
+      const topicNode = nodes.find((n: NodeModel) => n.entityId === this.topicId);
+      if (topicNode) {
+        const idx = nodes.indexOf(topicNode);
+        for (let i = idx - 1; i >= 0; i--) {
+          if (nodes[i].level < topicNode.level && nodes[i].expandable) {
+            return nodes[i];
+          }
+        }
       }
-    });
+    }
+
+    return null;
   }
 
-  private _collapseLevel(maxLevel: number): void {
+  private _getDescendants(parent: NodeModel): NodeModel[] {
     const treeControl = this.treeService.flatTreeControl;
-    treeControl.dataNodes?.forEach((node: NodeModel) => {
-      if (node.level >= maxLevel - 1) {
-        treeControl.collapse(node);
+    const nodes = treeControl.dataNodes;
+    if (!nodes) return [];
+
+    const parentIdx = nodes.indexOf(parent);
+    if (parentIdx < 0) return [];
+
+    const descendants: NodeModel[] = [];
+    for (let i = parentIdx + 1; i < nodes.length; i++) {
+      if (nodes[i].level <= parent.level) break;
+      descendants.push(nodes[i]);
+    }
+    return descendants;
+  }
+
+  private _expandToLevelScoped(maxLevel: number): void {
+    const treeControl = this.treeService.flatTreeControl;
+    const contextParent = this._findContextParent();
+
+    if (contextParent) {
+      const descendants = this._getDescendants(contextParent);
+      treeControl.expand(contextParent);
+      for (const node of descendants) {
+        const relativeLevel = node.level - contextParent.level;
+        if (relativeLevel <= maxLevel && node.expandable) {
+          treeControl.expand(node);
+        } else if (relativeLevel > maxLevel) {
+          treeControl.collapse(node);
+        }
       }
-    });
+    } else {
+      treeControl.dataNodes?.forEach((node: NodeModel) => {
+        if (node.level < maxLevel) {
+          treeControl.expand(node);
+        }
+      });
+    }
+  }
+
+  private _collapseLevelScoped(maxLevel: number): void {
+    const treeControl = this.treeService.flatTreeControl;
+    const contextParent = this._findContextParent();
+
+    if (contextParent) {
+      const descendants = this._getDescendants(contextParent);
+      for (const node of descendants) {
+        const relativeLevel = node.level - contextParent.level;
+        if (relativeLevel >= maxLevel) {
+          treeControl.collapse(node);
+        }
+      }
+    } else {
+      treeControl.dataNodes?.forEach((node: NodeModel) => {
+        if (node.level >= maxLevel - 1) {
+          treeControl.collapse(node);
+        }
+      });
+    }
   }
 
   private _setSelectedTopic(topicId: string | undefined): void {

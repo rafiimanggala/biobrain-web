@@ -34,6 +34,7 @@ export class QuestionContentComponent implements OnChanges, OnInit, OnDestroy {
   @Input() totalQuestions?: number;
   @Input() nodeHeader?: string;
   @Input() hintsEnabled = true;
+  @Input() isCustomQuiz = false;
 
   @Output() answerValueChange = new EventEmitter<string>();
 
@@ -76,7 +77,8 @@ export class QuestionContentComponent implements OnChanges, OnInit, OnDestroy {
       question: this.question,
       questionIndex: this.questionIndex,
       questionsCount: this.totalQuestions,
-      nodeHeader: this.nodeHeader
+      nodeHeader: this.nodeHeader,
+      isCustomQuiz: this.isCustomQuiz
     };
   }
 

@@ -7,10 +7,10 @@
 <mat-tree #tree *ngIf="nestedDataSource.data != null && nestedDataSource.data != undefined"
     [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="tree">
     <mat-tree-node class="node left-direction" *matTreeNodeDef="let node" matTreeNodePadding
-        matTreeNodePaddingIndent="175">
+        matTreeNodePaddingIndent="175" [class.selected]="isSelected(node)">
         <li>
-            <div class="mat-tree-node" fxLayout="raw" fxLayoutAlign="start">
-                <span class="clickable" [ngClass]="{'excluded' : node.isExcluded}">
+            <div class="mat-tree-node" fxLayout="raw" fxLayoutAlign="start" (click)="selectNode(node)">
+                <span class="clickable leaf-label" [ngClass]="{'excluded' : node.isExcluded}">
                     {{node.header}}
                 </span>
                 <!-- MoveUp -->
@@ -49,15 +49,22 @@
     </mat-tree-node>
 
     <mat-nested-tree-node class="node left-direction" *matTreeNodeDef="let node; when: hasNestedChild"
-        matTreeNodePadding matTreeNodePaddingIndent="175">
+        matTreeNodePadding matTreeNodePaddingIndent="175" [class.selected]="isSelected(node)">
         <!-- <div class="mat-tree-node"> -->
         <li>
-            <div class="mat-tree-node">
+            <div class="mat-tree-node" (click)="selectNode(node)">
                 <mat-icon class="mat-icon-rtl-mirror expand-toggle clickable" matTreeNodeToggle>
                     {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                 </mat-icon>
-                <span class="clickable" matTreeNodeToggle NgIsExcluded>
-                    {{node.header}}{{node.isAutoMapped ? "*" : ""}}{{" ("+node.children.length+")"}}
+                <mat-icon class="folder-badge folder-badge-{{getFolderIconColor(node)}}"
+                    *ngIf="node.isMaterialsFolder || node.isQuestionsFolder"
+                    [matTooltip]="node.isAutoMapped ? 'Auto-mapped quiz' : (node.isQuestionsFolder ? 'Manual quiz' : 'Materials')">
+                    {{getFolderIcon(node)}}
+                </mat-icon>
+                <span class="clickable node-label" matTreeNodeToggle NgIsExcluded
+                    [class.auto-mapped]="node.isAutoMapped"
+                    [class.empty-folder]="(node.isMaterialsFolder || node.isQuestionsFolder) && node.children.length === 0">
+                    {{node.header}}<span class="auto-badge" *ngIf="node.isAutoMapped"> · AUTO</span><span class="count-badge">({{node.children.length}})</span>
                 </span>
                 <!-- Add -->
                 <mat-icon class="clickable action-button" color="accent" [matTooltip]="strings.add"

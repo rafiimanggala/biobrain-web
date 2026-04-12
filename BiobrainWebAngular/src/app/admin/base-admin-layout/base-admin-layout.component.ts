@@ -56,6 +56,7 @@ export class BaseAdminLayoutComponent implements OnInit {
       new NavigationItem(this.strings.usageReport, 'usage_report'),
       new NavigationItem(this.strings.contentReport, 'content_report'),
       new NavigationItem(this.strings.userGuides, 'user_guides'),
+      new NavigationItem('Image Library', 'image_library'),
     ];
   }
 

@@ -53,6 +53,8 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
   questionCount = 20;
   saveAsTemplate = false;
   isSubmitting = false;
+  dueDate: Date;
+  minDueDate = new Date();
 
   questionCountOptions: number[] = [20, 30, 40, 60];
 
@@ -84,6 +86,10 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+
+    const defaultDue = new Date();
+    defaultDue.setDate(defaultDue.getDate() + 7);
+    this.dueDate = defaultDue;
 
     this.treeControl = new FlatTreeControl<ContentTreeFlatNode>(
       node => node.level,
@@ -264,6 +270,9 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
     this.isSubmitting = true;
 
     try {
+      const dueDateUtc = this.dueDate ? this.dueDate.toISOString() : null;
+      const dueDateLocal = this.dueDate ? this.dueDate.toLocaleDateString('sv-SE') + 'T23:59:59' : null;
+
       const command = new CreateTeacherCustomQuizCommand(
         this.quizName.trim(),
         this.selectedCourseId,
@@ -273,6 +282,8 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
         this.saveAsTemplate,
         this._userId,
         this.selectedStudentIds,
+        dueDateUtc,
+        dueDateLocal,
       );
 
       const result = await firstValueFrom(this._api.send(command));
@@ -282,6 +293,9 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
       this.quizName = '';
       this.checklistSelection.clear();
       this.saveAsTemplate = false;
+      const resetDue = new Date();
+      resetDue.setDate(resetDue.getDate() + 7);
+      this.dueDate = resetDue;
       this.students = this.students.map(s => ({ ...s, checked: true }));
     } catch (err) {
       this.handleError(err);

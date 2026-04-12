@@ -2,25 +2,30 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Api } from 'src/app/api/api.service';
-import { GetLatestWhatsNewQuery, GetLatestWhatsNewQuery_Result } from 'src/app/api/whats-new/get-latest-whats-new.query';
 import { AppEventProvider } from 'src/app/core/app/app-event-provider.service';
 import { BaseComponent } from 'src/app/core/app/base.component';
-import { DialogAction } from 'src/app/core/dialogs/dialog-action';
-import { Dialog } from 'src/app/core/dialogs/dialog.service';
 import { AuthTokensService } from 'src/app/core/storage/auth-tokens.service';
-import { StarRatingDialogComponent } from 'src/app/share/dialogs/star-rating-dialog/star-rating-dialog.component';
-import { StarRatingDialogData } from 'src/app/share/dialogs/star-rating-dialog/star-rating-dialog-data';
-import { WhatsNewDialogComponent } from 'src/app/share/dialogs/whats-new-dialog/whats-new-dialog.component';
-import { WhatsNewDialogData } from 'src/app/share/dialogs/whats-new-dialog/whats-new-dialog-data';
+import { Dialog } from 'src/app/core/dialogs/dialog.service';
 import { StringsService } from 'src/app/share/strings.service';
+import { StarRatingDialogComponent, STAR_RATING_RESULT_PREFIX } from 'src/app/share/dialogs/star-rating-dialog/star-rating-dialog.component';
+import { StarRatingDialogData } from 'src/app/share/dialogs/star-rating-dialog/star-rating-dialog-data';
 
+import { Api } from '../../../api/api.service';
+import { GetLatestWhatsNewQuery, GetLatestWhatsNewQuery_Result } from '../../../api/whats-new/get-latest-whats-new.query';
+import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { LoaderService } from '../../../share/services/loader.service';
+import { WhatsNewDialogComponent } from '../../../share/dialogs/whats-new-dialog/whats-new-dialog.component';
+import { WhatsNewDialogData } from '../../../share/dialogs/whats-new-dialog/whats-new-dialog-data';
 import { LoginModel } from '../../models/login.model';
 import { LoginOperation } from '../../operations/login.operation';
 import { CurrentUserService } from '../../services/current-user.service';
 import { RoutingService } from '../../services/routing.service';
+
+const STAR_RATING_TRIGGER_LOGINS = [4, 10];
+const STAR_RATING_STORAGE_PREFIX = 'biobrain.loginCount.';
+const STAR_RATING_SHOWN_PREFIX = 'biobrain.starRatingShown.';
+const WHATS_NEW_SHOWN_PREFIX = 'biobrain.whatsNewShown.';
 
 @Component({
   selector: 'app-login',
@@ -38,11 +43,6 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
   ssoError = '';
   ssoSchool: { schoolId: string; name: string } | null = null;
 
-  private static readonly LOGIN_COUNT_KEY = 'biobrain_login_count';
-  private static readonly HAS_RATED_KEY = 'biobrain_has_rated';
-  private static readonly RATING_TRIGGERS = [4, 10];
-  private static readonly LAST_SEEN_VERSION_KEY = 'biobrain_last_seen_version';
-
   constructor(
     appEvents: AppEventProvider,
     private readonly _routingService: RoutingService,
@@ -52,9 +52,9 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
     _activatedRouteSnapshot: ActivatedRoute,
     private readonly _loaderService: LoaderService,
     private readonly _userService: CurrentUserService,
+    private readonly _http: HttpClient,
     private readonly _dialog: Dialog,
     private readonly _api: Api,
-    private readonly _http: HttpClient
   ) {
     super(appEvents);
     this._backUrl = _activatedRouteSnapshot.snapshot.queryParamMap.get('backUrl');
@@ -97,9 +97,85 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
       this._loaderService.hide();
     }
 
-    await this._checkAndShowWhatsNew();
-    await this._checkAndShowRatingDialog();
+    await this._trackLoginAndMaybeShowRating();
+    await this._maybeShowWhatsNew();
     await this._navigateToNextPage();
+  }
+
+  private async _maybeShowWhatsNew(): Promise<void> {
+    try {
+      const currentUser = await this._userService.user;
+      if (!hasValue(currentUser) || !hasValue(currentUser.userId)) return;
+
+      const result: GetLatestWhatsNewQuery_Result = await firstValueFrom(
+        this._api.send(new GetLatestWhatsNewQuery())
+      );
+
+      if (!hasValue(result) || !hasValue(result.whatsNewId) || !hasValue(result.version)) return;
+
+      const shownKey = WHATS_NEW_SHOWN_PREFIX + currentUser.userId;
+      const shownRaw = localStorage.getItem(shownKey);
+      const shownVersions: string[] = shownRaw ? JSON.parse(shownRaw) : [];
+
+      if (shownVersions.indexOf(result.version) !== -1) return;
+
+      shownVersions.push(result.version);
+      localStorage.setItem(shownKey, JSON.stringify(shownVersions));
+
+      // Fire and forget — don't block navigation
+      void this._dialog.show(
+        WhatsNewDialogComponent,
+        new WhatsNewDialogData(result.title, result.content, result.version),
+      );
+    } catch {
+      // Never block login on what's new errors
+    }
+  }
+
+  private async _trackLoginAndMaybeShowRating(): Promise<void> {
+    try {
+      const currentUser = await this._userService.user;
+      if (!hasValue(currentUser) || !hasValue(currentUser.userId)) return;
+
+      const userId = currentUser.userId;
+      const countKey = STAR_RATING_STORAGE_PREFIX + userId;
+      const shownKey = STAR_RATING_SHOWN_PREFIX + userId;
+      const resultKey = STAR_RATING_RESULT_PREFIX + userId;
+
+      // Skip if user previously rated 4-5 stars
+      const previousRating = parseInt(localStorage.getItem(resultKey) || '0', 10) || 0;
+      if (previousRating >= 4) return;
+
+      const previousCount = parseInt(localStorage.getItem(countKey) || '0', 10) || 0;
+      const nextCount = previousCount + 1;
+      localStorage.setItem(countKey, String(nextCount));
+
+      if (STAR_RATING_TRIGGER_LOGINS.indexOf(nextCount) === -1) return;
+
+      const shownRaw = localStorage.getItem(shownKey);
+      const shownLogins: number[] = shownRaw ? JSON.parse(shownRaw) : [];
+      if (shownLogins.indexOf(nextCount) !== -1) return;
+
+      shownLogins.push(nextCount);
+      localStorage.setItem(shownKey, JSON.stringify(shownLogins));
+
+      // Build user display name: First Name + Last Initial
+      const firstName = currentUser.firstName || '';
+      const lastName = currentUser.lastName || '';
+      const displayName = firstName + (lastName ? ' ' + lastName.charAt(0) + '.' : '');
+
+      const dialogResult = await this._dialog.show(
+        StarRatingDialogComponent,
+        new StarRatingDialogData('Rate BioBrain', displayName.trim()),
+      );
+
+      // Store rating to skip future popups for 4-5 star ratings
+      if (dialogResult && dialogResult.hasData() && dialogResult.data.rating >= 4) {
+        localStorage.setItem(resultKey, String(dialogResult.data.rating));
+      }
+    } catch {
+      // Never block login on rating dialog errors
+    }
   }
 
   async onRestore(): Promise<void> {
@@ -127,55 +203,6 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
 
   reload(): void {
     window.location.reload();
-  }
-
-  private async _checkAndShowRatingDialog(): Promise<void> {
-    const hasRated = localStorage.getItem(LoginComponent.HAS_RATED_KEY) === 'true';
-    if (hasRated) {
-      return;
-    }
-
-    const currentCount = parseInt(localStorage.getItem(LoginComponent.LOGIN_COUNT_KEY) || '0', 10);
-    const newCount = currentCount + 1;
-    localStorage.setItem(LoginComponent.LOGIN_COUNT_KEY, String(newCount));
-
-    if (!LoginComponent.RATING_TRIGGERS.includes(newCount)) {
-      return;
-    }
-
-    const result = await this._dialog.show(
-      StarRatingDialogComponent,
-      new StarRatingDialogData(),
-      { disableClose: false, width: '420px' }
-    );
-
-    if (result && result.action === DialogAction.save) {
-      localStorage.setItem(LoginComponent.HAS_RATED_KEY, 'true');
-    }
-  }
-
-  private async _checkAndShowWhatsNew(): Promise<void> {
-    try {
-      const data = await this._api.send(new GetLatestWhatsNewQuery()).toPromise();
-      if (!data || !data.whatsNewId || !data.version) {
-        return;
-      }
-
-      const lastSeen = localStorage.getItem(LoginComponent.LAST_SEEN_VERSION_KEY);
-      if (lastSeen === data.version) {
-        return;
-      }
-
-      await this._dialog.show(
-        WhatsNewDialogComponent,
-        new WhatsNewDialogData(data.title, data.content, data.version),
-        { disableClose: false, width: '560px' }
-      );
-
-      localStorage.setItem(LoginComponent.LAST_SEEN_VERSION_KEY, data.version);
-    } catch {
-      // Silently ignore - don't block login flow
-    }
   }
 
   // --- SSO Methods ---

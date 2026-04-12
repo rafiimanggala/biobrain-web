@@ -53,26 +53,6 @@ const routes: Routes = [
         component: StudentQuizAssignmentResultsPageComponent,
       },
       {
-        path: 'custom-quiz',
-        canActivate: [SchoolClassSelectedGuard, CourseSelectedGuard],
-        component: TeacherCustomQuizComponent,
-      },
-      {
-        path: 'quiz-templates',
-        canActivate: [SchoolClassSelectedGuard, CourseSelectedGuard],
-        component: QuizTemplatesComponent,
-      },
-      {
-        path: 'ai-practice-set',
-        canActivate: [SchoolClassSelectedGuard, CourseSelectedGuard],
-        component: AiPracticeSetComponent,
-      },
-      {
-        path: 'ai-insights',
-        canActivate: [SchoolClassSelectedGuard, CourseSelectedGuard],
-        component: AiInsightsComponent,
-      },
-      {
         path: 'class-admin',
         component: ClassAdminMasterPage,
         canActivate: [CourseSelectedGuard],
@@ -82,6 +62,26 @@ const routes: Routes = [
             component: ClassAdminComponent,
           },
         ],
+      },
+      {
+        path: 'custom-quiz',
+        canActivate: [CourseSelectedGuard],
+        component: TeacherCustomQuizComponent,
+      },
+      {
+        path: 'quiz-templates',
+        canActivate: [CourseSelectedGuard],
+        component: QuizTemplatesComponent,
+      },
+      {
+        path: 'ai-practice-set',
+        canActivate: [CourseSelectedGuard],
+        component: AiPracticeSetComponent,
+      },
+      {
+        path: 'ai-insights',
+        canActivate: [CourseSelectedGuard],
+        component: AiInsightsComponent,
       },
     ],
   },

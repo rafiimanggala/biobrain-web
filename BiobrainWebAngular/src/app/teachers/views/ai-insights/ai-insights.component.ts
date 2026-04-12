@@ -111,7 +111,7 @@ export class AiInsightsComponent extends BaseComponent implements OnInit {
         this._api.send(command)
       );
 
-      this.insightsHtml = this._sanitizer.bypassSecurityTrustHtml(result.insights);
+      this.insightsHtml = this._sanitizer.bypassSecurityTrustHtml(result.insightsHtml);
       this.hasGenerated = true;
     } catch (err) {
       this.handleError(err);

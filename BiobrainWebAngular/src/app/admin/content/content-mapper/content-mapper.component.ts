@@ -18,6 +18,7 @@ import { StringsService } from 'src/app/share/strings.service';
 import { GetContentTreeListQuery_Result } from '../../../api/content/get-content-tree-list.query';
 import { GetContentTreeMetaListQuery_Result } from '../../../api/content/get-content-tree-meta-list.query';
 import { GetCoursesListQuery_Result } from '../../../api/content/get-courses-list.query';
+import { SnackBarService } from 'src/app/share/services/snack-bar.service';
 import { SubTitleProviderService } from '../../services/sub-title-provider.service';
 import { ContentMapperTreeComponent } from '../content-mapper-tree/content-mapper-tree.component';
 import { ManageAutoMapOperation } from '../operations/manage-auto-map.operation';
@@ -73,7 +74,8 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     private readonly _titlecasePipe: TitleCasePipe,
     private readonly _dialog: Dialog,
     private readonly _api: Api,
-    private readonly _router: Router
+    private readonly _router: Router,
+    private readonly _snackBar: SnackBarService
   ) { }
 
   goToImportJson(): void {
@@ -215,6 +217,7 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     const result = await this._dialog.show(CreateMaterialDialogComponent, data, { width: '720px' });
     if (result.action === DialogAction.save) {
       this.contentTreeListStore.reload();
+      this._snackBar.showMessage('Material saved successfully');
     }
   }
 
@@ -234,6 +237,7 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     const result = await this._dialog.show(CreateQuestionDialogComponent, data, { width: '720px' });
     if (result.action === DialogAction.save) {
       this.contentTreeListStore.reload();
+      this._snackBar.showMessage('Question saved successfully');
     }
   }
 
@@ -262,6 +266,7 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     const result = await this._dialog.show(QuizSettingsDialogComponent, data, { width: '560px' });
     if (result.action === DialogAction.save) {
       this.contentTreeListStore.reload();
+      this._snackBar.showMessage('Quiz settings saved');
     }
   }
 
@@ -288,6 +293,7 @@ export class ContentMapperComponent implements OnInit, OnDestroy {
     const result = await this._dialog.show(QuizManagerDialogComponent, data, { width: '900px' });
     if (result.action === DialogAction.save) {
       this.contentTreeListStore.reload();
+      this._snackBar.showMessage('Quiz updated');
     }
   }
 

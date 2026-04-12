@@ -53,16 +53,24 @@ export class TakeQuizOperation {
   }
 
   public async performAssignedQuiz(courseId: string, contentTreeNodeId: string, quizStudentAssignmentId: string): Promise<FailedOrSuccessResult> {
-    const canPerformResult = await this.canPerform(courseId, contentTreeNodeId);
-    if (canPerformResult.isFailed()) {
-      await this._dialog.show(ErrorMessageDialogComponent, { text: canPerformResult.reason });
+    const user = await this._currentUserService.user;
+    if (!hasValue(user)) {
+      await this._dialog.show(ErrorMessageDialogComponent, { text: this._strings.errors.noCurrentUser });
+      return Result.failed();
+    }
+    if (!user.isStudent()) {
+      await this._dialog.show(ErrorMessageDialogComponent, { text: this._strings.errors.userIsNotStudent });
       return Result.failed();
     }
 
-    const { user } = canPerformResult.data;
-    const ensureResult = await firstValueFrom(this._api.send(new EnsureQuizResultForAssignmentCommand(user.userId, quizStudentAssignmentId)));
-    await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
-    return Result.success();
+    try {
+      const ensureResult = await firstValueFrom(this._api.send(new EnsureQuizResultForAssignmentCommand(user.userId, quizStudentAssignmentId)));
+      await this._routingService.navigateToQuizPage(ensureResult.quizResultId);
+      return Result.success();
+    } catch (err) {
+      await this._dialog.show(ErrorMessageDialogComponent, { text: this._strings.errors.quizWasNotFound });
+      return Result.failed();
+    }
   }
 
   public async perform(courseId: string, contentTreeNodeId: string): Promise<FailedOrSuccessResult> {

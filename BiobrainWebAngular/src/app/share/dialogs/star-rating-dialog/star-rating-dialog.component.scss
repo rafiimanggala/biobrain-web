@@ -16,21 +16,25 @@ mat-dialog-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
-  margin: 12px auto;
+  gap: 8px;
+  margin: 16px auto;
   width: 100%;
 }
 
 .star-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
   color: #FFC107;
   transition: transform 0.15s ease;
 
   &:hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
+  }
+
+  &.active {
+    color: #FFC107;
   }
 }
 

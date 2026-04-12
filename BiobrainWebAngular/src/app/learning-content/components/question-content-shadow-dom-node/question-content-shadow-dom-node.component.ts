@@ -105,8 +105,8 @@ export class QuestionContentShadowDomNodeComponent extends PluggableScriptCompon
   }
 
   private async _buildPlainQuestionContent(datum: DisplayedQuestionData): Promise<string> {
-    const questionNumber = `<span class='questionNumber'>Q${datum.questionIndex}/${datum.questionsCount >= 10 ? 10 : datum.questionsCount}</span>`;
-    const levelName = `<span class='levelName'>${datum.nodeHeader.toUpperCase()}</span>`;
+    const questionNumber = `<span class='questionNumber'>Q${datum.questionIndex}/${datum.questionsCount}</span>`;
+    const levelName = datum.isCustomQuiz ? '' : `<span class='levelName'>${datum.nodeHeader.toUpperCase()}</span>`;
     const header = `<html><h2 class='questionText'>${questionNumber}${levelName}</h2>`;
 
     let questionText = datum.question.text.replace('<html>', header);
@@ -290,4 +290,5 @@ export interface DisplayedQuestionData {
   readonly questionIndex: number;
   readonly questionsCount: number;
   readonly nodeHeader: string;
+  readonly isCustomQuiz?: boolean;
 }

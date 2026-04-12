@@ -76,7 +76,11 @@ export class LearningMaterialContentComponent implements OnChanges, OnDestroy {
 
     const user = await this._currentUserService.user;
 
-    if(!user || (!node.isAvailableInDemo && user.isDemoSubscription())){
+    if(!user){
+      return '';
+    }
+
+    if(!node.isAvailableInDemo && user.isDemoSubscription()){
       await this._assertNotAvailableInDemoOperation.perform();
       return '';
     }

@@ -80,6 +80,7 @@ export class ContentTreeService {
     return this._flat.pipe(
       map(flat => {
         var firstNode = flat.filter(_ => _.row.courseId == courseId && !_.parent).sort((a,b) =>  a.order - b.order)[0];
+        if (!firstNode) return undefined;
         while(hasValue(firstNode.children) && firstNode.children.length > 0){
           firstNode = firstNode.children.sort((a,b) => a.order - b.order)[0];
         }

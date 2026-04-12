@@ -28,6 +28,11 @@ namespace Biobrain.Application.Quizzes.CreateTeacherCustomQuiz
         public Guid SchoolClassId { get; set; }
         public bool SaveAsTemplate { get; set; }
         public Guid TeacherId { get; set; }
+        public List<Guid> StudentIds { get; set; } = new();
+        public DateTime? DueDateUtc { get; set; }
+        public DateTime? DueDateLocal { get; set; }
+        public bool HintsEnabled { get; set; } = true;
+        public bool SoundEnabled { get; set; } = true;
 
 
         [PublicAPI]
@@ -104,10 +109,17 @@ namespace Biobrain.Application.Quizzes.CreateTeacherCustomQuiz
                 }).ToList();
                 await Db.QuizQuestions.AddRangeAsync(quizQuestions, cancellationToken);
 
-                var studentIds = await Db.SchoolClassStudents
-                    .Where(scs => scs.SchoolClassId == request.SchoolClassId)
-                    .Select(scs => scs.StudentId)
-                    .ToListAsync(cancellationToken);
+                var studentIds = request.StudentIds != null && request.StudentIds.Count > 0
+                    ? request.StudentIds
+                    : await Db.SchoolClassStudents
+                        .Where(scs => scs.SchoolClassId == request.SchoolClassId)
+                        .Select(scs => scs.StudentId)
+                        .ToListAsync(cancellationToken);
+
+                var now = DateTime.UtcNow;
+                var nowLocal = DateTime.Now;
+                var dueUtc = request.DueDateUtc ?? now.AddDays(7);
+                var dueLocal = request.DueDateLocal ?? nowLocal.AddDays(7);
 
                 var quizAssignmentEntity = new QuizAssignmentEntity
                 {
@@ -115,11 +127,21 @@ namespace Biobrain.Application.Quizzes.CreateTeacherCustomQuiz
                     QuizId = quizEntity.QuizId,
                     SchoolClassId = request.SchoolClassId,
                     AssignedByTeacherId = request.TeacherId,
+                    DueAtUtc = dueUtc,
+                    DueAtLocal = dueLocal,
+                    AssignedAtUtc = now,
+                    AssignedAtLocal = nowLocal,
+                    HintsEnabled = request.HintsEnabled,
+                    SoundEnabled = request.SoundEnabled,
                     QuizStudentAssignments = studentIds.Select(studentId => new QuizStudentAssignmentEntity
                     {
                         QuizStudentAssignmentId = Guid.NewGuid(),
                         AssignedToUserId = studentId,
                         AttemptNumber = 1,
+                        DueAtUtc = dueUtc,
+                        DueAtLocal = dueLocal,
+                        AssignedAtUtc = now,
+                        AssignedAtLocal = nowLocal,
                     }).ToList(),
                 };
                 await Db.QuizAssignments.AddAsync(quizAssignmentEntity, cancellationToken);

@@ -21,6 +21,7 @@ import { ContentReportComponent } from './reports/content-report/content-report.
 import { UserGuidesListComponent } from './user-guides/user-guides-list/user-guides-list.component';
 import { UserGuidesComponent } from '../share/components/user-guides/user-guides.component';
 import { VoucherListComponent } from './vouchers/vouchers-list/voucher-list.component';
+import { ImageLibraryComponent } from './content/image-library/image-library.component';
 
 const routes: Routes = [
   {
@@ -144,6 +145,15 @@ const routes: Routes = [
       {
         path: 'templates',
         component: TemplatesListComponent,
+        data: {
+          roles: [UserRoles.systemAdministrator],
+          navigatingSave: true,
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'image_library',
+        component: ImageLibraryComponent,
         data: {
           roles: [UserRoles.systemAdministrator],
           navigatingSave: true,

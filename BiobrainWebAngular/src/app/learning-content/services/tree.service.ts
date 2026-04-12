@@ -124,6 +124,7 @@ export class TreeService {
   }
 
   private readonly _transformer = (node: NodeModel, level: number): NodeModel => {
+    if (!node) return node;
     node.level = level;
     node.expandable = node.children && node.children.length > 0;
     return node;

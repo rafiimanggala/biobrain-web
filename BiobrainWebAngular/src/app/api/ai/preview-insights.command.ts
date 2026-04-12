@@ -10,10 +10,14 @@ export class PreviewInsightsCommand extends Command<PreviewInsightsCommand_Resul
   }
 
   getUrl(apiPath: ApiPath): string {
-    return `${apiPath.ai()}/preview-insights`;
+    return `${apiPath.ai()}/PreviewInsights`;
   }
 }
 
 export interface PreviewInsightsCommand_Result {
-  insights: string;
+  schoolClassId: string;
+  courseId: string;
+  fromDate: string;
+  toDate: string;
+  insightsHtml: string;
 }

@@ -41,6 +41,34 @@ export class ContentMapperTreeComponent implements OnInit, OnDestroy {
   nestedTreeControl: NestedTreeControl<GetContentTreeListQuery_Result>;
   nestedDataSource: MatTreeNestedDataSource<GetContentTreeListQuery_Result>;
   expandedNodes: GetContentTreeListQuery_Result[] = [];
+  selectedNodeId: string | null = null;
+
+  selectNode(node: GetContentTreeListQuery_Result): void {
+    this.selectedNodeId = node.entityId;
+  }
+
+  isSelected(node: GetContentTreeListQuery_Result): boolean {
+    return this.selectedNodeId === node.entityId;
+  }
+
+  getFolderIcon(node: GetContentTreeListQuery_Result): string {
+    if (node.isMaterialsFolder) {
+      return (node.children?.length ?? 0) > 0 ? 'menu_book' : 'book';
+    }
+    if (node.isQuestionsFolder) {
+      if ((node.children?.length ?? 0) === 0) return 'help_outline';
+      return node.isAutoMapped ? 'auto_awesome' : 'quiz';
+    }
+    return '';
+  }
+
+  getFolderIconColor(node: GetContentTreeListQuery_Result): string {
+    const count = node.children?.length ?? 0;
+    if (count === 0) return 'muted';
+    if (node.isMaterialsFolder) return 'materials';
+    if (node.isQuestionsFolder) return node.isAutoMapped ? 'auto' : 'manual';
+    return '';
+  }
 
   constructor(
     public readonly strings: StringsService,

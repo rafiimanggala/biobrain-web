@@ -6,6 +6,7 @@ import { CreateQuestionAnswerInput, CreateQuestionCommand } from 'src/app/api/co
 import { UpdateQuestionCommand } from 'src/app/api/content/update-question.command';
 import { QuestionType } from 'src/app/api/enums/question-type.enum';
 import { SummernoteService } from 'src/app/admin/services/summernote/summernote.service';
+import { SnackBarService } from 'src/app/share/services/snack-bar.service';
 import { StringsService } from 'src/app/share/strings.service';
 
 import { DialogAction } from '../../../../core/dialogs/dialog-action';
@@ -61,7 +62,8 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
     public readonly strings: StringsService,
     public readonly summernoteService: SummernoteService,
     @Inject(MAT_DIALOG_DATA) public readonly data: CreateQuestionDialogData,
-    private readonly _api: Api
+    private readonly _api: Api,
+    private readonly _snackBar: SnackBarService
   ) {
     super(data);
 
@@ -126,12 +128,13 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
   parseBulk(): void {
     this.bulkParsed = [];
     this.errorMessage = null;
-    const raw = (this.bulkText || '').trim();
+    const raw = this.normalizeText(this.bulkText || '').trim();
     if (!raw) {
       this.errorMessage = 'Paste some questions first.';
       return;
     }
-    const blocks = raw.split(/\n\s*---+\s*\n|\n{2,}(?=Q\s*[:.])/i);
+    // Split on --- separators, blank lines before Q:, or numbered prefixes like "1." / "1)"
+    const blocks = raw.split(/\n\s*---+\s*\n|\n{2,}(?=(?:Q\s*[:.)]|\d{1,3}\s*[.)]))/i);
     for (const block of blocks) {
       const parsed = this.parseSingleBlock(block.trim());
       if (parsed) this.bulkParsed.push(parsed);
@@ -139,6 +142,20 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
     if (this.bulkParsed.length === 0) {
       this.errorMessage = 'Could not parse any questions. Check the format.';
     }
+  }
+
+  private normalizeText(text: string): string {
+    return text
+      // Smart quotes → straight quotes
+      .replace(/[\u2018\u2019\u02BC]/g, "'")
+      .replace(/[\u201C\u201D]/g, '"')
+      // Various dashes → hyphen
+      .replace(/[\u2013\u2014]/g, '-')
+      // Non-breaking spaces → regular
+      .replace(/\u00A0/g, ' ')
+      // Windows line endings
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n');
   }
 
   private parseSingleBlock(block: string): BulkParsedQuestion | null {
@@ -150,21 +167,43 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
     let hint = '';
     let feedBack = '';
     const answers: { text: string; isCorrect: boolean }[] = [];
+    // Track if we're in the question text (multi-line) before first answer
+    let readingQuestion = false;
 
     for (const line of lines) {
-      const qMatch = line.match(/^Q\s*[:.]\s*(.*)$/i);
-      const hMatch = line.match(/^H(int)?\s*[:.]\s*(.*)$/i);
-      const fMatch = line.match(/^F(eedback)?\s*[:.]\s*(.*)$/i);
-      const aMatch = line.match(/^(\*?)\s*[A-Z]\s*[).]\s*(.*)$/);
+      // Question prefixes: "Q:", "Q.", "Q)", "1.", "1)", or first line without other markers
+      const qMatch = line.match(/^(?:Q|question)\s*[:.)]\s*(.*)$/i);
+      const numMatch = line.match(/^\d{1,3}\s*[.)]\s*(.+)$/);
+      const hMatch = line.match(/^(?:H|Hint)\s*[:.)]\s*(.*)$/i);
+      const fMatch = line.match(/^(?:F|Feedback|Fb|Explanation|Explain)\s*[:.)]\s*(.*)$/i);
+      // Answers: A), A., a), (A), [A], *A), *A., * A)
+      // Also support numbered: 1), 1. (when already in answers context, less common)
+      const aMatch = line.match(/^\s*(\*)?\s*[\(\[]?\s*([A-Za-z])\s*[\)\].]\s*(.+)$/);
 
-      if (qMatch) {
-        text = text ? `${text}<br>${qMatch[1]}` : qMatch[1];
-      } else if (hMatch) {
-        hint = hMatch[2] || '';
+      if (hMatch) {
+        hint = hMatch[1] || '';
+        readingQuestion = false;
       } else if (fMatch) {
-        feedBack = fMatch[2] || '';
-      } else if (aMatch) {
-        answers.push({ text: aMatch[2], isCorrect: aMatch[1] === '*' });
+        feedBack = fMatch[1] || '';
+        readingQuestion = false;
+      } else if (qMatch) {
+        text = text ? `${text}<br>${qMatch[1]}` : qMatch[1];
+        readingQuestion = true;
+      } else if (aMatch && (answers.length > 0 || text)) {
+        // Only treat as answer if we already have question text
+        answers.push({ text: aMatch[3].trim(), isCorrect: !!aMatch[1] });
+        readingQuestion = false;
+      } else if (numMatch && !text) {
+        // First numbered line is the question
+        text = numMatch[1];
+        readingQuestion = true;
+      } else if (readingQuestion && !aMatch) {
+        // Multi-line question continuation
+        text = text ? `${text}<br>${line}` : line;
+      } else if (!text && answers.length === 0) {
+        // First unmarked line = question text
+        text = line;
+        readingQuestion = true;
       }
     }
 
@@ -172,7 +211,7 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
       return { text, hint, feedBack, answers, parseError: 'Missing question text or answers' };
     }
     if (!answers.some(a => a.isCorrect)) {
-      return { text, hint, feedBack, answers, parseError: 'No answer marked correct (use * prefix)' };
+      return { text, hint, feedBack, answers, parseError: 'No answer marked correct (prefix with *)' };
     }
     return { text: `<p>${text}</p>`, hint, feedBack, answers };
   }
@@ -216,6 +255,7 @@ export class CreateQuestionDialogComponent extends DialogComponent<CreateQuestio
       this.lastSavedHeader = `${successCount} bulk questions`;
       this.bulkParsed = [];
       this.bulkText = '';
+      this._snackBar.showMessage(`Imported ${successCount} question${successCount === 1 ? '' : 's'} successfully`);
     } catch (err: any) {
       this.errorMessage = `Imported ${successCount}/${valid.length}. Error: ${err?.message ?? 'Failed.'}`;
     } finally {

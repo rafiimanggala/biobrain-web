@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
@@ -10,12 +10,8 @@ import { StringsService } from 'src/app/share/strings.service';
 import { Colors } from 'src/app/share/values/colors';
 
 import { Question } from '../../../api/content/content-data-models';
-import { Dialog } from '../../../core/dialogs/dialog.service';
-import { DialogAction } from '../../../core/dialogs/dialog-action';
 import { QuizResult } from '../../../core/services/quizzes/quiz-result';
 import { assertHasValue } from '../../../share/helpers/assert-has-value';
-import { StarRatingDialogComponent } from '../../../share/dialogs/star-rating-dialog/star-rating-dialog.component';
-import { StarRatingDialogData } from '../../../share/dialogs/star-rating-dialog/star-rating-dialog-data';
 
 import { QuizResultPageService } from './services/quiz-result-page.service';
 
@@ -24,17 +20,12 @@ import { QuizResultPageService } from './services/quiz-result-page.service';
   templateUrl: './quiz-result.component.html',
   styleUrls: ['./quiz-result.component.scss'],
 })
-export class QuizResultComponent extends BaseComponent implements OnDestroy, OnInit {
-  private static readonly QUIZ_COUNT_KEY = 'biobrain_quiz_completion_count';
-  private static readonly HAS_RATED_KEY = 'biobrain_has_rated';
-  private static readonly RATING_TRIGGERS = [3, 8, 15];
-
+export class QuizResultComponent extends BaseComponent implements OnDestroy {
   courseId: string = '';
   subjectName$: Observable<string>;
 
   constructor(
     private readonly _routingService: RoutingService,
-    private readonly _dialog: Dialog,
     public strings: StringsService,
     public readonly quizResultPageService: QuizResultPageService,
     activatedRoute: ActivatedRoute,
@@ -49,31 +40,6 @@ export class QuizResultComponent extends BaseComponent implements OnDestroy, OnI
       map(x => x?.subject?.name ?? ''),
       distinctUntilChanged(),
     );
-  }
-
-  ngOnInit(): void {
-    void this._checkAndShowRatingDialog();
-  }
-
-  private async _checkAndShowRatingDialog(): Promise<void> {
-    const hasRated = localStorage.getItem(QuizResultComponent.HAS_RATED_KEY) === 'true';
-    if (hasRated) return;
-
-    const currentCount = parseInt(localStorage.getItem(QuizResultComponent.QUIZ_COUNT_KEY) || '0', 10);
-    const newCount = currentCount + 1;
-    localStorage.setItem(QuizResultComponent.QUIZ_COUNT_KEY, String(newCount));
-
-    if (!QuizResultComponent.RATING_TRIGGERS.includes(newCount)) return;
-
-    const result = await this._dialog.show(
-      StarRatingDialogComponent,
-      new StarRatingDialogData('How are you finding BioBrain?'),
-      { disableClose: false, width: '420px' }
-    );
-
-    if (result && result.action === DialogAction.save) {
-      localStorage.setItem(QuizResultComponent.HAS_RATED_KEY, 'true');
-    }
   }
 
   getHexColor(data: { quizResult: QuizResult; question: Question | undefined }): string {

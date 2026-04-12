@@ -12,7 +12,7 @@ export class AskBiobrainCommand extends Command<AskBiobrainCommand_Result> {
   }
 
   getUrl(apiPath: ApiPath): string {
-    return `${apiPath.ai()}/ask`;
+    return `${apiPath.ai()}/Ask`;
   }
 }
 

@@ -28,7 +28,7 @@ const routes: Routes = [
       {
         path: 'custom-quiz',
         component: CustomQuizComponent,
-        canActivate: [SubscriptionGuard],
+        canActivate: [CourseSelectedGuard, SubscriptionGuard],
       },
       {
         path: 'quiz-result-history',

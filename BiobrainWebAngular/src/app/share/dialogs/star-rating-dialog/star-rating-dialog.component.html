@@ -18,18 +18,19 @@
   </div>
 
   <div class="rating-hint" *ngIf="rating >= 4">
-    Glad you love BioBrain! You'll be taken to leave a Google Review.
+    Glad you love BioBrain! You'll be taken to leave a Google Review<span *ngIf="displayName"> as {{ displayName }}</span>.
   </div>
 
   <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0 && rating < 4">
-    <mat-label>Feedback (optional)</mat-label>
+    <mat-label>Tell us how we can improve</mat-label>
     <textarea
       matInput
       [(ngModel)]="feedback"
       rows="3"
       maxlength="500"
-      placeholder="Tell us what you think...">
+      placeholder="Your feedback helps us improve BioBrain...">
     </textarea>
+    <mat-hint>Your feedback will be sent to our support team.</mat-hint>
   </mat-form-field>
 </mat-dialog-content>
 

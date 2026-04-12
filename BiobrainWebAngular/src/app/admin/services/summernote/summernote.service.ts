@@ -5,6 +5,11 @@ import { CodeviewToggleEventModel } from './codeview.toggle.event.model';
 import { ImageModel } from './image.model';
 import { AddImageOperation } from '../../operations/images/add-mage.operation';
 import { SelectImageOperation } from '../../operations/images/select-image.operation';
+import { Api } from 'src/app/api/api.service';
+import { UploadUserGuideImageCommand } from 'src/app/api/user-guides/upload-user-guide-image.command';
+import { firstValueFrom } from 'src/app/share/helpers/first-value-from';
+import { AppEventProvider } from 'src/app/core/app/app-event-provider.service';
+import { StringsService } from 'src/app/share/strings.service';
 declare var $: any;
 
 
@@ -18,6 +23,9 @@ export class SummernoteService {
         private readonly selectImageOperation: SelectImageOperation,
         private readonly route: ActivatedRoute,
         private readonly http: HttpClient,
+        private readonly api: Api,
+        private readonly appEvent: AppEventProvider,
+        private readonly strings: StringsService,
         // Need to invoke methods from js
         private ngZone: NgZone,
     ) {
@@ -52,14 +60,16 @@ export class SummernoteService {
 
     callbacks = {
         onPaste: (event: any) => { this.onPaste(event); },
-        onInit: (event: any) => { this.onInit(event); }
+        onInit: (event: any) => { this.onInit(event); },
+        onImageUpload: (files: FileList) => { this.uploadDroppedImages(files); }
     }
 
     get materialsConfig(): any {
         let config = {
             height: '250px',
             tabDisable: true,
-            disableDragAndDrop: true,
+            disableDragAndDrop: false,
+            maximumImageFileSize: 5 * 1024 * 1024, // 5 MB
             // dialogsInBody: true,
             // dialogsFade: true,
             colors: [
@@ -185,5 +195,32 @@ export class SummernoteService {
         var bufferText = ((e.originalEvent || e).clipboardData).getData('Text');
         e.preventDefault();
         document.execCommand('insertText', false, bufferText);
+    }
+
+    private uploadDroppedImages(files: FileList): void {
+        if (!files || files.length === 0) return;
+        // Capture the currently-focused summernote editor so we can insert into it
+        const activeEditor = $('.note-editable:focus').closest('.note-editor').find('.note-editable')[0]
+            || document.activeElement;
+        const $editor = activeEditor ? $(activeEditor).closest('.note-editor').prev() : null;
+        this.ngZone.run(async () => {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type || file.type.indexOf('image/') !== 0) {
+                    this.appEvent.errorEmit('Only image files can be dropped.');
+                    continue;
+                }
+                try {
+                    const result = await firstValueFrom(this.api.sendFile(new UploadUserGuideImageCommand(file)));
+                    if (result && result.fileLink && $editor && $editor.length) {
+                        $editor.summernote('insertImage', result.fileLink, (img: any) => {
+                            img.css('max-width', '100%');
+                        });
+                    }
+                } catch (err) {
+                    this.appEvent.errorEmit(this.strings.errors.errorSavingDataOnServer);
+                }
+            }
+        });
     }
 }

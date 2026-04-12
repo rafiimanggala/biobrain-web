@@ -9,6 +9,7 @@ import { DialogComponent } from '../../../core/dialogs/dialog-component';
 import { StarRatingDialogData, StarRatingDialogResult } from './star-rating-dialog-data';
 
 const GOOGLE_REVIEW_URL = 'https://g.page/biobrain/review';
+export const STAR_RATING_RESULT_PREFIX = 'biobrain.starRatingResult.';
 
 @Component({
   selector: 'star-rating-dialog',
@@ -22,6 +23,10 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
   submitting = false;
 
   readonly stars = [1, 2, 3, 4, 5];
+
+  get displayName(): string {
+    return this.dialogData.userName || '';
+  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: StarRatingDialogData,
@@ -58,9 +63,10 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
     try {
       if (this.rating >= 4) {
         window.open(GOOGLE_REVIEW_URL, '_blank');
-      } else {
-        await this._api.send(new SubmitFeedbackCommand(this.rating, trimmedFeedback)).toPromise();
       }
+
+      // Always submit feedback to backend for tracking
+      await this._api.send(new SubmitFeedbackCommand(this.rating, trimmedFeedback)).toPromise();
     } catch {
       // Don't block the dialog close on error
     } finally {

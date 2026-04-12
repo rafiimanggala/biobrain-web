@@ -2,12 +2,6 @@
   <ng-container *ngIf='data$ | async as data'>
     <div class='quiz-header' fxLayout='row' fxLayoutAlign='space-between center'>
       <span class='quiz-path'>{{data.path}}</span>
-      <button mat-icon-button
-              class='sound-toggle'
-              (click)='toggleSound(data.soundEnabled)'
-              [matTooltip]='getEffectiveSoundEnabled(data.soundEnabled) ? strings.soundOn : strings.soundOff'>
-        <mat-icon>{{ getEffectiveSoundEnabled(data.soundEnabled) ? 'volume_up' : 'volume_off' }}</mat-icon>
-      </button>
     </div>
 
     <div class='content-container' fxLayout='column' fxLayoutAlign='center center' fxFlex='1 1 100'>
@@ -17,6 +11,7 @@
         [totalQuestions]='data.totalQuestions'
         [nodeHeader]='data.nodeHeader'
         [hintsEnabled]='data.hintsEnabled'
+        [isCustomQuiz]='data.isCustomQuiz'
         (answerValueChange)='onAnswerValueChange(data.quizResult, data.question, $event)'
         class='quiz-content'>
       </app-question-content>

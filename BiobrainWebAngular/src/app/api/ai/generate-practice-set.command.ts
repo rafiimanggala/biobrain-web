@@ -14,7 +14,7 @@ export class GeneratePracticeSetCommand extends Command<GeneratePracticeSetComma
   }
 
   getUrl(apiPath: ApiPath): string {
-    return `${apiPath.ai()}/generate-practice-set`;
+    return `${apiPath.ai()}/GeneratePracticeSet`;
   }
 }
 

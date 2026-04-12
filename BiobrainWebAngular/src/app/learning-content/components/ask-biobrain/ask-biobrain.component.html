@@ -11,7 +11,7 @@
 
 <!-- Chat Panel -->
 <div class="chat-panel" *ngIf="isOpen">
-  <div class="chat-header" fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="chat-header" [style.background]="headerColor" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="chat-title" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
       <mat-icon>psychology</mat-icon>
       <span>Ask BioBrain</span>
@@ -35,9 +35,10 @@
     <div *ngFor="let msg of messages"
          class="message"
          [ngClass]="{'message-user': msg.role === 'user', 'message-assistant': msg.role === 'assistant'}">
-      <div class="message-bubble">
+      <div class="message-bubble" *ngIf="msg.role === 'user'" [style.background]="headerColor">
         {{msg.content}}
       </div>
+      <div class="message-bubble markdown-body" *ngIf="msg.role === 'assistant'" [innerHTML]="msg.renderedHtml"></div>
     </div>
 
     <div class="message message-assistant" *ngIf="isLoading">

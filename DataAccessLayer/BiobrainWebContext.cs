@@ -65,7 +65,8 @@ namespace DataAccessLayer
         public virtual DbSet<ContentTreeEntity> ContentTree { get; set; }
         public virtual DbSet<ContentTreeMetaEntity> ContentTreeMeta { get; set; }
         public virtual DbSet<IconEntity> Icons { get; set; }
-        
+        public virtual DbSet<ContentImageEntity> ContentImages { get; set; }
+
         public virtual DbSet<PageEntity> Pages { get; set; }
         public virtual DbSet<MaterialEntity> Materials { get; set; }
         public virtual DbSet<PageMaterialEntity> PageMaterials { get; set; }

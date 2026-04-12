@@ -1,0 +1,80 @@
+<div class="image-library-container">
+  <h2>Content Image Library</h2>
+
+  <!-- Upload Section -->
+  <mat-card class="upload-card">
+    <mat-card-title>Upload Image</mat-card-title>
+    <mat-card-content>
+      <div class="upload-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Code (identifier)</mat-label>
+          <input matInput [(ngModel)]="uploadCode" placeholder="e.g. cell-diagram-01" maxlength="100">
+          <mat-hint>Unique code to reference this image in content</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="uploadDescription" placeholder="Optional description" maxlength="1000">
+        </mat-form-field>
+
+        <div class="file-input-row">
+          <button mat-stroked-button (click)="fileInput.click()" type="button">
+            <mat-icon>attach_file</mat-icon>
+            Choose File
+          </button>
+          <span class="file-name">{{ selectedFileName || 'No file selected' }}</span>
+          <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="upload()" [disabled]="uploading || !selectedFile || !uploadCode.trim()">
+          <mat-icon>cloud_upload</mat-icon>
+          {{ uploading ? 'Uploading...' : 'Upload' }}
+        </button>
+      </div>
+
+      <div *ngIf="successMessage" class="message success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="message error">{{ errorMessage }}</div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Search & Library -->
+  <mat-card class="library-card">
+    <mat-card-title>
+      Image Library
+      <span class="count">({{ totalCount }} images)</span>
+    </mat-card-title>
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by code or description</mat-label>
+        <input matInput [(ngModel)]="search" (input)="onSearchChange()" placeholder="Search...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <div *ngIf="loading" class="loading">Loading...</div>
+
+      <div class="image-grid" *ngIf="!loading">
+        <mat-card *ngFor="let img of images" class="image-card" (click)="copyCode(img.code)">
+          <img [src]="img.fileLink" [alt]="img.code" class="image-thumbnail" loading="lazy">
+          <mat-card-content>
+            <div class="image-code">{{ img.code }}</div>
+            <div class="image-desc" *ngIf="img.description">{{ img.description }}</div>
+            <div class="image-meta">
+              {{ formatFileSize(img.fileSize) }} &middot; {{ img.createdAt | date:'short' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div *ngIf="!loading && images.length === 0" class="empty-state">
+        No images found.
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button mat-button [disabled]="page <= 1" (click)="prevPage()">Previous</button>
+        <span>Page {{ page }} of {{ totalPages }}</span>
+        <button mat-button [disabled]="page >= totalPages" (click)="nextPage()">Next</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

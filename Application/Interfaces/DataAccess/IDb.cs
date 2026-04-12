@@ -71,6 +71,7 @@ namespace Biobrain.Application.Interfaces.DataAccess
         DbSet<ContentTreeEntity> ContentTree { get; set; }
         DbSet<ContentTreeMetaEntity> ContentTreeMeta { get; set; }
         DbSet<IconEntity> Icons { get; set; }
+        DbSet<ContentImageEntity> ContentImages { get; set; }
 
         DbSet<PageEntity> Pages { get; set; }
         DbSet<MaterialEntity> Materials { get; set; }

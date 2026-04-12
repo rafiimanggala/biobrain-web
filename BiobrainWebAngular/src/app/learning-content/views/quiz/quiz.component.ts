@@ -32,7 +32,7 @@ import { CorrectnessService } from '../../services/correctness.service';
   providers: [CorrectnessService],
 })
 export class QuizComponent extends BaseComponent implements OnDestroy {
-  public readonly data$: Observable<{ quizResult: QuizResult; question: Question; questionIndex: number; totalQuestions: number; nodeHeader: string; path: string; hintsEnabled: boolean; soundEnabled: boolean }>;
+  public readonly data$: Observable<{ quizResult: QuizResult; question: Question; questionIndex: number; totalQuestions: number; nodeHeader: string; path: string; hintsEnabled: boolean; soundEnabled: boolean; isCustomQuiz: boolean }>;
   public readonly questionHasAnswer$: Observable<boolean>;
   public readonly attemptCounts$ = new BehaviorSubject<number>(0);
   public studentSoundOverride: boolean | null = null;
@@ -123,9 +123,12 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
             : quizResult.questions.findIndex(_ => _.questionId === question.questionId) + 1,
         totalQuestions: quiz.row.questions.filter(q => !quizResult.excludedQuestions.some(_ => _ === q.questionId)).length,
         nodeHeader: quiz.node.row.name ?? '',
-        path: quiz.fullName,
+        path: quiz.row.questions.length > AppSettings.quizQuestionsNumber
+          ? quiz.fullName.split(' › ').slice(0, 2).join(' › ') + ' › ' + (quiz.row as any).name
+          : quiz.fullName,
         hintsEnabled: quizResult.hintsEnabled,
         soundEnabled: quizResult.soundEnabled,
+        isCustomQuiz: quiz.row.questions.length > AppSettings.quizQuestionsNumber,
       })),
     );
 
@@ -141,7 +144,10 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
             }
           }
 
-          if (quizResult.questions.length >= AppSettings.quizQuestionsNumber || unansweredQuestions.length === 0) {
+          const maxQuestions = quiz.row.questions.length > AppSettings.quizQuestionsNumber
+            ? quiz.row.questions.length
+            : AppSettings.quizQuestionsNumber;
+          if (quizResult.questions.length >= maxQuestions || unansweredQuestions.length === 0) {
             this._finishQuiz(quizResult.quizResultId);
             return;
           }

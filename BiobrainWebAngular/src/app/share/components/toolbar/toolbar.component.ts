@@ -263,8 +263,8 @@ export class ToolbarComponent extends BaseComponent {
         }
         var items = [
           new NavigationItem(this.strings.glossary.toUpperCase(), this.routingService.glossary().toString()),
-          new NavigationItem(this.strings.results.toUpperCase(), this.routingService.quizResultHistory().toString()),
           new NavigationItem(this.strings.customQuiz.toUpperCase(), this.routingService.customQuiz().toString()),
+          new NavigationItem(this.strings.results.toUpperCase(), this.routingService.quizResultHistory().toString()),
           new NavigationItem(this.strings.savedItems.toUpperCase(), this.routingService.bookmarks().toString()),
         ];
         // for chemistry
@@ -298,7 +298,7 @@ export class ToolbarComponent extends BaseComponent {
             new NavigationItem(this.strings.classResults.toUpperCase(), this.routingService.classResults().toString()),
             new NavigationItem(this.strings.classAdmin.toUpperCase(), this.routingService.classAdmin().toString()),
             new NavigationItem(this.strings.workAssigned.toUpperCase(), this.routingService.workAssigned().toString()),
-            new NavigationItem(this.strings.createCustomQuiz.toUpperCase(), this.routingService.teacherCustomQuiz().toString()),
+            new NavigationItem(this.strings.createQuiz.toUpperCase(), this.routingService.teacherCustomQuiz().toString()),
             new NavigationItem(this.strings.quizTemplates.toUpperCase(), this.routingService.quizTemplates().toString()),
             new NavigationItem(this.strings.aiPracticeSet.toUpperCase(), this.routingService.aiPracticeSet().toString()),
             new NavigationItem(this.strings.aiInsights.toUpperCase(), this.routingService.aiInsights().toString()),

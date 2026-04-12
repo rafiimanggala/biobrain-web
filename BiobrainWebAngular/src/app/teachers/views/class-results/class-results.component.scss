@@ -12,6 +12,14 @@
 .header-row{
   padding: 10px;
   padding-left: 460px;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+
+@media (max-width: 1400px) {
+  .header-row {
+    padding-left: 10px;
+  }
 }
 
 .filter-container{

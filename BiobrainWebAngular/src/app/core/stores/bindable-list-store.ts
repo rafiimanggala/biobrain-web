@@ -147,6 +147,10 @@ export abstract class BindableListStoreBase<TItem, TCriteria, TNestedState> exte
     map(state => state.items)
   );
 
+  readonly isLoading$: Observable<boolean> = this.state$.pipe(
+    map(state => state.isLoading)
+  );
+
   readonly isChangedAfterLoad$: Observable<boolean> = this.state$.pipe(
     map(state => state.isChangedAfterLoad)
   );

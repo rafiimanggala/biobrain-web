@@ -107,17 +107,30 @@ namespace Biobrain.Application.Quizzes.CreateQuizFromTemplate
                     .Select(scs => scs.StudentId)
                     .ToListAsync(cancellationToken);
 
+                var now = DateTime.UtcNow;
+                var nowLocal = DateTime.Now;
+                var dueUtc = now.AddDays(7);
+                var dueLocal = nowLocal.AddDays(7);
+
                 var quizAssignmentEntity = new QuizAssignmentEntity
                 {
                     QuizAssignmentId = Guid.NewGuid(),
                     QuizId = quizEntity.QuizId,
                     SchoolClassId = request.SchoolClassId,
                     AssignedByTeacherId = request.TeacherId,
+                    DueAtUtc = dueUtc,
+                    DueAtLocal = dueLocal,
+                    AssignedAtUtc = now,
+                    AssignedAtLocal = nowLocal,
                     QuizStudentAssignments = studentIds.Select(studentId => new QuizStudentAssignmentEntity
                     {
                         QuizStudentAssignmentId = Guid.NewGuid(),
                         AssignedToUserId = studentId,
                         AttemptNumber = 1,
+                        DueAtUtc = dueUtc,
+                        DueAtLocal = dueLocal,
+                        AssignedAtUtc = now,
+                        AssignedAtLocal = nowLocal,
                     }).ToList(),
                 };
                 await Db.QuizAssignments.AddAsync(quizAssignmentEntity, cancellationToken);

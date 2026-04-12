@@ -1,6 +1,7 @@
 export class StarRatingDialogData {
   constructor(
     public readonly title: string = 'Rate BioBrain',
+    public readonly userName: string = '',
   ) {}
 }
 

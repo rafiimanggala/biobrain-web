@@ -1,0 +1,132 @@
+.image-library-container {
+  padding: 16px;
+  max-width: 1200px;
+
+  h2 {
+    margin-bottom: 16px;
+  }
+}
+
+.upload-card {
+  margin-bottom: 24px;
+
+  .upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+  }
+
+  .file-input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .file-name {
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+    }
+  }
+}
+
+.library-card {
+  .count {
+    font-size: 14px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.54);
+    margin-left: 8px;
+  }
+
+  .search-field {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 8px;
+  }
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.image-card {
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .image-thumbnail {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .image-code {
+    font-weight: 500;
+    font-size: 13px;
+    word-break: break-all;
+    margin-top: 4px;
+  }
+
+  .image-desc {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .image-meta {
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.38);
+    margin-top: 4px;
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 32px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 8px 0;
+
+  span {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+.message {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+
+  &.success {
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  &.error {
+    background: #ffebee;
+    color: #c62828;
+  }
+}

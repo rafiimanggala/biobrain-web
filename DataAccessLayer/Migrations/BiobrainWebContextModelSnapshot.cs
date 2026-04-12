@@ -118,6 +118,44 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AccessCodeMilestone");
                 });
 
+            modelBuilder.Entity("Biobrain.Domain.Entities.Content.ContentImageEntity", b =>
+                {
+                    b.Property<Guid>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("UploadedByUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("Code");
+
+                    b.ToTable("ContentImages");
+                });
+
             modelBuilder.Entity("Biobrain.Domain.Entities.Content.ContentTreeEntity", b =>
                 {
                     b.Property<Guid>("NodeId")
