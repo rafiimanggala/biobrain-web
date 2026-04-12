@@ -77,6 +77,7 @@ export class QuizzesService {
           result.courseId,
           result.contentTreeNodeId,
           result.questions,
+          result.name,
         );
         return from(learningContentDb.quizzes.put(quizRow)).pipe(
           switchMap(() => this._contentTreeService.findNode(result.contentTreeNodeId).pipe(

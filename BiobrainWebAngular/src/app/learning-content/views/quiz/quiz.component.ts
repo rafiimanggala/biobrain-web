@@ -124,7 +124,7 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
         totalQuestions: quiz.row.questions.filter(q => !quizResult.excludedQuestions.some(_ => _ === q.questionId)).length,
         nodeHeader: quiz.node.row.name ?? '',
         path: quiz.row.questions.length > AppSettings.quizQuestionsNumber
-          ? quiz.fullName.split(' › ').slice(0, 2).join(' › ') + ' › ' + (quiz.row as any).name
+          ? quiz.fullName.split(' › ').slice(0, 2).join(' › ') + (quiz.row.name ? ' › ' + quiz.row.name : '')
           : quiz.fullName,
         hintsEnabled: quizResult.hintsEnabled,
         soundEnabled: quizResult.soundEnabled,
