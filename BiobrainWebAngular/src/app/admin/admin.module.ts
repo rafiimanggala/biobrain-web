@@ -29,6 +29,7 @@ import { AllStudentsPageComponent } from './students/all-students-page/all-stude
 import { UsageReportComponent } from './reports/usage-report/usage-report.component';
 import { ContentLoaderComponent } from './content/content-loader/content-loader.component';
 import { ContentImportComponent } from './content/content-import/content-import.component';
+import { CourseImportComponent } from './content/course-import/course-import.component';
 import { AccessCodesListComponent } from './access-codes/access-codes-list/access-codes-list.component';
 import { EditBatchDialog } from './dialogs/edit-batch-dialog/edit-batch-dialog.component';
 import { AutoMapOptionsDialogComponent } from './content/dialogs/auto-map-options-dialog/auto-map-options-dialog.component';
@@ -94,6 +95,7 @@ const components = [
   UsageReportComponent,
   ContentLoaderComponent,
   ContentImportComponent,
+  CourseImportComponent,
   AccessCodesListComponent,
   TemplatesListComponent,
   ContentReportComponent,

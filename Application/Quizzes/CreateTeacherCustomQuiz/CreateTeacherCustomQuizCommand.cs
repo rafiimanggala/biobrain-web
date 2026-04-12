@@ -156,6 +156,8 @@ namespace Biobrain.Application.Quizzes.CreateTeacherCustomQuiz
                         CourseId = request.CourseId,
                         ContentTreeNodeIdsJson = JsonSerializer.Serialize(request.ContentTreeNodeIds),
                         QuestionCount = request.QuestionCount,
+                        HintsEnabled = request.HintsEnabled,
+                        SoundEnabled = request.SoundEnabled,
                     };
                     await Db.AddAsync(templateEntity, cancellationToken);
                 }

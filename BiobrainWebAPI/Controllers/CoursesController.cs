@@ -4,6 +4,7 @@ using Biobrain.Application.Courses.GetCourses;
 using Biobrain.Application.Courses.GetCoursesForSchool;
 using Biobrain.Application.Courses.GetCoursesForStudent;
 using Biobrain.Application.Courses.GetCoursesForTeacher;
+using Biobrain.Application.Courses.ImportCourses;
 using BiobrainWebAPI.Core.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -37,5 +38,10 @@ namespace BiobrainWebAPI.Controllers
         [HttpGet]
         public Task<ActionResult<List<GetCoursesForTeacherQuery.Result>>> GetCoursesForTeacher([FromQuery] GetCoursesForTeacherQuery query)
             => _mediator.Send(query).ToActionResult();
+
+        [Authorize]
+        [HttpPost]
+        public Task<ActionResult<ImportCoursesCommand.Result>> ImportCourses([FromBody] ImportCoursesCommand command)
+            => _mediator.Send(command).ToActionResult();
     }
 }

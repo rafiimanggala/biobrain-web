@@ -31,7 +31,7 @@ import { SelectClassDialogData } from '../../dialogs/select-class-dialog/select-
 })
 export class QuizTemplatesComponent extends BaseComponent implements OnInit {
   templates: QuizTemplate[] = [];
-  displayedColumns: string[] = ['name', 'questionCount', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['name', 'questionCount', 'hints', 'sound', 'createdAt', 'actions'];
 
   private _userId = '';
   private _courseId = '';

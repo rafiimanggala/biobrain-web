@@ -92,8 +92,10 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
     const wCoeff = this.canvas.width / this._baseWidth;
     const coeff = Math.min(wCoeff, hCoeff);
     this._koef = Math.min(Math.max(coeff, this._koef), this._maxCoefficient);
-    const width = this._hexWidth * 4 + this._d * 3;
-    const height = this._hexHeight * 2.5 + this._d * 2;
+    const cols = this._cols;
+    const rows = Math.ceil(this.results.length / cols);
+    const width = this._hexWidth * cols + this._d * (cols - 1);
+    const height = this._hexHeight * (0.75 * rows + 0.25) + this._d * (rows - 1);
     this._drawRect = new Rect((this.canvas.width - width) / 2, (this.canvas.height - height) / 2, width, height);
 
     this._hexagones = [];

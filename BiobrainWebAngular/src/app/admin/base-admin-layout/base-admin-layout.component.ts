@@ -48,6 +48,7 @@ export class BaseAdminLayoutComponent implements OnInit {
     this.navigationItems = [
       new NavigationItem(this.strings.contentMapper, 'content_mapper'),
       new NavigationItem('Content Import', 'content_import'),
+      new NavigationItem('Course Import', 'courses_import'),
       new NavigationItem(this.strings.schools, 'schools'),
       new NavigationItem(this.strings.students, 'students'),
       new NavigationItem(this.strings.accessCodes, 'access_codes'),

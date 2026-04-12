@@ -23,5 +23,7 @@ export interface QuizTemplate {
   readonly name: string;
   readonly questionCount: number;
   readonly courseId: string;
+  readonly hintsEnabled: boolean;
+  readonly soundEnabled: boolean;
   readonly createdAt: Date;
 }

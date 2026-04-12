@@ -11,6 +11,8 @@ namespace Biobrain.Domain.Entities.Quiz
         public Guid CourseId { get; set; }
         public string ContentTreeNodeIdsJson { get; set; } // JSON array of Guid
         public int QuestionCount { get; set; }
+        public bool HintsEnabled { get; set; } = true;
+        public bool SoundEnabled { get; set; } = true;
         public DateTime CreatedAt { get; set; }
     }
 }

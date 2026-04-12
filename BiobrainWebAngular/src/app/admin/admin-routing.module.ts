@@ -15,6 +15,7 @@ import { AllStudentsPageComponent } from './students/all-students-page/all-stude
 import { UsageReportComponent } from './reports/usage-report/usage-report.component';
 import { ContentLoaderComponent } from './content/content-loader/content-loader.component';
 import { ContentImportComponent } from './content/content-import/content-import.component';
+import { CourseImportComponent } from './content/course-import/course-import.component';
 import { AccessCodesListComponent } from './access-codes/access-codes-list/access-codes-list.component';
 import { TemplatesListComponent } from './templates/templates-list/templates-list.component';
 import { ContentReportComponent } from './reports/content-report/content-report.component';
@@ -55,6 +56,15 @@ const routes: Routes = [
       {
         path: 'content_import',
         component: ContentImportComponent,
+        data: {
+          roles: [UserRoles.systemAdministrator],
+          navigatingSave: true,
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'courses_import',
+        component: CourseImportComponent,
         data: {
           roles: [UserRoles.systemAdministrator],
           navigatingSave: true,

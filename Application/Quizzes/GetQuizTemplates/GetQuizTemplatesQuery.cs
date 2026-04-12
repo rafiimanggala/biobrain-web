@@ -31,6 +31,8 @@ namespace Biobrain.Application.Quizzes.GetQuizTemplates
             public string Name { get; set; }
             public int QuestionCount { get; set; }
             public Guid CourseId { get; set; }
+            public bool HintsEnabled { get; set; }
+            public bool SoundEnabled { get; set; }
             public DateTime CreatedAt { get; set; }
         }
 
@@ -73,6 +75,8 @@ namespace Biobrain.Application.Quizzes.GetQuizTemplates
                         Name = t.Name,
                         QuestionCount = t.QuestionCount,
                         CourseId = t.CourseId,
+                        HintsEnabled = t.HintsEnabled,
+                        SoundEnabled = t.SoundEnabled,
                         CreatedAt = t.CreatedAt,
                     })
                     .ToListAsync(cancellationToken);

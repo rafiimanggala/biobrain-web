@@ -1,0 +1,163 @@
+@import '../../../styles/variables.scss';
+
+.container {
+  padding: 20px;
+}
+
+.file-name {
+  color: #666;
+  font-style: italic;
+}
+
+.separator {
+  color: #999;
+  font-size: 14px;
+}
+
+.preview-section {
+  h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.preview-table {
+  width: 100%;
+}
+
+.invalid-row {
+  background: #fff3f3;
+}
+
+.status-ok {
+  color: #2e7d32;
+}
+
+.status-error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #d32f2f;
+  font-size: 12px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #d32f2f;
+  }
+}
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #ffeef0;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #d32f2f;
+
+  mat-icon {
+    color: #d32f2f;
+  }
+}
+
+.result-box {
+  padding: 16px;
+  background: #f0f9f0;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+
+  h3 {
+    margin: 0 0 12px 0;
+    color: #2e7d32;
+  }
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+  max-width: 300px;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  border-radius: 4px;
+}
+
+.result-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.result-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2e7d32;
+
+  &.success {
+    color: #2e7d32;
+  }
+
+  &.error {
+    color: #d32f2f;
+  }
+}
+
+.error-list {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #fff3f3;
+  border-radius: 4px;
+
+  ul {
+    margin: 4px 0 0 0;
+    padding-left: 20px;
+  }
+
+  li {
+    font-size: 13px;
+    color: #d32f2f;
+    margin-bottom: 2px;
+  }
+}
+
+.help-panel {
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.format-reference {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  overflow-x: auto;
+}
+
+.format-notes {
+  margin-top: 12px;
+
+  p {
+    margin: 4px 0;
+    font-size: 13px;
+    color: #666;
+  }
+}

@@ -62,6 +62,16 @@
     font-size: 14px;
   }
 
+  .enabled {
+    color: #4caf50;
+    font-size: 20px;
+  }
+
+  .disabled {
+    color: #bdbdbd;
+    font-size: 20px;
+  }
+
   button {
     mat-icon {
       margin-right: 4px;

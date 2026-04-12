@@ -122,6 +122,8 @@ namespace Biobrain.Application.Quizzes.CreateQuizFromTemplate
                     DueAtLocal = dueLocal,
                     AssignedAtUtc = now,
                     AssignedAtLocal = nowLocal,
+                    HintsEnabled = template.HintsEnabled,
+                    SoundEnabled = template.SoundEnabled,
                     QuizStudentAssignments = studentIds.Select(studentId => new QuizStudentAssignmentEntity
                     {
                         QuizStudentAssignmentId = Guid.NewGuid(),

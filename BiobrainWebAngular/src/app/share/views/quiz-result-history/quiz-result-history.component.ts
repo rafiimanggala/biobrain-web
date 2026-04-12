@@ -305,7 +305,7 @@ export function getFlex(name: string, depth: number): number {
   if (name.toLocaleLowerCase().includes("subtopic"))
     flex = 3;
   if (name.toLocaleLowerCase().includes("topic") && !name.toLocaleLowerCase().includes("subtopic")) {
-    if (depth = 0)
+    if (depth === 0)
       flex = 0.5;
     else
       flex = 2;
