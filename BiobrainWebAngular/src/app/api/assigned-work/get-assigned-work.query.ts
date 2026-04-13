@@ -24,8 +24,8 @@ export interface ActiveQuizAssignment {
   readonly nodeId: string;
   readonly path: string[];
   readonly nameLines: string[];
-  readonly dueAt: Date;
-  readonly assignedAt: Date;
+  readonly dueAt: Date | null;
+  readonly assignedAt: Date | null;
 }
 
 export interface ActiveLearningMaterialAssignment {
@@ -33,6 +33,6 @@ export interface ActiveLearningMaterialAssignment {
   readonly nodeId: string;
   readonly path: string[];
   readonly nameLines: string[];
-  readonly dueAt: Date;
-  readonly assignedAt: Date;
+  readonly dueAt: Date | null;
+  readonly assignedAt: Date | null;
 }

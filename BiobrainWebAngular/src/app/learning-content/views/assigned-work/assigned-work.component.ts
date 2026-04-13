@@ -258,7 +258,7 @@ export class AssignedWorkComponent extends BaseComponent implements OnInit {
     return columns.sort((a: ColDef, b: ColDef) => a?.colId?.localeCompare(b?.colId ?? '') ?? 0);
   }
 
-  formatDate(date: Date) {
+  formatDate(date: Date | null) {
     return formatDate(date);
   }
 
@@ -307,21 +307,23 @@ export class AssignedWorkComponent extends BaseComponent implements OnInit {
     }
   }
 
-  getDueDateColor(date: Date): string {
-    if (moment().isAfter(toLocal(date).endOf('day')))
+  getDueDateColor(date: Date | null): string {
+    const local = toLocal(date);
+    if (!local) return '';
+    if (moment().isAfter(local.endOf('day')))
       return 'red';
     return 'green';
   }
 }
 
 function formatDate(date: Date | null | undefined): string {
-  assertHasValue(date);
+  if (!date) return '—';
 
-  return toLocal(date).format('DD MMM YY');
+  return moment.utc(date).local().format('DD MMM YY');
 }
 
-function toLocal(date: Date | null | undefined): Moment {
-  assertHasValue(date);
+function toLocal(date: Date | null | undefined): Moment | null {
+  if (!date) return null;
   return moment.utc(date).local();
 }
 
@@ -331,16 +333,18 @@ function convertAssignedWorkToRows(assignedWork: AssignedWork): RowModel[] {
   result.push(...assignedWork.learningMaterials);
 
   result.sort((x1, x2) => {
-    const dueDate1 = toLocal(x1.dueAt).startOf('day');
-    const dueDate2 = toLocal(x2.dueAt).startOf('day');
+    const dueDate1 = toLocal(x1.dueAt)?.startOf('day');
+    const dueDate2 = toLocal(x2.dueAt)?.startOf('day');
 
-    if (dueDate1.valueOf() !== dueDate2.valueOf()) {
+    if (dueDate1 && dueDate2 && dueDate1.valueOf() !== dueDate2.valueOf()) {
       return dueDate2.valueOf() < dueDate1.valueOf() ? 1 : -1;
     }
+    if (!dueDate1 && dueDate2) return 1;
+    if (dueDate1 && !dueDate2) return -1;
 
-    const assignedDate1 = toLocal(x1.assignedAt).startOf('day');
-    const assignedDate2 = toLocal(x2.assignedAt).startOf('day');
-    if (assignedDate1.valueOf() !== x2.assignedAt.valueOf()) {
+    const assignedDate1 = toLocal(x1.assignedAt)?.startOf('day');
+    const assignedDate2 = toLocal(x2.assignedAt)?.startOf('day');
+    if (assignedDate1 && assignedDate2 && assignedDate1.valueOf() !== assignedDate2.valueOf()) {
       return assignedDate1.valueOf() < assignedDate2.valueOf() ? 1 : -1;
     }
 
@@ -379,6 +383,7 @@ function tuneGrid(gridApi: GridApi): void {
 
 export function getDueDateCellColor(params: ICellRendererParams): { 'color': string } | undefined {
   let date = toLocal((params.node?.data as RowModel)?.dueAt);
+  if (!date) return undefined;
   if (moment().isAfter(date.endOf('day')))
     return { color: 'red' };
   return { color: 'green' };

@@ -25,8 +25,8 @@ export interface ActiveQuizClassAssignment {
   readonly nodeId: string;
   readonly path: string[];
   readonly title: string,
-  readonly dueAt: Date;
-  readonly assignedAt: Date;
+  readonly dueAt: Date | null;
+  readonly assignedAt: Date | null;
   readonly studentAssigned: number;
   readonly status: AssignmentStatus;
 }
@@ -36,8 +36,8 @@ export interface ActiveLearningMaterialClassAssignment {
   readonly nodeId: string;
   readonly path: string[];
   readonly title: string,
-  readonly dueAt: Date;
-  readonly assignedAt: Date;
+  readonly dueAt: Date | null;
+  readonly assignedAt: Date | null;
   readonly studentAssigned: number;
   readonly status: AssignmentStatus;
 }

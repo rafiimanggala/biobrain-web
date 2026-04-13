@@ -47,9 +47,9 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
 
             public List<string> NameLines { get; init; }
 
-            public DateTime DueAt { get; init; }
+            public DateTime? DueAt { get; init; }
 
-            public DateTime AssignedAt { get; init; }
+            public DateTime? AssignedAt { get; init; }
         }
 
 
@@ -64,9 +64,9 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
 
             public List<string> NameLines { get; init; }
 
-            public DateTime DueAt { get; init; }
+            public DateTime? DueAt { get; init; }
 
-            public DateTime AssignedAt { get; init; }
+            public DateTime? AssignedAt { get; init; }
         }
 
         internal sealed class Validator : ValidatorBase<GetAssignedWorkQuery>
@@ -174,13 +174,8 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
                                                   .ResolvePath(_.QuizAssignment.Quiz.ContentTreeId, courseStructure)
                                                   .ToImmutableList(),
                                               NameLines = nameLines,
-                                              DueAt = _.DueAtUtc ??
-                                                      DateTime
-                                                          .UnixEpoch, // for quizzes assigned by student Due Date must be not null
-                                              AssignedAt =
-                                                  _.AssignedAtUtc ??
-                                                  DateTime
-                                                      .UnixEpoch // for quizzes assigned by student Assigned Date must be not null
+                                              DueAt = _.DueAtUtc,
+                                              AssignedAt = _.AssignedAtUtc
                                           };
                                       })
                                       .ToImmutableList();

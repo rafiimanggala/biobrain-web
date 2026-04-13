@@ -45,9 +45,9 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
 
             public string Title { get; set; }
 
-            public DateTime DueAt { get; init; }
+            public DateTime? DueAt { get; init; }
 
-            public DateTime AssignedAt { get; init; }
+            public DateTime? AssignedAt { get; init; }
 
             public int StudentAssigned { get; init; }
 
@@ -66,9 +66,9 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
 
             public string Title { get; set; }
 
-            public DateTime DueAt { get; init; }
+            public DateTime? DueAt { get; init; }
 
-            public DateTime AssignedAt { get; init; }
+            public DateTime? AssignedAt { get; init; }
 
             public int StudentAssigned { get; init; }
 
@@ -177,12 +177,8 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
                                 Path = contentTreePathResolver.ResolvePath(_.Quiz.ContentTreeId, courseStructure).ToImmutableList(),
                                 Title = _templateService.ApplyTemplate(titleTemplate?.Template?.Value ?? string.Empty,
                                     path.Select(x => new TemplateValue { Index = x.Index, Name = x.Value }).ToList()),
-                                DueAt = _.DueAtUtc ??
-                                        DateTime.UnixEpoch, // for quizzes assigned by student Due Date must be not null
-                                AssignedAt =
-                                    _.AssignedAtUtc ??
-                                    DateTime
-                                        .UnixEpoch, // for quizzes assigned by student Assigned Date must be not null
+                                DueAt = _.DueAtUtc,
+                                AssignedAt = _.AssignedAtUtc,
                                 StudentAssigned = _.QuizStudentAssignments.Count,
                                 Status = _.QuizStudentAssignments.All(_ => _.Result?.CompletedAt != null)
                                     ? Constant.QuizAssignmentStatus.Complete

@@ -294,11 +294,11 @@ export class TeacherAssignedWorkComponent extends BaseComponent implements OnIni
           cellRenderer: 'editableCellRenderer',
           cellRendererParams: {
             clicked: (data: any) => {
-              if ('quizAssignmentId' in data) {
+              if ('quizAssignmentId' in data && data.dueAt) {
                 this.onQuizEditDueDate.bind(this)(data.quizAssignmentId, moment.utc(data.dueAt).local());
               }
 
-              if ('learningMaterialAssignmentId' in data) {
+              if ('learningMaterialAssignmentId' in data && data.dueAt) {
                 this.onMaterialEditDueDate.bind(this)(data.learningMaterialAssignmentId, moment.utc(data.dueAt).local());
               }
             },
@@ -396,7 +396,7 @@ export class TeacherAssignedWorkComponent extends BaseComponent implements OnIni
 }
 
 function formatDate(date: Date | null | undefined): string {
-  assertHasValue(date);
+  if (!date) return '—';
 
   return moment.utc(date).local().format('DD MMM YY');
 }
@@ -410,16 +410,18 @@ function convertAssignedWorkToRows(assignedWork: TeacherAssignedWork): RowModel[
   .sort((x1, x2) => {return ('quizAssignmentId' in x1) ? 1 : -1;})
   .sort((x1, x2) => {return x1.title.localeCompare(x2.title)})
   .sort((x1, x2) => {
-    const dueDate1 = moment.utc(x1.dueAt).local().startOf('day');
-    const dueDate2 = moment.utc(x2.dueAt).local().startOf('day');
+    const dueDate1 = x1.dueAt ? moment.utc(x1.dueAt).local().startOf('day') : null;
+    const dueDate2 = x2.dueAt ? moment.utc(x2.dueAt).local().startOf('day') : null;
 
-    if (dueDate1.valueOf() !== dueDate2.valueOf()) {
+    if (dueDate1 && dueDate2 && dueDate1.valueOf() !== dueDate2.valueOf()) {
       return dueDate2.valueOf() < dueDate1.valueOf() ? 1 : -1;
     }
+    if (!dueDate1 && dueDate2) return 1;
+    if (dueDate1 && !dueDate2) return -1;
 
-    const assignedDate1 = moment.utc(x1.assignedAt).local().startOf('day');
-    const assignedDate2 = moment.utc(x2.assignedAt).local().startOf('day');
-    if (assignedDate1.valueOf() !== x2.assignedAt.valueOf()) {
+    const assignedDate1 = x1.assignedAt ? moment.utc(x1.assignedAt).local().startOf('day') : null;
+    const assignedDate2 = x2.assignedAt ? moment.utc(x2.assignedAt).local().startOf('day') : null;
+    if (assignedDate1 && assignedDate2 && assignedDate1.valueOf() !== assignedDate2.valueOf()) {
       return assignedDate1.valueOf() < assignedDate2.valueOf() ? 1 : -1;
     }
 

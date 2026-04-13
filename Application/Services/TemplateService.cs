@@ -39,7 +39,11 @@ namespace Biobrain.Application.Services
                 var modificator = match.Groups[3].Value;
                 
                 if(!int.TryParse(indexString,out var index)) continue;
-                if(values.Count() < index+1) continue;
+                if(values.Count() < index+1)
+                {
+                    result = result.Remove(match.Index, match.Length);
+                    continue;
+                }
 
                 result = result.Remove(match.Index, match.Length);
                 if (modificator == Modificator.Index)
