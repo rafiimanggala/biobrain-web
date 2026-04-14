@@ -74,7 +74,7 @@ export class AskBiobrainComponent implements OnDestroy {
 
     const userMessage: ChatMessage = { role: 'user', content: question };
     this.messages = [...this.messages, userMessage];
-    this._scrollToBottom();
+    this._scrollToLatestMessage();
 
     this.isLoading = true;
 
@@ -106,7 +106,7 @@ export class AskBiobrainComponent implements OnDestroy {
       this.errorMessage = 'Failed to get a response. Please try again.';
     } finally {
       this.isLoading = false;
-      this._scrollToBottom();
+      this._scrollToLatestMessage();
     }
   }
 
@@ -175,11 +175,17 @@ export class AskBiobrainComponent implements OnDestroy {
     return out.join('\n');
   }
 
-  private _scrollToBottom(): void {
+  private _scrollToLatestMessage(): void {
     setTimeout(() => {
       if (this.messageListEl) {
         const el = this.messageListEl.nativeElement;
-        el.scrollTop = el.scrollHeight;
+        const messageElements = el.querySelectorAll('.message');
+        if (messageElements.length > 0) {
+          const lastMessage = messageElements[messageElements.length - 1];
+          lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          el.scrollTop = el.scrollHeight;
+        }
       }
     }, 50);
   }

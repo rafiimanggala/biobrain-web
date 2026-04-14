@@ -2,6 +2,11 @@
   <ng-container *ngIf='data$ | async as data'>
     <div class='quiz-header' fxLayout='row' fxLayoutAlign='space-between center'>
       <span class='quiz-path'>{{data.path}}</span>
+      <button mat-icon-button
+              (click)='toggleSound(data.soundEnabled)'
+              [matTooltip]='getEffectiveSoundEnabled(data.soundEnabled) ? "Sound On" : "Sound Off"'>
+        <mat-icon>{{getEffectiveSoundEnabled(data.soundEnabled) ? 'volume_up' : 'volume_off'}}</mat-icon>
+      </button>
     </div>
 
     <div class='content-container' fxLayout='column' fxLayoutAlign='center center' fxFlex='1 1 100'>

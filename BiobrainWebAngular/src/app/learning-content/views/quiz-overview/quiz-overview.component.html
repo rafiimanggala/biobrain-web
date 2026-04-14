@@ -14,6 +14,10 @@
                             <app-hexagone id="{{question.questionHeader}}" class="hex" [text]="question.questionHeader"
                                 [color]="getHexColor()" [textColor]="'#ffffff'" fxFlex="0 0 60px">
                             </app-hexagone>
+                            <button mat-raised-button color='accent' class='remove-button'
+                                (click)='quizOverviewPageService.removeAddBackQuestion(question)'>
+                                {{(question.isExcluded ? strings.addBack : strings.remove) | titlecase}}
+                            </button>
                         </div>
                         <div>
                             <div fxLayout="column" fxLayoutAlign="start">

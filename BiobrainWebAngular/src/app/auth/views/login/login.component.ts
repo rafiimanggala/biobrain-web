@@ -137,6 +137,9 @@ export class LoginComponent extends BaseComponent implements OnInit, OnDestroy {
       const currentUser = await this._userService.user;
       if (!hasValue(currentUser) || !hasValue(currentUser.userId)) return;
 
+      // Only show star rating to students
+      if (!currentUser.isStudent()) return;
+
       const userId = currentUser.userId;
       const countKey = STAR_RATING_STORAGE_PREFIX + userId;
       const shownKey = STAR_RATING_SHOWN_PREFIX + userId;

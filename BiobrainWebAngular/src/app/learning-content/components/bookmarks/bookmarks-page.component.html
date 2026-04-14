@@ -6,6 +6,11 @@
   </div> -->
   <app-page-bradscrumbs [courseId]='courseId' [pageName]='strings.savedItems'></app-page-bradscrumbs>
   <div class='bookmarks-list' fxLayout="column" fxLayoutGap="2px">
+    <div *ngIf="bookmarks && bookmarks.length === 0" class="empty-state" fxLayout="column" fxLayoutAlign="center center">
+      <mat-icon class="empty-icon">bookmark_border</mat-icon>
+      <p>No saved items yet.</p>
+      <p class="empty-hint">Tap the bookmark icon on any content to save it here.</p>
+    </div>
     <div class="bookmark-item" *ngFor="let bookmark of bookmarks" fxLayout="row" fxLayoutAlign="space-between" (click)="onBookmarkClick(bookmark)">
       <div class="bookmark-item-title" fxLayout="raw wrap" fxLayoutAlign="start center">
         <div fxLayout="raw" fxLayoutAlign="start center" *ngFor="let pathItem of bookmark.path; last as isLast">
