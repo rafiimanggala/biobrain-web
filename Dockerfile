@@ -23,15 +23,13 @@ COPY Biobrain.Infrastructure.Payments/ Biobrain.Infrastructure.Payments/
 COPY BiobrainWebAPI/ BiobrainWebAPI/
 
 RUN dotnet publish BiobrainWebAPI/BiobrainWebAPI.csproj -c Release -o /app/publish --no-restore \
-    && find /app/publish -name "libwkhtmltox*" -delete \
-    && find /app/publish -name "libSkiaSharp*" -delete \
     && find /app/publish -name "*.so" -exec echo "[BUILD] Native lib: {}" \;
 
 # ---- Runtime Stage ----
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
-# Minimal native deps (PDF/chart native libs removed at build time)
+# Native deps for SkiaSharp (charts) + wkhtmltopdf (PDF reports)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdiplus \
     libfontconfig1 \
@@ -39,6 +37,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6 \
     libpng16-16 \
     zlib1g \
+    libxrender1 \
+    libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/publish .

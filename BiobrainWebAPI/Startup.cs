@@ -86,32 +86,32 @@ namespace BiobrainWebAPI
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BiobrainWebContext db)
 		{
 			Console.WriteLine("[Startup] Configure starting..."); Console.Out.Flush();
-			// Ensure uuid-ossp extension exists before running migrations
-			Console.WriteLine("[Startup] Creating uuid-ossp extension..."); Console.Out.Flush();
-			db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
-
-			// Drop stale migration history if tables don't actually exist
 			try
 			{
-				var hasUsers = db.Database.ExecuteSqlRaw("SELECT 1 FROM \"AspNetUsers\" LIMIT 1");
-				Console.WriteLine("[Startup] Tables exist, running migrations..."); Console.Out.Flush();
-			}
-			catch
-			{
-				Console.WriteLine("[Startup] Tables missing — dropping stale migration history..."); Console.Out.Flush();
-				try { db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"__EFMigrationsHistory\" CASCADE;"); } catch { }
-			}
+				// Ensure uuid-ossp extension exists before running migrations
+				Console.WriteLine("[Startup] Creating uuid-ossp extension..."); Console.Out.Flush();
+				db.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
 
-			Console.WriteLine("[Startup] Running migrations..."); Console.Out.Flush();
-			try
-			{
+				// Drop stale migration history if tables don't actually exist
+				try
+				{
+					var hasUsers = db.Database.ExecuteSqlRaw("SELECT 1 FROM \"AspNetUsers\" LIMIT 1");
+					Console.WriteLine("[Startup] Tables exist, running migrations..."); Console.Out.Flush();
+				}
+				catch
+				{
+					Console.WriteLine("[Startup] Tables missing — dropping stale migration history..."); Console.Out.Flush();
+					try { db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"__EFMigrationsHistory\" CASCADE;"); } catch { }
+				}
+
+				Console.WriteLine("[Startup] Running migrations..."); Console.Out.Flush();
 				db.Database.Migrate();
 				Console.WriteLine("[Startup] Migrations completed successfully"); Console.Out.Flush();
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"[Startup] Migration error (non-fatal): {ex.Message}");
-				Console.WriteLine("[Startup] Skipping migration — existing database will be used as-is");
+				Console.WriteLine($"[Startup] Database init error (non-fatal): {ex.Message}");
+				Console.WriteLine("[Startup] Continuing without migration — existing database will be used as-is");
 				Console.Out.Flush();
 			}
 
