@@ -161,7 +161,21 @@ export class ToolbarComponent extends BaseComponent {
         switchMap(event => this.menuItems$.pipe(
           map(menuItems => {
             const navEnd = <NavigationEnd>event;
-            this.selectedTab = menuItems.find(x => navEnd.url.includes(x.navigation))?.navigation ?? '';
+            // Check top-level items first
+            let matched = menuItems.find(x => x.navigation && navEnd.url.includes(x.navigation));
+            if (!matched) {
+              // Check children (e.g. Quiz Hub dropdown items)
+              for (const item of menuItems) {
+                if (item.hasChildren) {
+                  const childMatch = item.children.find(c => navEnd.url.includes(c.navigation));
+                  if (childMatch) {
+                    matched = item;
+                    break;
+                  }
+                }
+              }
+            }
+            this.selectedTab = matched?.navigation ?? matched?.title ?? '';
           })
         ))
       ).subscribe());
@@ -298,10 +312,12 @@ export class ToolbarComponent extends BaseComponent {
             new NavigationItem(this.strings.classResults.toUpperCase(), this.routingService.classResults().toString()),
             new NavigationItem(this.strings.classAdmin.toUpperCase(), this.routingService.classAdmin().toString()),
             new NavigationItem(this.strings.workAssigned.toUpperCase(), this.routingService.workAssigned().toString()),
-            new NavigationItem(this.strings.createQuiz.toUpperCase(), this.routingService.teacherCustomQuiz().toString()),
-            new NavigationItem(this.strings.quizTemplates.toUpperCase(), this.routingService.quizTemplates().toString()),
-            new NavigationItem(this.strings.aiPracticeSet.toUpperCase(), this.routingService.aiPracticeSet().toString()),
-            new NavigationItem(this.strings.aiInsights.toUpperCase(), this.routingService.aiInsights().toString()),
+            new NavigationItem(this.strings.quizHub.toUpperCase(), '', {}, '', [
+              new NavigationItem(this.strings.createQuiz, this.routingService.teacherCustomQuiz().toString()),
+              new NavigationItem(this.strings.quizTemplates, this.routingService.quizTemplates().toString()),
+              new NavigationItem(this.strings.aiPracticeSet, this.routingService.aiPracticeSet().toString()),
+              new NavigationItem(this.strings.aiInsights, this.routingService.aiInsights().toString()),
+            ]),
           );
         }
 

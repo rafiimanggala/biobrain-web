@@ -24,6 +24,7 @@ import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { SnackBarService } from '../../../share/services/snack-bar.service';
 import { StringsService } from '../../../share/strings.service';
+import { ThemeService } from '../../../core/app/theme.service';
 
 interface ContentTreeFlatNode {
   expandable: boolean;
@@ -42,11 +43,15 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
 
   selectedCourseId = '';
   selectedNodeId = '';
+  quizName = '';
   questionType = 'MultipleChoice';
   questionCount = 5;
   difficultyLevel = 'Medium';
   isSubmitting = false;
   generatedCount: number | null = null;
+  generatedQuestionIds: string[] = [];
+  showReview = false;
+  themeColor = '';
 
   questionTypes: { value: string; label: string }[] = [
     { value: 'MultipleChoice', label: 'Multiple Choice' },
@@ -78,9 +83,14 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
     private readonly _activeCourseService: ActiveCourseService,
     private readonly _teacherCoursesService: TeacherCoursesService,
     private readonly _snackBarService: SnackBarService,
+    private readonly _themeService: ThemeService,
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+
+    this._themeService.colors$.subscribe(colors => {
+      this.themeColor = colors.primary;
+    });
 
     this.treeControl = new FlatTreeControl<ContentTreeFlatNode>(
       node => node.level,
@@ -165,7 +175,9 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
         this._api.send(command)
       );
 
+      this.generatedQuestionIds = result.questionIds;
       this.generatedCount = result.questionIds.length;
+      this.showReview = false;
       this._snackBarService.showMessage(
         `Successfully generated ${this.generatedCount} question(s)!`
       );
@@ -174,6 +186,10 @@ export class AiPracticeSetComponent extends BaseComponent implements OnInit {
     } finally {
       this.isSubmitting = false;
     }
+  }
+
+  toggleReview(): void {
+    this.showReview = !this.showReview;
   }
 
   private async _loadContentTree(courseId: string): Promise<void> {

@@ -16,6 +16,8 @@ namespace Biobrain.Domain.Entities.School
         public Constant.SchoolStatus Status { get; set; }
         public DateTime? EndDateUtc { get; set; }
 
+        public bool AiDisabled { get; set; }
+
         // SAML SSO Configuration
         public bool SsoEnabled { get; set; }
         public string SamlEntityId { get; set; }

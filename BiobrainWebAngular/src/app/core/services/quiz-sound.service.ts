@@ -31,8 +31,26 @@ export class QuizSoundService {
       if (!this._correctAudio) {
         this._correctAudio = new Audio('assets/sounds/Biobrain-correct-answer.mp3');
       }
-      this._correctAudio.currentTime = 0;
-      this._correctAudio.play();
+      const audio = this._correctAudio;
+      audio.currentTime = 0;
+
+      const stopAt60Percent = (): void => {
+        if (audio.duration && isFinite(audio.duration)) {
+          const cutoffTime = audio.duration * 0.6;
+          setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }, cutoffTime * 1000);
+        }
+      };
+
+      if (audio.readyState >= 1) {
+        stopAt60Percent();
+      } else {
+        audio.addEventListener('loadedmetadata', stopAt60Percent, { once: true });
+      }
+
+      audio.play();
     } catch {
       // Audio not supported — silently ignore
     }

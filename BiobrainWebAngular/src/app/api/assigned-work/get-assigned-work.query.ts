@@ -24,6 +24,7 @@ export interface ActiveQuizAssignment {
   readonly nodeId: string;
   readonly path: string[];
   readonly nameLines: string[];
+  readonly title: string;
   readonly dueAt: Date | null;
   readonly assignedAt: Date | null;
 }

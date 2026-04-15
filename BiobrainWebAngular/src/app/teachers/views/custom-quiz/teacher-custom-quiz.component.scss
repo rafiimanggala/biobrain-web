@@ -108,6 +108,18 @@
   }
 }
 
+.toggle-options {
+  padding: 8px 0;
+
+  .toggle-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+}
+
 .student-selection-panel {
   border: 1px solid #e0e0e0;
   border-radius: 8px;

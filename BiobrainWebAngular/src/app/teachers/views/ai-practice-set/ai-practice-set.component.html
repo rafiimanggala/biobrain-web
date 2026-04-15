@@ -1,12 +1,18 @@
 <div class="ai-practice-set-container" fxLayout="column" fxLayoutGap="20px">
   <div class="page-header">
-    <h2>AI Practice Set Generator</h2>
+    <h2 [style.color]="themeColor">AI Practice Set Generator</h2>
     <p class="subtitle">Use AI to automatically generate practice questions for your students.</p>
   </div>
 
   <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="24px">
     <!-- Left panel: Form -->
     <div fxFlex="40" fxLayout="column" fxLayoutGap="16px" class="form-panel">
+
+      <!-- Quiz Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Quiz Name</mat-label>
+        <input matInput [(ngModel)]="quizName" placeholder="Enter a name for this quiz" maxlength="100">
+      </mat-form-field>
 
       <!-- Course Selector -->
       <mat-form-field appearance="outline" class="full-width" *ngIf="courseGroups$ | async as courseGroups">
@@ -65,7 +71,11 @@
       <!-- Success message -->
       <div class="success-message" *ngIf="generatedCount !== null">
         <mat-icon>check_circle</mat-icon>
-        <span>{{generatedCount}} question(s) generated successfully! You can now review and assign them.</span>
+        <span>{{generatedCount}} question(s) generated successfully!</span>
+        <button mat-stroked-button color="primary" class="review-button" (click)="toggleReview()">
+          <mat-icon>{{showReview ? 'visibility_off' : 'visibility'}}</mat-icon>
+          {{showReview ? 'Hide Review' : 'Review Quiz'}}
+        </button>
       </div>
     </div>
 
@@ -117,5 +127,20 @@
         </mat-tree-node>
       </mat-tree>
     </div>
+  </div>
+
+  <!-- Review Panel -->
+  <div *ngIf="showReview && generatedQuestionIds.length > 0" class="review-panel">
+    <div class="review-header" fxLayout="row" fxLayoutAlign="space-between center">
+      <h3>Review Generated Questions</h3>
+      <span class="review-count">{{generatedQuestionIds.length}} question(s)</span>
+    </div>
+    <div class="review-list">
+      <div *ngFor="let qId of generatedQuestionIds; let i = index" class="review-item">
+        <span class="review-number">Q{{i + 1}}</span>
+        <span class="review-id">Question ID: {{qId}}</span>
+      </div>
+    </div>
+    <p class="review-hint">Questions have been generated and saved. You can assign them to your class from Quiz Templates or Work Assigned.</p>
   </div>
 </div>

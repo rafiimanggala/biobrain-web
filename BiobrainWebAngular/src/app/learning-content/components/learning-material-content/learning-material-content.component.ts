@@ -102,10 +102,6 @@ export class LearningMaterialContentComponent implements OnChanges, OnDestroy {
         var bookmarkButton = user.isStudent() ? `<button><img class=\"heading-icon\" onclick="sendRequest(event, 'bookmark.${m.materialId}');" src="${bookmarkIcon}"></button>` : '';
 
         var excludeButton = '';
-        if (user.isTeacher()) {
-          const label = isExcluded ? 'Add back' : 'Remove';
-          excludeButton = `<button class=\"exclude-button\" onclick=\"sendRequest(event, 'excludeMaterial.${m.materialId}');\">${label}</button>`;
-        }
 
         var conteainsVideo = hasValue(m.videoLink) && m.videoLink.length > 0;
         var videoIcon = conteainsVideo ? "<img class=\"right-margin heading-icon\" src=\"assets/icons/play-solid.svg\">" : '';

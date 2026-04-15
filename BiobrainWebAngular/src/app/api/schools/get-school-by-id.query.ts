@@ -40,7 +40,8 @@ export class GetSchoolByIdQuery_Result {
     public readonly courses: string[],
     public readonly status: SchoolStatus | undefined,
     public readonly startDate: Moment,
-    public readonly endDate?: Moment | undefined
+    public readonly endDate?: Moment | undefined,
+    public readonly aiDisabled: boolean = false
   ) {
   }
 }

@@ -49,6 +49,19 @@ export class TreeSidenavComponent implements OnChanges {
     void this._routingService.navigateToMaterialsSearch(this.courseId, this.searchString);
   }
 
+  toggleDescendants(node: NodeModel): void {
+    const treeControl = this.treeService.flatTreeControl;
+    const isExpanded = treeControl.isExpanded(node);
+
+    if (isExpanded) {
+      treeControl.collapseDescendants(node);
+      treeControl.collapse(node);
+    } else {
+      treeControl.expandDescendants(node);
+      treeControl.expand(node);
+    }
+  }
+
   toggleExpandAll(): void {
     if (this.allExpanded) {
       this.treeService.flatTreeControl.collapseAll();

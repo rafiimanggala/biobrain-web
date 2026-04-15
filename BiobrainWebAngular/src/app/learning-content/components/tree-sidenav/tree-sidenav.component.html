@@ -56,13 +56,13 @@
                      *matTreeNodeDef='let node; when: treeService.hasNestedChild'
                      matTreeNodePadding matTreeNodePaddingIndent='8'>
         <div class='mat-tree-node' [class.bold]='node.isBold' [class.accent]='node.isAccent'>
-          <button mat-icon-button matTreeNodeToggle *ngIf='node.entityType !== 8'>
+          <button mat-icon-button (click)='toggleDescendants(node)' *ngIf='node.entityType !== 8'>
             <mat-icon class='mat-icon-rtl-mirror'>
               {{treeService.flatTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
           </button>
 
-          <span class='clickable font-nunito node-level-{{node.level}}' [class.unavailable]="!node.isAvailableInDemo && treeService.isDemoMode" matTreeNodeToggle>
+          <span class='clickable font-nunito node-level-{{node.level}}' [class.unavailable]="!node.isAvailableInDemo && treeService.isDemoMode" (click)='toggleDescendants(node)'>
             {{node.header}}
           </span>
         </div>

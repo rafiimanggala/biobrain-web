@@ -1,37 +1,44 @@
 <h1 mat-dialog-title class="rating-title">{{ dialogData.title }}</h1>
 
 <mat-dialog-content fxLayout="column" fxLayoutAlign="center center">
-  <div class="stars-container">
-    <mat-icon
-      *ngFor="let star of stars"
-      class="star-icon"
-      [class.active]="star <= (hoveredRating > 0 ? hoveredRating : rating)"
-      (mouseenter)="onStarHover(star)"
-      (mouseleave)="onStarLeave()"
-      (click)="onStarClick(star)">
-      {{ getStarIcon(star) }}
-    </mat-icon>
-  </div>
+  <ng-container *ngIf="!submitted">
+    <div class="stars-container">
+      <mat-icon
+        *ngFor="let star of stars"
+        class="star-icon"
+        [class.active]="star <= (hoveredRating > 0 ? hoveredRating : rating)"
+        (mouseenter)="onStarHover(star)"
+        (mouseleave)="onStarLeave()"
+        (click)="onStarClick(star)">
+        {{ getStarIcon(star) }}
+      </mat-icon>
+    </div>
 
-  <div class="rating-label" *ngIf="rating > 0">
-    {{ rating }} / 5
-  </div>
+    <div class="rating-label" *ngIf="rating > 0">
+      {{ rating }} / 5
+    </div>
 
-  <div class="rating-hint" *ngIf="rating >= 4">
-    Glad you love BioBrain! You'll be taken to leave a Google Review<span *ngIf="displayName"> as {{ displayName }}</span>.
-  </div>
+    <div class="reviewer-name" *ngIf="rating > 0 && displayName">
+      Your review will appear as <strong>{{ displayName }}</strong>
+    </div>
 
-  <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0 && rating < 4">
-    <mat-label>Tell us how we can improve</mat-label>
-    <textarea
-      matInput
-      [(ngModel)]="feedback"
-      rows="3"
-      maxlength="500"
-      placeholder="Your feedback helps us improve BioBrain...">
-    </textarea>
-    <mat-hint>Your feedback will be sent to our support team.</mat-hint>
-  </mat-form-field>
+    <mat-form-field class="feedback-field" appearance="outline" *ngIf="rating > 0">
+      <mat-label>{{ rating >= 4 ? 'Write your review' : 'Tell us how we can improve' }}</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="feedback"
+        rows="3"
+        maxlength="500"
+        [placeholder]="rating >= 4 ? 'Share what you love about BioBrain...' : 'Your feedback helps us improve BioBrain...'">
+      </textarea>
+    </mat-form-field>
+  </ng-container>
+
+  <div class="submit-success" *ngIf="submitted">
+    <mat-icon class="success-icon">check_circle</mat-icon>
+    <p class="success-text">Thank you for your review!</p>
+    <p class="success-subtext" *ngIf="displayName">Posted as {{ displayName }}</p>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
@@ -42,7 +49,7 @@
     color="accent"
     [disabled]="submitting"
     (click)="onMaybeLater()">
-    MAYBE LATER
+    {{ submitted ? 'CLOSE' : 'MAYBE LATER' }}
   </button>
 
   <button
@@ -51,7 +58,8 @@
     class="auto-form-button"
     color="primary"
     [disabled]="rating === 0 || submitting"
-    (click)="onSubmit()">
-    {{ submitting ? 'SUBMITTING...' : 'SUBMIT' }}
+    (click)="onSubmit()"
+    *ngIf="!submitted">
+    {{ submitting ? 'SUBMITTING...' : 'SUBMIT REVIEW' }}
   </button>
 </mat-dialog-actions>

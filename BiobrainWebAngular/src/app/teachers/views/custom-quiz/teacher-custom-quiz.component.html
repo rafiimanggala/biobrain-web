@@ -46,6 +46,18 @@
         <mat-datepicker #dueDatePicker></mat-datepicker>
       </mat-form-field>
 
+      <!-- Sound & Hints Toggles -->
+      <div class="toggle-options" fxLayout="row" fxLayoutGap="24px">
+        <mat-slide-toggle [(ngModel)]="soundEnabled" color="primary">
+          <mat-icon class="toggle-icon">{{soundEnabled ? 'volume_up' : 'volume_off'}}</mat-icon>
+          Sound
+        </mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="hintsEnabled" color="primary">
+          <mat-icon class="toggle-icon">{{hintsEnabled ? 'lightbulb' : 'lightbulb_outline'}}</mat-icon>
+          Hints
+        </mat-slide-toggle>
+      </div>
+
       <!-- Student Selection -->
       <div class="student-selection-panel" *ngIf="selectedClassId">
         <div class="student-header" fxLayout="row" fxLayoutAlign="space-between center">

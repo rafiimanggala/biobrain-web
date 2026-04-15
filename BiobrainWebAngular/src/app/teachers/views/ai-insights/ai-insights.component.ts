@@ -18,6 +18,7 @@ import { TeacherCoursesService } from '../../../core/services/courses/teacher-co
 import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { StringsService } from '../../../share/strings.service';
+import { ThemeService } from '../../../core/app/theme.service';
 
 @Component({
   selector: 'app-ai-insights',
@@ -32,6 +33,7 @@ export class AiInsightsComponent extends BaseComponent implements OnInit {
   isGenerating = false;
   insightsHtml: SafeHtml | null = null;
   hasGenerated = false;
+  themeColor = '';
 
   constructor(
     public readonly strings: StringsService,
@@ -41,9 +43,14 @@ export class AiInsightsComponent extends BaseComponent implements OnInit {
     private readonly _activeCourseService: ActiveCourseService,
     private readonly _activeClassService: ActiveSchoolClassService,
     private readonly _teacherCoursesService: TeacherCoursesService,
+    private readonly _themeService: ThemeService,
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+
+    this._themeService.colors$.subscribe(colors => {
+      this.themeColor = colors.primary;
+    });
 
     this.courseGroups$ = this._currentUserService.userChanges$.pipe(
       filter(hasValue),

@@ -286,6 +286,7 @@ export class StringsService {
   tasks = 'Tasks';
   template = 'template';
   templates = 'Templates';
+  quizHub = 'Quiz Hub';
   quizTemplates = 'Quiz Templates';
   aiPracticeSet = 'AI Practice Set';
   aiInsights = 'AI Insights';

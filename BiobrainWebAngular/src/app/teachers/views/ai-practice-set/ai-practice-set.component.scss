@@ -8,7 +8,8 @@
   h2 {
     margin: 0 0 4px 0;
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 700;
+    font-family: 'Arial Rounded MT Bold', 'Nunito', sans-serif;
   }
 
   .subtitle {
@@ -54,12 +55,25 @@
   color: #2e7d32;
   font-size: 14px;
   line-height: 1.4;
+  flex-wrap: wrap;
 
   mat-icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
     flex-shrink: 0;
+  }
+
+  .review-button {
+    margin-left: auto;
+    font-size: 13px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
   }
 }
 
@@ -105,5 +119,66 @@
 .content-tree {
   .mat-tree-node {
     min-height: 36px;
+  }
+}
+
+.review-panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  .review-header {
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .review-count {
+      color: #666;
+      font-size: 14px;
+    }
+  }
+
+  .review-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .review-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .review-number {
+    font-weight: 600;
+    color: #333;
+    min-width: 32px;
+    font-size: 14px;
+  }
+
+  .review-id {
+    color: #888;
+    font-size: 13px;
+    font-family: monospace;
+  }
+
+  .review-hint {
+    margin: 16px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #e0e0e0;
+    color: #888;
+    font-size: 13px;
+    line-height: 1.4;
   }
 }

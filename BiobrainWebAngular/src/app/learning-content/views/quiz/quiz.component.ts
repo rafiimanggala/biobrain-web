@@ -121,14 +121,17 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
           quizResult.questions.findIndex(_ => _.questionId === question.questionId) < 0
             ? quizResult.questions.length + 1
             : quizResult.questions.findIndex(_ => _.questionId === question.questionId) + 1,
-        totalQuestions: quiz.row.questions.filter(q => !quizResult.excludedQuestions.some(_ => _ === q.questionId)).length,
+        totalQuestions: Math.min(
+          quiz.row.questions.filter(q => !quizResult.excludedQuestions.some(_ => _ === q.questionId)).length,
+          quiz.row.questionCount || AppSettings.quizQuestionsNumber
+        ),
         nodeHeader: quiz.node.row.name ?? '',
         path: quiz.row.name
           ? quiz.fullName.split(' › ').slice(0, -1).join(' › ') + ' › ' + quiz.row.name
           : quiz.fullName,
         hintsEnabled: quizResult.hintsEnabled,
         soundEnabled: quizResult.soundEnabled,
-        isCustomQuiz: quiz.row.questions.length > AppSettings.quizQuestionsNumber,
+        isCustomQuiz: !!quiz.row.questionCount,
       })),
     );
 
@@ -144,9 +147,11 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
             }
           }
 
-          const maxQuestions = quiz.row.questions.length > AppSettings.quizQuestionsNumber
-            ? quiz.row.questions.length
-            : AppSettings.quizQuestionsNumber;
+          // For standard level quizzes, cap at quizQuestionsNumber (10).
+          // For generated/custom quizzes that specify a questionCount, use that count.
+          const maxQuestions = quiz.row.questionCount
+            ? Math.min(quiz.row.questionCount, quiz.row.questions.length)
+            : Math.min(AppSettings.quizQuestionsNumber, quiz.row.questions.length);
           if (quizResult.questions.length >= maxQuestions || unansweredQuestions.length === 0) {
             this._finishQuiz(quizResult.quizResultId);
             return;

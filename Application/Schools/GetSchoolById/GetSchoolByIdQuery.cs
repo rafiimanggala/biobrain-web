@@ -28,6 +28,7 @@ namespace Biobrain.Application.Schools.GetSchoolById
             public int TeachersLicensesNumber { get; init; }
             public int StudentLicensesNumber { get; init; }
             public bool UseAccessCodes { get; init; }
+            public bool AiDisabled { get; init; }
             public Constant.SchoolStatus Status { get; init; }
             public List<Guid> Admins { get; init; }
             public List<Guid> Courses { get; init; }
@@ -72,6 +73,7 @@ namespace Biobrain.Application.Schools.GetSchoolById
                                           Courses = _.Courses.Select(_ => _.CourseId).ToList(),
                                           Status = _.Status,
                                           UseAccessCodes = _.UseAccessCodes,
+                                          AiDisabled = _.AiDisabled,
                                           StartDateUtc = _.CreatedAt,
                                           EndDateUtc = _.EndDateUtc
                          })

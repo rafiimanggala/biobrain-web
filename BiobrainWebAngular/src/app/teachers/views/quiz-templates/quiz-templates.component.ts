@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 
 import { Api } from '../../../api/api.service';
@@ -21,6 +21,7 @@ import { firstValueFrom } from '../../../share/helpers/first-value-from';
 import { hasValue } from '../../../share/helpers/has-value';
 import { SnackBarService } from '../../../share/services/snack-bar.service';
 import { StringsService } from '../../../share/strings.service';
+import { ThemeService, SubjectColors } from '../../../core/app/theme.service';
 import { SelectClassDialog } from '../../dialogs/select-class-dialog/select-class-dialog.component';
 import { SelectClassDialogData } from '../../dialogs/select-class-dialog/select-class-dialog.data';
 
@@ -32,10 +33,12 @@ import { SelectClassDialogData } from '../../dialogs/select-class-dialog/select-
 export class QuizTemplatesComponent extends BaseComponent implements OnInit {
   templates: QuizTemplate[] = [];
   displayedColumns: string[] = ['name', 'questionCount', 'hints', 'sound', 'createdAt', 'actions'];
+  themeColor = '';
 
   private _userId = '';
   private _courseId = '';
   private _courseGroups: TeacherCourseGroup[] = [];
+  private _colorSub: Subscription;
 
   constructor(
     public readonly strings: StringsService,
@@ -45,9 +48,13 @@ export class QuizTemplatesComponent extends BaseComponent implements OnInit {
     private readonly _teacherCoursesService: TeacherCoursesService,
     private readonly _dialog: Dialog,
     private readonly _snackBarService: SnackBarService,
+    private readonly _themeService: ThemeService,
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+    this._colorSub = this._themeService.colors$.subscribe(colors => {
+      this.themeColor = colors.primary;
+    });
   }
 
   ngOnInit(): void {

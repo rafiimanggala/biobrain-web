@@ -8,7 +8,6 @@ import { DialogComponent } from '../../../core/dialogs/dialog-component';
 
 import { StarRatingDialogData, StarRatingDialogResult } from './star-rating-dialog-data';
 
-const GOOGLE_REVIEW_URL = 'https://g.page/biobrain/review';
 export const STAR_RATING_RESULT_PREFIX = 'biobrain.starRatingResult.';
 
 @Component({
@@ -21,6 +20,7 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
   hoveredRating = 0;
   feedback = '';
   submitting = false;
+  submitted = false;
 
   readonly stars = [1, 2, 3, 4, 5];
 
@@ -61,11 +61,6 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
     const trimmedFeedback = this.feedback.trim();
 
     try {
-      if (this.rating >= 4) {
-        window.open(GOOGLE_REVIEW_URL, '_blank');
-      }
-
-      // Always submit feedback to backend for tracking
       await this._api.send(new SubmitFeedbackCommand(this.rating, trimmedFeedback)).toPromise();
     } catch {
       // Don't block the dialog close on error
@@ -73,8 +68,11 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
       this.submitting = false;
     }
 
+    this.submitted = true;
     const result = new StarRatingDialogResult(this.rating, trimmedFeedback);
-    this.close(DialogAction.save, result);
+
+    // Show success briefly, then auto-close
+    setTimeout(() => this.close(DialogAction.save, result), 1500);
   }
 
   onMaybeLater(): void {

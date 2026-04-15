@@ -24,12 +24,10 @@
     </div>
 
     <!-- Actions -->
-    <div fxLayout='raw' fxLayoutAlign='space-around' fxLayoutGap="16px">
-      <button class="auto-form-button" mat-raised-button color='primary' (click)='onNextLevel(data)'>{{strings.nextLevel}}</button>
-      <button class="auto-form-button" mat-raised-button color='primary' (click)='onNextTopic(data)'>{{strings.nextTopic}}</button>
-    </div>
-    <div *ngIf="isStudent" fxLayout='raw' fxLayoutAlign='space-around' fxLayoutGap="16px">
-      <button class="auto-form-button" mat-raised-button color='primary' (click)='onAssignedWork(data)'>{{strings.assignedWork | titlecase}}</button>
+    <div class="action-buttons-container" fxLayout='column' fxLayoutGap="12px">
+      <button class="auto-form-button sidenav-action-button" mat-raised-button color='primary' (click)='onNextLevel(data)'>{{strings.nextLevel}}</button>
+      <button class="auto-form-button sidenav-action-button" mat-raised-button color='primary' (click)='onNextTopic(data)'>{{strings.nextTopic}}</button>
+      <button *ngIf="isStudent" class="auto-form-button sidenav-action-button" mat-raised-button color='primary' (click)='onAssignedWork(data)'>{{strings.assignedWork | titlecase}}</button>
     </div>
   </ng-container>
 </mat-nav-list>

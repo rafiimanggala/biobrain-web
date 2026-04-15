@@ -8,7 +8,8 @@
   h2 {
     margin: 0 0 4px 0;
     font-size: 24px;
-    font-weight: 500;
+    font-weight: 700;
+    font-family: 'Arial Rounded MT Bold', 'Nunito', sans-serif;
   }
 
   .subtitle {
@@ -62,6 +63,15 @@
     font-size: 14px;
   }
 
+  .name-column {
+    min-width: 220px;
+    width: 35%;
+  }
+
+  .questions-column {
+    text-align: center;
+  }
+
   .enabled {
     color: #4caf50;
     font-size: 20px;
@@ -73,8 +83,12 @@
   }
 
   button {
+    min-width: 160px;
+    padding: 6px 24px;
+    font-size: 14px;
+
     mat-icon {
-      margin-right: 4px;
+      margin-right: 6px;
       font-size: 18px;
       width: 18px;
       height: 18px;

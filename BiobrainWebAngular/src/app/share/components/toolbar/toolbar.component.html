@@ -34,10 +34,19 @@
           </mat-button-toggle>
         </ng-container>
 
-        <mat-button-toggle *ngFor='let menuItem of menuItems$ | async' [routerLink]='menuItem.navigation'
-          [queryParams]='menuItem.queryParams' class="tab-item" [value]='menuItem.navigation'>
-          {{menuItem.title}}
-        </mat-button-toggle>
+        <ng-container *ngFor='let menuItem of menuItems$ | async'>
+          <!-- Regular tab item -->
+          <mat-button-toggle *ngIf='!menuItem.hasChildren' [routerLink]='menuItem.navigation'
+            [queryParams]='menuItem.queryParams' class="tab-item" [value]='menuItem.navigation'>
+            {{menuItem.title}}
+          </mat-button-toggle>
+          <!-- Dropdown tab item (Quiz Hub) -->
+          <mat-button-toggle *ngIf='menuItem.hasChildren' class="tab-item quiz-hub-toggle"
+            [matMenuTriggerFor]='quizHubMenu' [value]='menuItem.title'>
+            {{menuItem.title}}
+            <mat-icon class="dropdown-arrow">arrow_drop_down</mat-icon>
+          </mat-button-toggle>
+        </ng-container>
       </mat-button-toggle-group>
     </span>
     <button mat-icon-button [matMenuTriggerFor]='verticalMenu' fxFlexAlign='end' fxHide.gt-sm>
@@ -95,10 +104,26 @@
     <button mat-menu-item [matMenuTriggerFor]='mySubjectsMenu' *ngIf='mySubjectsVisible$ | async'>
       <span>{{strings.mySubjects.toUpperCase()}}</span>
     </button>
-    <button *ngFor='let menuItem of menuItems$ | async' mat-menu-item [routerLink]='menuItem.navigation'
-      [queryParams]='menuItem.queryParams'>
-      <span>{{menuItem.title}}</span>
-    </button>
+    <ng-container *ngFor='let menuItem of menuItems$ | async'>
+      <button *ngIf='!menuItem.hasChildren' mat-menu-item [routerLink]='menuItem.navigation'
+        [queryParams]='menuItem.queryParams'>
+        <span>{{menuItem.title}}</span>
+      </button>
+      <button *ngIf='menuItem.hasChildren' mat-menu-item [matMenuTriggerFor]='quizHubMenu'>
+        <span>{{menuItem.title}}</span>
+      </button>
+    </ng-container>
+  </mat-menu>
+
+  <mat-menu #quizHubMenu='matMenu' yPosition='below' [overlapTrigger]='false'>
+    <ng-container *ngFor='let menuItem of menuItems$ | async'>
+      <ng-container *ngIf='menuItem.hasChildren'>
+        <button *ngFor='let child of menuItem.children' mat-menu-item [routerLink]='child.navigation'
+          [queryParams]='child.queryParams'>
+          <span>{{child.title}}</span>
+        </button>
+      </ng-container>
+    </ng-container>
   </mat-menu>
 
   <mat-menu #mySubjectsMenu='matMenu' yPosition='below' [overlapTrigger]='false'>    

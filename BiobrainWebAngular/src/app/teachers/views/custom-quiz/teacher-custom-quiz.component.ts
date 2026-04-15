@@ -51,6 +51,8 @@ export class TeacherCustomQuizComponent extends BaseComponent implements OnInit 
   selectedClassId = '';
   quizName = '';
   questionCount = 20;
+  soundEnabled = true;
+  hintsEnabled = true;
   saveAsTemplate = false;
   isSubmitting = false;
   dueDate: Date;

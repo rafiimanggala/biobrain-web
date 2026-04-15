@@ -25,6 +25,7 @@ namespace Biobrain.Application.Schools.UpdateSchoolDetails
         public bool UseAccessCodes { get; set; }
         public Constant.SchoolStatus Status { get; init; }
         public DateTime? EndDateUtc { get; set; }
+        public bool AiDisabled { get; set; }
         public List<Guid> Courses { get; set; }
 
 
@@ -75,6 +76,7 @@ namespace Biobrain.Application.Schools.UpdateSchoolDetails
                 school.Name = request.Name;
                 school.Status = request.Status;
                 school.UseAccessCodes = request.UseAccessCodes;
+                school.AiDisabled = request.AiDisabled;
                 school.EndDateUtc = request.EndDateUtc;
 
                 var courses = await Db.SchoolCourses.Where(_ => _.SchoolId == request.SchoolId)
