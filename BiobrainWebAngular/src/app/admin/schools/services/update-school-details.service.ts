@@ -90,12 +90,13 @@ export class UpdateSchoolDetailsService extends DisposableSubscriptionService {
     dialogData.studentsLicensesNumber = school.studentLicensesNumber;
     dialogData.endDate = school.endDate;
     dialogData.useAccessCodes = school.useAccessCodes;
+    dialogData.aiDisabled = school.aiDisabled;
 
     return dialogData;
   }
 
   private _setDetails(schoolId: string, dialogData: SchoolDialogData): Observable<UpdateSchoolDetailsCommand_Result> {
-    return this._api.send(new UpdateSchoolDetailsCommand(schoolId, dialogData.name ?? '', dialogData.useAccessCodes, dialogData.status ?? SchoolStatus.FreeTrial, dialogData.endDate?.endOf('day').toJSON() ?? null, dialogData.coursesIds));
+    return this._api.send(new UpdateSchoolDetailsCommand(schoolId, dialogData.name ?? '', dialogData.useAccessCodes, dialogData.status ?? SchoolStatus.FreeTrial, dialogData.endDate?.endOf('day').toJSON() ?? null, dialogData.coursesIds, dialogData.aiDisabled));
   }
 
   private _setLicenses(schoolId: string, dialogData: SchoolDialogData): Observable<UpdateSchoolLicensesCommand_Result> {

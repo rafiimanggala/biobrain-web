@@ -9,6 +9,7 @@ export class SchoolDialogData {
   studentsLicensesNumber: number | undefined;  
   coursesIds: string[] = [];
   useAccessCodes: boolean = false;
+  aiDisabled: boolean = false;
   endDate: Moment | undefined;
 
   constructor(public readonly settings: SchoolDialogDataSettings) {}

@@ -64,6 +64,10 @@
         {{strings.useAccessCodes}}
       </mat-checkbox>
 
+      <mat-slide-toggle [(ngModel)]="data.aiDisabled" name="aiDisabledToggle" color="warn" style="margin: 8px 0;">
+        Disable AI features
+      </mat-slide-toggle>
+
       <mat-label>{{strings.courses | titlecase}}</mat-label>
       <div fxLayout="column wrap" style="max-height: 300px;">
         <mat-checkbox *ngFor="let course of data.settings.courses" name="check{{course.courseId}}"

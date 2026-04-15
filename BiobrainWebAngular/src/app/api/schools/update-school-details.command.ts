@@ -3,7 +3,7 @@ import { Command } from '../common/command';
 import { SchoolStatus } from '../enums/school-status.enum';
 
 export class UpdateSchoolDetailsCommand extends Command<UpdateSchoolDetailsCommand_Result> {
-  constructor(public readonly schoolId: string, public readonly name: string, public readonly useAccessCodes: boolean, public readonly status: SchoolStatus, public readonly endDateUtc: string|null, public readonly courses: string[]) {
+  constructor(public readonly schoolId: string, public readonly name: string, public readonly useAccessCodes: boolean, public readonly status: SchoolStatus, public readonly endDateUtc: string|null, public readonly courses: string[], public readonly aiDisabled: boolean = false) {
     super();
   }
 

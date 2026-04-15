@@ -24,7 +24,8 @@ export class GetSchoolByIdQuery extends Query<GetSchoolByIdQuery_Result> {
       obj.courses ?? [],
       obj.status,
       moment.utc(obj.startDateUtc),
-      obj.endDateUtc ? moment.utc(obj.endDateUtc) : undefined
+      obj.endDateUtc ? moment.utc(obj.endDateUtc) : undefined,
+      obj.aiDisabled ?? false
     );
   }
 }
@@ -57,4 +58,5 @@ export interface GetSchoolByIdQuery_Result_Object {
   courses: string[] | undefined;
   startDateUtc: string;
   endDateUtc: string;
+  aiDisabled: boolean;
 }
