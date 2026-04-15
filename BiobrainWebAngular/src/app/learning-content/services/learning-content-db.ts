@@ -236,6 +236,7 @@ export class QuizRow implements Quiz {
     public contentTreeNodeId: string,
     public questions: Question[],
     public name?: string,
+    public questionCount?: number | null,
   ) {
   }
 
