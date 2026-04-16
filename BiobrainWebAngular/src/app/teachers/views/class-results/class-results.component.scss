@@ -103,6 +103,5 @@
   // background-color: ;
 }
 
-.red-color{
-  color: $red;
-}
+// .red-color color now handled by theme mixin (_class-results-theme.component.scss)
+// to use subject primary color instead of red
