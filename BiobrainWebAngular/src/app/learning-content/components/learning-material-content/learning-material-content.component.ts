@@ -113,9 +113,21 @@ export class LearningMaterialContentComponent implements OnChanges, OnDestroy {
           : "";
 
         const excludedClass = isExcluded ? ' class="excluded"' : '';
-        materialText = materialText + `<details${excludedClass}><summary><span>${m.header}</span><div class=\"header-actions\">${videoIcon}${bookmarkButton}${excludeButton}</div></summary>${m.text}${embedVideo}</details>`;
+        const detailsOpen = user.isTeacher() ? ' open' : '';
+        materialText = materialText + `<details${detailsOpen}${excludedClass}><summary><span>${m.header}</span><div class=\"header-actions\">${videoIcon}${bookmarkButton}${excludeButton}</div></summary>${m.text}${embedVideo}</details>`;
       }
     );
+
+    // Teacher view: hide expand/collapse arrows, headings always open (Issue #11)
+    if (user.isTeacher()) {
+      materialText = `<style>
+        summary:before { display: none !important; }
+        details[open] summary:before { display: none !important; }
+        summary { cursor: default; pointer-events: none; }
+        summary .header-actions { pointer-events: auto; }
+        summary > span { left: 8px !important; width: calc(100% - 50px) !important; }
+      </style>` + materialText;
+    }
 
     return materialText;
   }
