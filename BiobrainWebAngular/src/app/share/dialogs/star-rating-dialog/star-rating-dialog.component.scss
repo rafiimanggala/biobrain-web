@@ -83,6 +83,53 @@ mat-dialog-content {
   margin: 0;
 }
 
+.google-review-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.google-review-prompt {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.google-review-button {
+  background-color: #4285f4 !important;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.clipboard-feedback {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #4caf50;
+  margin: 8px 0 0;
+}
+
+.clipboard-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #4caf50;
+}
+
 mat-dialog-actions {
   gap: 12px;
 }

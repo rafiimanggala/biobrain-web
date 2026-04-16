@@ -38,6 +38,22 @@
     <mat-icon class="success-icon">check_circle</mat-icon>
     <p class="success-text">Thank you for your review!</p>
     <p class="success-subtext" *ngIf="displayName">Posted as {{ displayName }}</p>
+
+    <div class="google-review-section" *ngIf="showGoogleReview">
+      <p class="google-review-prompt">Enjoying BioBrain? Share your experience on Google!</p>
+      <button
+        mat-raised-button
+        type="button"
+        class="google-review-button"
+        (click)="copyAndOpenGoogle()">
+        <mat-icon>open_in_new</mat-icon>
+        Share on Google
+      </button>
+      <p class="clipboard-feedback" *ngIf="copiedToClipboard">
+        <mat-icon class="clipboard-icon">content_paste</mat-icon>
+        Review copied to clipboard — paste it on Google!
+      </p>
+    </div>
   </div>
 </mat-dialog-content>
 
@@ -48,7 +64,7 @@
     class="auto-bordered-form-button"
     color="accent"
     [disabled]="submitting"
-    (click)="onMaybeLater()">
+    (click)="showGoogleReview ? onDone() : onMaybeLater()">
     {{ submitted ? 'CLOSE' : 'MAYBE LATER' }}
   </button>
 
