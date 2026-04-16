@@ -169,14 +169,24 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
                         .Where(_ => _.QuizStudentAssignments.Any(_ => _.Result?.CompletedAt == null))
                         .Select(_ =>
                         {
-                            var path = contentTreePathResolver.ResolveFullPath(_.Quiz.ContentTreeId, courseStructure);
+                            var fullPath = contentTreePathResolver.ResolveFullPath(_.Quiz.ContentTreeId, courseStructure);
+                            var resolvedPath = contentTreePathResolver.ResolvePath(_.Quiz.ContentTreeId, courseStructure);
+
+                            // For teacher custom quizzes, replace the last path entry with the quiz name
+                            if (_.Quiz.Type == QuizType.TeacherCustom
+                                && !string.IsNullOrEmpty(_.Quiz.Name)
+                                && resolvedPath.Count > 0)
+                            {
+                                resolvedPath[resolvedPath.Count - 1] = _.Quiz.Name;
+                            }
+
                             return new ActiveQuizAssignment
                             {
                                 QuizAssignmentId = _.QuizAssignmentId,
                                 NodeId = _.Quiz.ContentTreeId,
-                                Path = contentTreePathResolver.ResolvePath(_.Quiz.ContentTreeId, courseStructure).ToImmutableList(),
+                                Path = resolvedPath.ToImmutableList(),
                                 Title = _templateService.ApplyTemplate(titleTemplate?.Template?.Value ?? string.Empty,
-                                    path.Select(x => new TemplateValue { Index = x.Index, Name = x.Value }).ToList()),
+                                    fullPath.Select(x => new TemplateValue { Index = x.Index, Name = x.Value }).ToList()),
                                 DueAt = _.DueAtUtc,
                                 AssignedAt = _.AssignedAtUtc,
                                 StudentAssigned = _.QuizStudentAssignments.Count,

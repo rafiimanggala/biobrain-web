@@ -25,6 +25,7 @@ interface ChatMessage {
 export class AskBiobrainComponent implements OnDestroy {
   @Input() courseId = '';
   @Input() contentTreeNodeId = '';
+  @Input() aiDisabled = false;
 
   @ViewChild('messageList') messageListEl!: ElementRef;
 

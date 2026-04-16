@@ -35,7 +35,10 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
   public readonly data$: Observable<{ quizResult: QuizResult; question: Question; questionIndex: number; totalQuestions: number; nodeHeader: string; path: string; hintsEnabled: boolean; soundEnabled: boolean; isCustomQuiz: boolean }>;
   public readonly questionHasAnswer$: Observable<boolean>;
   public readonly attemptCounts$ = new BehaviorSubject<number>(0);
-  public studentSoundOverride: boolean | null = null;
+  public studentSoundOverride: boolean | null;
+
+  // Initialize from global toolbar sound preference (localStorage).
+  // If globally disabled, override to false; otherwise let server setting decide.
 
   private readonly _subscriptions: Subscription[] = [];
 
@@ -54,6 +57,7 @@ export class QuizComponent extends BaseComponent implements OnDestroy {
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+    this.studentSoundOverride = this._quizSoundService.soundEnabled ? null : false;
 
     const questionId$ = this._activatedRoute.paramMap.pipe(
       map(_ => _.get('questionId')),

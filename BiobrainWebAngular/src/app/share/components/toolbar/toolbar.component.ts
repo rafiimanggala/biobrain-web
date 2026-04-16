@@ -29,6 +29,7 @@ import { CoursesService } from 'src/app/core/services/courses/courses.service';
 import { UseAccessCodeOperation } from 'src/app/student/operations/use-access-code.operation';
 import { SendLogsOperation } from '../../operations/send-logs.operation';
 import { ActiveSchoolService } from 'src/app/core/services/active-school.service';
+import { QuizSoundService } from 'src/app/core/services/quiz-sound.service';
 import { StudentCourse } from 'src/app/core/services/courses/student-course';
 
 @Component({
@@ -53,6 +54,8 @@ export class ToolbarComponent extends BaseComponent {
   public navigationType$: Observable<NavigationType>;
   public canSeeUserGuides$: Observable<boolean>;
   public canManageSchool$: Observable<boolean>;
+  public isStudent$: Observable<boolean>;
+  public soundEnabled: boolean;
 
   public selectedTab = '';
 
@@ -75,10 +78,16 @@ export class ToolbarComponent extends BaseComponent {
     private readonly _activeSchoolService: ActiveSchoolService,
     private readonly _activeCourseService: ActiveCourseService,
     private readonly _coursesService: CoursesService,
+    private readonly _quizSoundService: QuizSoundService,
     private readonly _router: Router,
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+    this.soundEnabled = this._quizSoundService.soundEnabled;
+
+    this.isStudent$ = this.currentUserService.userChanges$.pipe(
+      map(_ => _?.isStudent() ?? false),
+    );
     this.menuItems$ = this.currentUserService.userChanges$.pipe(
       switchMap(user => this._getNavigationItems(user)),
     );
@@ -183,6 +192,11 @@ export class ToolbarComponent extends BaseComponent {
 
   public toggleMenu(): void {
     this.sidenavService.toggle();
+  }
+
+  public toggleSound(): void {
+    this.soundEnabled = !this.soundEnabled;
+    this._quizSoundService.setGlobalSoundEnabled(this.soundEnabled);
   }
 
   public async homeClick(): Promise<void> {
@@ -290,21 +304,39 @@ export class ToolbarComponent extends BaseComponent {
   }
 
   private _getTeacherNavigation(): Observable<NavigationItem[]> {
-    return this._activeCourseService.courseIdChanges$.pipe(
-      switchMap((courseId) => {
+    return combineLatest([
+      this._activeCourseService.courseIdChanges$,
+      this._activeSchoolService.aiDisabledChanges$,
+    ]).pipe(
+      switchMap(([courseId, _aiDisabled]) => {
         if (!hasValue(courseId)) {
           return [];
         }
-        return combineLatest([this._coursesService.findById(courseId), this._activeSchoolClassService.schoolClassIdChanges$]);
-
+        return combineLatest([
+          this._coursesService.findById(courseId),
+          this._activeSchoolClassService.schoolClassIdChanges$,
+          this._activeSchoolService.aiDisabledChanges$,
+        ]);
       }),
-      map(([course, schoolClassId]) => {
+      map(([course, schoolClassId, aiDisabled]) => {
         if (!hasValue(course)) {
           return [];
         }
         const navigationItems = [new NavigationItem(this.strings.myClasses.toUpperCase(), this.routingService.myClasses().toString())];
 
         if (hasValue(course.courseId) && hasValue(schoolClassId)) {
+          const quizHubChildren = [
+            new NavigationItem(this.strings.createQuiz, this.routingService.teacherCustomQuiz().toString()),
+            new NavigationItem(this.strings.quizTemplates, this.routingService.quizTemplates().toString()),
+          ];
+
+          if (!aiDisabled) {
+            quizHubChildren.push(
+              new NavigationItem(this.strings.aiPracticeSet, this.routingService.aiPracticeSet().toString()),
+              new NavigationItem(this.strings.aiInsights, this.routingService.aiInsights().toString()),
+            );
+          }
+
           navigationItems.push(
             new NavigationItem(this.strings.teach.toUpperCase(), this.routingService.learningMaterials(course.courseId).toString()),
             new NavigationItem(this.strings.glossary.toUpperCase(), this.routingService.glossary().toString()),
@@ -312,12 +344,7 @@ export class ToolbarComponent extends BaseComponent {
             new NavigationItem(this.strings.classResults.toUpperCase(), this.routingService.classResults().toString()),
             new NavigationItem(this.strings.classAdmin.toUpperCase(), this.routingService.classAdmin().toString()),
             new NavigationItem(this.strings.workAssigned.toUpperCase(), this.routingService.workAssigned().toString()),
-            new NavigationItem(this.strings.quizHub.toUpperCase(), '', {}, '', [
-              new NavigationItem(this.strings.createQuiz, this.routingService.teacherCustomQuiz().toString()),
-              new NavigationItem(this.strings.quizTemplates, this.routingService.quizTemplates().toString()),
-              new NavigationItem(this.strings.aiPracticeSet, this.routingService.aiPracticeSet().toString()),
-              new NavigationItem(this.strings.aiInsights, this.routingService.aiInsights().toString()),
-            ]),
+            new NavigationItem(this.strings.quizHub.toUpperCase(), '', {}, '', quizHubChildren),
           );
         }
 

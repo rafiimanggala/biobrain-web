@@ -4,12 +4,39 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class QuizSoundService {
+  private static readonly STORAGE_KEY = 'biobrain.soundEnabled';
   private _soundEnabled = true;
   private _audioContext: AudioContext | null = null;
   private _correctAudio: HTMLAudioElement | null = null;
 
+  constructor() {
+    this._soundEnabled = this._loadFromStorage();
+  }
+
+  get soundEnabled(): boolean {
+    return this._soundEnabled;
+  }
+
   setSoundEnabled(enabled: boolean): void {
     this._soundEnabled = enabled;
+  }
+
+  setGlobalSoundEnabled(enabled: boolean): void {
+    this._soundEnabled = enabled;
+    try {
+      localStorage.setItem(QuizSoundService.STORAGE_KEY, JSON.stringify(enabled));
+    } catch {
+      // localStorage not available — silently ignore
+    }
+  }
+
+  private _loadFromStorage(): boolean {
+    try {
+      const stored = localStorage.getItem(QuizSoundService.STORAGE_KEY);
+      return stored !== null ? JSON.parse(stored) : true;
+    } catch {
+      return true;
+    }
   }
 
   playCorrect(): void {

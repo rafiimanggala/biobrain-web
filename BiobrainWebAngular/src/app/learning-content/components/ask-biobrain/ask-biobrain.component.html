@@ -6,12 +6,12 @@
   (click)="togglePanel()"
   matTooltip="Ask BioBrain"
   aria-label="Ask BioBrain"
-  *ngIf="!isOpen">
+  *ngIf="!isOpen && !aiDisabled">
   <mat-icon>psychology</mat-icon>
 </button>
 
 <!-- Chat Panel -->
-<div class="chat-panel" *ngIf="isOpen">
+<div class="chat-panel" *ngIf="isOpen && !aiDisabled">
   <div class="chat-header" [style.background]="headerColor" fxLayout="row" fxLayoutAlign="space-between center">
     <span class="chat-title" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
       <mat-icon>psychology</mat-icon>

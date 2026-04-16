@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AiEnabledGuard } from '../core/guards/ai-enabled.guard';
 import { AuthGuard } from '../core/guards/auth.quard';
 import { CourseSelectedGuard } from '../core/guards/course-selected.guard';
 import { SchoolClassSelectedGuard } from '../core/guards/school-class-selected.guard';
@@ -75,12 +76,12 @@ const routes: Routes = [
       },
       {
         path: 'ai-practice-set',
-        canActivate: [CourseSelectedGuard],
+        canActivate: [CourseSelectedGuard, AiEnabledGuard],
         component: AiPracticeSetComponent,
       },
       {
         path: 'ai-insights',
-        canActivate: [CourseSelectedGuard],
+        canActivate: [CourseSelectedGuard, AiEnabledGuard],
         component: AiInsightsComponent,
       },
     ],

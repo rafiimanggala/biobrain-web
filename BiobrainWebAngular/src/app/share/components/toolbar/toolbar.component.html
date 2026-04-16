@@ -53,6 +53,13 @@
       <mat-icon>more_vert</mat-icon>
     </button>
   </span>
+  <button mat-icon-button
+    *ngIf='isStudent$ | async'
+    (click)='toggleSound()'
+    [matTooltip]='soundEnabled ? "Sound On" : "Sound Off"'
+    style="margin-right: 4px;">
+    <mat-icon>{{soundEnabled ? 'volume_up' : 'volume_off'}}</mat-icon>
+  </button>
   <span class='user-menu-button' mat-icon-button (click)="onUserGuidesClick()"
     *ngIf='canSeeUserGuides$ | async' fxLayout='row' fxLayoutGap='10px'
     fxLayoutAlign='center center' style="margin-right: 8px;">

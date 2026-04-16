@@ -72,10 +72,16 @@
       <div class="success-message" *ngIf="generatedCount !== null">
         <mat-icon>check_circle</mat-icon>
         <span>{{generatedCount}} question(s) generated successfully!</span>
-        <button mat-stroked-button color="primary" class="review-button" (click)="toggleReview()">
-          <mat-icon>{{showReview ? 'visibility_off' : 'visibility'}}</mat-icon>
-          {{showReview ? 'Hide Review' : 'Review Quiz'}}
-        </button>
+        <div class="success-actions">
+          <button mat-stroked-button color="primary" class="review-button" (click)="toggleReview()">
+            <mat-icon>{{showReview ? 'visibility_off' : 'visibility'}}</mat-icon>
+            {{showReview ? 'Hide Review' : 'Review Quiz'}}
+          </button>
+          <button mat-raised-button color="accent" class="assign-button" (click)="toggleAssignPanel()">
+            <mat-icon>assignment</mat-icon>
+            Assign to Class
+          </button>
+        </div>
       </div>
     </div>
 
@@ -132,15 +138,133 @@
   <!-- Review Panel -->
   <div *ngIf="showReview && generatedQuestionIds.length > 0" class="review-panel">
     <div class="review-header" fxLayout="row" fxLayoutAlign="space-between center">
-      <h3>Review Generated Questions</h3>
+      <h3 [style.color]="themeColor">Review Generated Questions</h3>
       <span class="review-count">{{generatedQuestionIds.length}} question(s)</span>
     </div>
-    <div class="review-list">
+
+    <!-- Loading questions -->
+    <div *ngIf="isLoadingQuestions" class="loading-container" fxLayoutAlign="center center">
+      <mat-spinner diameter="32"></mat-spinner>
+      <span class="loading-text">Loading question details...</span>
+    </div>
+
+    <!-- Full question cards (when details available) -->
+    <div *ngIf="!isLoadingQuestions && generatedQuestions.length > 0" class="review-list">
+      <div *ngFor="let question of generatedQuestions; let i = index" class="question-card">
+        <div class="question-card-header">
+          <span class="question-number" [style.background-color]="themeColor">Q{{i + 1}}</span>
+          <span class="question-type-badge">{{question.questionTypeName}}</span>
+        </div>
+        <div class="question-text" [innerHTML]="question.text"></div>
+
+        <!-- Answer options -->
+        <div *ngIf="question.answers && question.answers.length > 0" class="answer-list">
+          <div *ngFor="let answer of question.answers; let j = index"
+               class="answer-option"
+               [class.correct-answer]="answer.isCorrect">
+            <span class="answer-label" [class.correct-label]="answer.isCorrect">
+              {{getAnswerLabel(j)}}
+            </span>
+            <span class="answer-text" [innerHTML]="answer.text"></span>
+            <mat-icon *ngIf="answer.isCorrect" class="correct-icon">check_circle</mat-icon>
+          </div>
+        </div>
+
+        <!-- Hint (if available) -->
+        <div *ngIf="question.hint" class="question-hint">
+          <mat-icon>lightbulb_outline</mat-icon>
+          <span [innerHTML]="question.hint"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fallback: show IDs only if question details couldn't be fetched -->
+    <div *ngIf="!isLoadingQuestions && generatedQuestions.length === 0" class="review-list">
       <div *ngFor="let qId of generatedQuestionIds; let i = index" class="review-item">
         <span class="review-number">Q{{i + 1}}</span>
         <span class="review-id">Question ID: {{qId}}</span>
       </div>
+      <p class="review-hint">Question details could not be loaded. Questions have been generated and saved.</p>
     </div>
-    <p class="review-hint">Questions have been generated and saved. You can assign them to your class from Quiz Templates or Work Assigned.</p>
+  </div>
+
+  <!-- Assign to Class Panel -->
+  <div *ngIf="showAssignPanel && generatedQuestionIds.length > 0" class="assign-panel">
+    <div class="assign-header">
+      <h3 [style.color]="themeColor">
+        <mat-icon>assignment</mat-icon>
+        Assign to Class
+      </h3>
+    </div>
+
+    <!-- Class Selector -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="schoolClasses.length > 0">
+      <mat-label>Select Class</mat-label>
+      <mat-select [(value)]="selectedClassId" (selectionChange)="onClassChange($event.value)">
+        <mat-option *ngFor="let cls of schoolClasses" [value]="cls.schoolClassId">
+          {{cls.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p *ngIf="schoolClasses.length === 0" class="no-classes-hint">
+      No classes found for this course.
+    </p>
+
+    <!-- Due Date -->
+    <mat-form-field appearance="outline" class="full-width" *ngIf="selectedClassId">
+      <mat-label>Due Date</mat-label>
+      <input matInput [matDatepicker]="dueDatePicker" [(ngModel)]="dueDate" [min]="minDueDate">
+      <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dueDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Student Selection -->
+    <div class="student-selection-panel" *ngIf="selectedClassId">
+      <div class="student-header" fxLayout="row" fxLayoutAlign="space-between center">
+        <h4>Assign to Students</h4>
+        <div fxLayoutGap="8px" *ngIf="students.length > 0">
+          <button mat-stroked-button color="accent" (click)="selectAllStudents()" type="button">
+            Select All
+          </button>
+          <button mat-stroked-button color="accent" (click)="unselectAllStudents()" type="button">
+            Unselect All
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isLoadingStudents" fxLayoutAlign="center center" style="padding: 16px;">
+        <mat-spinner diameter="24"></mat-spinner>
+      </div>
+
+      <div *ngIf="!isLoadingStudents && students.length === 0" class="no-students-hint">
+        No students found in this class.
+      </div>
+
+      <div *ngIf="!isLoadingStudents && students.length > 0" class="student-list">
+        <div *ngFor="let student of students" class="student-checkbox-row">
+          <mat-checkbox
+            [checked]="student.checked"
+            (change)="toggleStudent(student)"
+            color="primary">
+            {{student.fullName}}
+          </mat-checkbox>
+        </div>
+        <div class="student-count-summary">
+          {{selectedStudentIds.length}} of {{students.length}} student(s) selected
+        </div>
+      </div>
+    </div>
+
+    <!-- Assign Button -->
+    <button
+      mat-raised-button
+      color="primary"
+      class="submit-button assign-submit"
+      [disabled]="!isAssignFormValid || isAssigning"
+      (click)="onAssign()">
+      <mat-icon *ngIf="!isAssigning">send</mat-icon>
+      <mat-spinner *ngIf="isAssigning" diameter="20" class="inline-spinner"></mat-spinner>
+      <span>{{isAssigning ? 'Assigning...' : 'Assign Quiz'}}</span>
+    </button>
   </div>
 </div>

@@ -166,13 +166,22 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
                                                   fullPath.Select(x => new TemplateValue { Index = x.Index, Name = x.Value })
                                                       .ToList()).Split('\n').ToList();
 
+                                          var path = _contentTreePathResolver
+                                              .ResolvePath(_.QuizAssignment.Quiz.ContentTreeId, courseStructure);
+
+                                          // For teacher custom quizzes, replace the last path entry with the quiz name
+                                          if (_.QuizAssignment.Quiz.Type == QuizType.TeacherCustom
+                                              && !string.IsNullOrEmpty(_.QuizAssignment.Quiz.Name)
+                                              && path.Count > 0)
+                                          {
+                                              path[path.Count - 1] = _.QuizAssignment.Quiz.Name;
+                                          }
+
                                           return new ActiveQuizAssignment
                                           {
                                               QuizStudentAssignmentId = _.QuizStudentAssignmentId,
                                               NodeId = _.QuizAssignment.Quiz.ContentTreeId,
-                                              Path = _contentTreePathResolver
-                                                  .ResolvePath(_.QuizAssignment.Quiz.ContentTreeId, courseStructure)
-                                                  .ToImmutableList(),
+                                              Path = path.ToImmutableList(),
                                               NameLines = nameLines,
                                               DueAt = _.DueAtUtc,
                                               AssignedAt = _.AssignedAtUtc

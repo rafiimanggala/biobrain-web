@@ -39,6 +39,7 @@ export class MaterialPageComponent extends BaseComponent implements OnDestroy {
   public availableTeacherCourses: TeacherCourseGroup[] =[];
   public activeSchoolClassId: string|null = null;
   isDemoMode = false;
+  aiDisabled = false;
 
   subscriptions: Subscription[] = [];
 
@@ -61,6 +62,12 @@ export class MaterialPageComponent extends BaseComponent implements OnDestroy {
     appEvents: AppEventProvider,
   ) {
     super(appEvents);
+
+    this.subscriptions.push(
+      this._activeSchoolService.aiDisabledChanges$.subscribe(
+        disabled => this.aiDisabled = disabled
+      ),
+    );
 
     this.subscriptions.push(
       this._router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe({
