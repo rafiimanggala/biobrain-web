@@ -10,12 +10,6 @@ import { StarRatingDialogData, StarRatingDialogResult } from './star-rating-dial
 
 export const STAR_RATING_RESULT_PREFIX = 'biobrain.starRatingResult.';
 
-// Google Place ID for BioBrain — replace with actual Place ID once available
-const GOOGLE_PLACE_ID = 'ChIJn1Izqh1o1moRCCAqOE0pqIg';
-const GOOGLE_REVIEW_URL = GOOGLE_PLACE_ID
-  ? `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`
-  : '';
-
 @Component({
   selector: 'star-rating-dialog',
   templateUrl: 'star-rating-dialog.component.html',
@@ -27,7 +21,6 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
   feedback = '';
   submitting = false;
   submitted = false;
-  copiedToClipboard = false;
 
   readonly stars = [1, 2, 3, 4, 5];
 
@@ -36,7 +29,7 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
   }
 
   get showGoogleReview(): boolean {
-    return this.submitted && this.rating >= 4 && !!GOOGLE_REVIEW_URL;
+    return this.submitted && this.rating >= 4;
   }
 
   constructor(
@@ -89,19 +82,6 @@ export class StarRatingDialogComponent extends DialogComponent<StarRatingDialogD
 
     // Show success briefly, then auto-close
     setTimeout(() => this.close(DialogAction.save, result), 1500);
-  }
-
-  async copyAndOpenGoogle(): Promise<void> {
-    const reviewText = this.feedback.trim();
-    if (reviewText) {
-      try {
-        await navigator.clipboard.writeText(reviewText);
-        this.copiedToClipboard = true;
-      } catch {
-        // Clipboard API may fail in some browsers — proceed anyway
-      }
-    }
-    window.open(GOOGLE_REVIEW_URL, '_blank');
   }
 
   onDone(): void {
