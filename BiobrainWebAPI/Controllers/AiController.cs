@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Biobrain.Application.Interfaces.DataAccess;
+using Biobrain.Application.Interfaces.ExecutionContext;
 using Biobrain.Application.Services.AI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,43 @@ namespace BiobrainWebAPI.Controllers
         private readonly IAskBiobrainService _askBiobrainService;
         private readonly IPracticeSetGeneratorService _practiceSetGeneratorService;
         private readonly IDb _db;
+        private readonly ISessionContext _sessionContext;
 
         public AiController(
             IPerformanceInsightsService insightsService,
             IAskBiobrainService askBiobrainService,
             IPracticeSetGeneratorService practiceSetGeneratorService,
-            IDb db)
+            IDb db,
+            ISessionContext sessionContext)
         {
             _insightsService = insightsService;
             _askBiobrainService = askBiobrainService;
             _practiceSetGeneratorService = practiceSetGeneratorService;
             _db = db;
+            _sessionContext = sessionContext;
         }
+
+        // Returns true if the current user belongs to at least one school with AI enabled.
+        // If user belongs to no schools, default to allow (fail-open for admin/support roles).
+        private async Task<bool> IsAiEnabledForUserAsync()
+        {
+            Guid userId;
+            try { userId = _sessionContext.GetUserId(); }
+            catch { return true; }
+
+            var schoolFlags = await _db.Schools
+                .AsNoTracking()
+                .Where(s => s.Teachers.Any(t => t.TeacherId == userId)
+                         || s.Students.Any(st => st.StudentId == userId))
+                .Select(s => s.AiDisabled)
+                .ToListAsync();
+
+            if (schoolFlags.Count == 0) return true;
+            return schoolFlags.Any(disabled => !disabled);
+        }
+
+        private ActionResult AiDisabledResult() =>
+            StatusCode(403, new { error = "AI features are disabled for your school." });
 
         [HttpPost]
         public async Task<ActionResult<SendWeeklyInsightsResponse>> SendWeeklyInsights()
@@ -49,6 +75,8 @@ namespace BiobrainWebAPI.Controllers
             {
                 return BadRequest("SchoolClassId and CourseId are required.");
             }
+
+            if (!await IsAiEnabledForUserAsync()) return AiDisabledResult();
 
             var fromDate = request.FromDate ?? DateTime.UtcNow.AddDays(-7);
             var toDate = request.ToDate ?? DateTime.UtcNow;
@@ -77,6 +105,8 @@ namespace BiobrainWebAPI.Controllers
                 return BadRequest("CourseId and Question are required.");
             }
 
+            if (!await IsAiEnabledForUserAsync()) return AiDisabledResult();
+
             var answer = await _askBiobrainService.AskAsync(
                 request.CourseId,
                 request.ContentTreeNodeId,
@@ -97,6 +127,8 @@ namespace BiobrainWebAPI.Controllers
             {
                 return BadRequest("CourseId, ContentTreeNodeId, and TeacherId are required.");
             }
+
+            if (!await IsAiEnabledForUserAsync()) return AiDisabledResult();
 
             var questionIds = await _practiceSetGeneratorService.GenerateAsync(
                 request.CourseId,
