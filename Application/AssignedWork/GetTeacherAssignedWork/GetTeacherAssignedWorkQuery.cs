@@ -52,6 +52,8 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
             public int StudentAssigned { get; init; }
 
             public Constant.QuizAssignmentStatus Status { get; init; }
+
+            public bool IsCustomQuiz { get; init; }
         }
 
 
@@ -194,7 +196,8 @@ namespace Biobrain.Application.AssignedWork.GetTeacherAssignedWork
                                     ? Constant.QuizAssignmentStatus.Complete
                                     : _.QuizStudentAssignments.Any(_ => _.Result?.CompletedAt != null)
                                         ? Constant.QuizAssignmentStatus.PartiallyComplete
-                                        : Constant.QuizAssignmentStatus.Assigned
+                                        : Constant.QuizAssignmentStatus.Assigned,
+                                IsCustomQuiz = _.Quiz.Type == QuizType.TeacherCustom
                             };
                         })
                         .ToImmutableList();

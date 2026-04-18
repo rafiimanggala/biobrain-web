@@ -50,6 +50,8 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
             public DateTime? DueAt { get; init; }
 
             public DateTime? AssignedAt { get; init; }
+
+            public bool IsCustomQuiz { get; init; }
         }
 
 
@@ -184,7 +186,8 @@ namespace Biobrain.Application.AssignedWork.GetAssignedWork
                                               Path = path.ToImmutableList(),
                                               NameLines = nameLines,
                                               DueAt = _.DueAtUtc,
-                                              AssignedAt = _.AssignedAtUtc
+                                              AssignedAt = _.AssignedAtUtc,
+                                              IsCustomQuiz = _.QuizAssignment.Quiz.Type == QuizType.TeacherCustom
                                           };
                                       })
                                       .ToImmutableList();
