@@ -202,7 +202,7 @@ export class AssignedWorkComponent extends BaseComponent implements OnInit {
       headerName: `${capitalizeFirstLetter(x.name)}`,
       headerClass: simpleHeaderClasses,
       cellClass: [commonCellClass, ...this.getClasses(x.name)],
-      valueGetter: getValue(x.depth),
+      valueGetter: getValue(x.depth, x.name),
       suppressMovable: true,
       autoHeight: true,
       wrapText: true,
@@ -361,9 +361,9 @@ export function getType(depth: number): string {
   return 'leftAligned';
 }
 
-function getValue(depth: number): (params: ValueGetterParams) => string {
+function getValue(depth: number, columnName?: string): (params: ValueGetterParams) => string {
   return params => {
-    const data = params.node?.data as ({ path: string[] } | undefined | null);
+    const data = params.node?.data as ({ path: string[]; isCustomQuiz?: boolean } | undefined | null);
     if (!data) {
       return '';
     }
@@ -372,8 +372,21 @@ function getValue(depth: number): (params: ValueGetterParams) => string {
       throw Error('Path is required for "action" column');
     }
 
+    if (data.isCustomQuiz && columnName) {
+      const override = getCustomQuizOverride(columnName);
+      if (override !== null) return override;
+    }
+
     return data.path[depth];
   };
+}
+
+function getCustomQuizOverride(name: string): string | null {
+  const lower = name.toLocaleLowerCase();
+  if (lower.includes('key knowledge')) return 'Custom Quiz';
+  if (lower.includes('topic') && !lower.includes('subtopic')) return 'Various';
+  if (lower.includes('level')) return '-';
+  return null;
 }
 
 function tuneGrid(gridApi: GridApi): void {

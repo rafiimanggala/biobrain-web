@@ -23,7 +23,8 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
 
   private get _cols() {
     const count = this.results.length;
-    if (count <= 10) return 4;
+    if (count === 10) return 4;
+    if (count <= 10) return 3;
     if (count <= 20) return 5;
     if (count <= 30) return 6;
     return 8;
@@ -35,6 +36,10 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
     if (count <= 20) return 0.8;
     if (count <= 30) return 0.65;
     return 0.5;
+  }
+
+  private get _isClassic10() {
+    return this.results.length === 10;
   }
 
   private get _baseWidth() {
@@ -100,11 +105,28 @@ export class HexagoneResultsComponent extends BaseComponent implements AfterView
 
     this._hexagones = [];
     for (let i = 0; i < this.results.length; i++) {
-      const row = Math.floor(i / cols);
-      const col = i % cols;
-      const isOffsetRow = row % 2 === 1;
-      const dx = (col + (isOffsetRow ? 0.5 : 0)) * (this._hexWidth + this._d);
-      const dy = row * (0.75 * this._hexHeight + this._d);
+      let dx: number;
+      let dy: number;
+
+      if (this._isClassic10) {
+        // Classic 3-4-3 honeycomb layout (original design)
+        if (i < 3) {
+          dx = (0.5 + i) * (this._hexWidth + this._d);
+          dy = 0;
+        } else if (i < 7) {
+          dx = (i - 3) * (this._hexWidth + this._d);
+          dy = 0.75 * this._hexHeight + this._d;
+        } else {
+          dx = (0.5 + i - 7) * (this._hexWidth + this._d);
+          dy = 1.5 * this._hexHeight + 2 * this._d;
+        }
+      } else {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        const isOffsetRow = row % 2 === 1;
+        dx = (col + (isOffsetRow ? 0.5 : 0)) * (this._hexWidth + this._d);
+        dy = row * (0.75 * this._hexHeight + this._d);
+      }
 
       const result = this.results[i];
       const hexagonRect = new Rect(dx + this._drawRect.x, dy + this._drawRect.y, this._hexWidth, this._hexHeight);

@@ -27,6 +27,7 @@ export interface ActiveQuizAssignment {
   readonly title: string;
   readonly dueAt: Date | null;
   readonly assignedAt: Date | null;
+  readonly isCustomQuiz?: boolean;
 }
 
 export interface ActiveLearningMaterialAssignment {

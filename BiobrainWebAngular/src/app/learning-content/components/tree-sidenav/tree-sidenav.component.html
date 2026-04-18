@@ -3,29 +3,7 @@
   <app-sidenav-search class='search' [(searchText)]='searchString' (searchComplete)='onSearchComplete()'>
   </app-sidenav-search>
 
-  <!-- expand controls -->
-  <div class='tree-controls'>
-    <button mat-stroked-button
-            class='control-btn'
-            [class.active-level]='allExpanded'
-            (click)='toggleExpandAll()'>
-      <mat-icon class='control-icon'>{{allExpanded ? 'unfold_less' : 'unfold_more'}}</mat-icon>
-      {{allExpanded ? 'Collapse All' : 'Expand All'}}
-    </button>
-    <span class='control-separator'>|</span>
-    <button mat-stroked-button
-            class='control-btn'
-            [class.active-level]='l1Expanded'
-            (click)='toggleLevel(1)'>
-      L1
-    </button>
-    <button mat-stroked-button
-            class='control-btn'
-            [class.active-level]='l2Expanded'
-            (click)='toggleLevel(2)'>
-      L2
-    </button>
-  </div>
+  <!-- expand controls moved to toolbar arrow button (issue #2: single control) -->
 
   <!--tree-->
   <div class='tree-scroll-container right-direction'>

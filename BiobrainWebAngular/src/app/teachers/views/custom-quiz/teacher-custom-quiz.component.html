@@ -48,11 +48,11 @@
 
       <!-- Sound & Hints Toggles -->
       <div class="toggle-options" fxLayout="row" fxLayoutGap="24px">
-        <mat-slide-toggle [(ngModel)]="soundEnabled" color="primary">
+        <mat-slide-toggle [(ngModel)]="soundEnabled" color="accent">
           <mat-icon class="toggle-icon">{{soundEnabled ? 'volume_up' : 'volume_off'}}</mat-icon>
           Sound
         </mat-slide-toggle>
-        <mat-slide-toggle [(ngModel)]="hintsEnabled" color="primary">
+        <mat-slide-toggle [(ngModel)]="hintsEnabled" color="accent">
           <mat-icon class="toggle-icon">{{hintsEnabled ? 'lightbulb' : 'lightbulb_outline'}}</mat-icon>
           Hints
         </mat-slide-toggle>
@@ -85,7 +85,7 @@
             <mat-checkbox
               [checked]="student.checked"
               (change)="toggleStudent(student)"
-              color="primary">
+              color="accent">
               {{student.fullName}}
             </mat-checkbox>
           </div>
@@ -96,7 +96,7 @@
       </div>
 
       <!-- Save as Template -->
-      <mat-checkbox [(ngModel)]="saveAsTemplate" color="primary">
+      <mat-checkbox [(ngModel)]="saveAsTemplate" color="accent">
         Save as template for future use
       </mat-checkbox>
 
@@ -141,7 +141,7 @@
           <mat-checkbox
             [checked]="checklistSelection.isSelected(node)"
             (change)="toggleLeafNode(node)"
-            color="primary">
+            color="accent">
             {{node.header}}
           </mat-checkbox>
         </mat-tree-node>
@@ -157,7 +157,7 @@
             [checked]="descendantsAllSelected(node)"
             [indeterminate]="descendantsPartiallySelected(node)"
             (change)="toggleParentNode(node)"
-            color="primary">
+            color="accent">
             {{node.header}}
           </mat-checkbox>
         </mat-tree-node>

@@ -31,9 +31,7 @@
     <ng-container matColumnDef="hints">
       <th mat-header-cell *matHeaderCellDef>Hints</th>
       <td mat-cell *matCellDef="let template">
-        <mat-icon [class.enabled]="template.hintsEnabled" [class.disabled]="!template.hintsEnabled">
-          {{template.hintsEnabled ? 'check_circle' : 'cancel'}}
-        </mat-icon>
+        <mat-slide-toggle [checked]="template.hintsEnabled" color="accent" disabled></mat-slide-toggle>
       </td>
     </ng-container>
 
@@ -41,9 +39,7 @@
     <ng-container matColumnDef="sound">
       <th mat-header-cell *matHeaderCellDef>Sound</th>
       <td mat-cell *matCellDef="let template">
-        <mat-icon [class.enabled]="template.soundEnabled" [class.disabled]="!template.soundEnabled">
-          {{template.soundEnabled ? 'volume_up' : 'volume_off'}}
-        </mat-icon>
+        <mat-slide-toggle [checked]="template.soundEnabled" color="accent" disabled></mat-slide-toggle>
       </td>
     </ng-container>
 

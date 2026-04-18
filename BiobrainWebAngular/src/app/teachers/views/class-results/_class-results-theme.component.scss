@@ -23,7 +23,7 @@
   }
 
   .red-color {
-    color: mat-color($primary-palette, 500);
+    color: #E73E3E;
   }
 
   .filter-container {
@@ -41,12 +41,11 @@
     padding-right: 8px !important;
   }
 
-  // Override accent (#00A1DF) to primary (#004876) for student name,
-  // Average Quiz Score, and Student Progress columns within class results
-  // (CR Item 4 — match the rest of the page).
+  // Student name, Average Quiz Score, and Student Progress columns use
+  // accent (#00A1DF — light blue) per James's review (Issue #6).
   app-class-results {
     .ag-grid-custom-aggregate-cell {
-      color: mat-color($primary-palette, 500);
+      color: mat-color($accent-palette, 500);
     }
   }
 }

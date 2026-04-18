@@ -29,6 +29,7 @@ export interface ActiveQuizClassAssignment {
   readonly assignedAt: Date | null;
   readonly studentAssigned: number;
   readonly status: AssignmentStatus;
+  readonly isCustomQuiz?: boolean;
 }
 
 export interface ActiveLearningMaterialClassAssignment {
